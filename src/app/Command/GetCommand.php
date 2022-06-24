@@ -1,0 +1,59 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Command;
+
+use App\DownloadManager;
+use Hyperf\Command\Command as HyperfCommand;
+use Hyperf\Command\Annotation\Command;
+use Hyperf\Context\Context;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+#[Command]
+class GetCommand extends HyperfCommand
+{
+
+    protected DownloadManager $downloadManager;
+
+    public function __construct(protected ContainerInterface $container)
+    {
+        parent::__construct('get');
+        $this->downloadManager = $this->container->get(DownloadManager::class);
+    }
+
+    public function configure()
+    {
+        parent::configure();
+        $this->setDescription('Get the runtime or library into your project.');
+        $this->addArgument('pkg', InputArgument::REQUIRED, 'The package name');
+        $this->addOption('source', 's', InputOption::VALUE_OPTIONAL, 'The download source.');
+    }
+
+    public function handle()
+    {
+        Context::set(InputInterface::class, $this->input);
+        Context::set(OutputInterface::class, $this->output);
+        $pkg = $this->input->getArgument('pkg');
+        $source = $this->input->getOption('source');
+        [$pkg, $version] = $this->parsePkgVersion($pkg);
+        $options = [];
+        if ($source) {
+            $options['source'] = $source;
+        }
+        $this->downloadManager->get($pkg, $version, $options);
+    }
+
+    protected function parsePkgVersion(string $pkg): array
+    {
+        $version = 'latest';
+        if (str_contains($pkg, '@')) {
+            [$pkg, $version] = explode('@', $pkg);
+        }
+        return [$pkg, $version];
+    }
+}

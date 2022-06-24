@@ -1,0 +1,6 @@
+{
+    "composer": {
+        "full_name": "composer/composer",
+        "asset_name": "composer.phar"
+    }
+}
