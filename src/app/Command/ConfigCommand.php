@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Config;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
+use Hyperf\Utils\Arr;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -37,6 +38,10 @@ class ConfigCommand extends HyperfCommand
         switch ($action) {
             case 'list':
                 $this->output->writeln(json_encode($this->config->getConfigContent(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                break;
+            case 'unset':
+                $key = $this->input->getArgument('arg1');
+                $this->config->updateConfig($key, null);
                 break;
             case 'set':
                 $key = $this->input->getArgument('arg1');
