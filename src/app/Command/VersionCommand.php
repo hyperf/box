@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Box;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 use Psr\Container\ContainerInterface;
@@ -25,7 +26,9 @@ class VersionCommand extends HyperfCommand
 
     public function handle()
     {
-        $this->output->block('box version: v0.0.1');
+        $this->output->writeln([
+            'box version: v' . Box::VERSION,
+        ]);
     }
 
 }
