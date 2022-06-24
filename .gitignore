@@ -13,3 +13,4 @@ vendor/
 *.lock
 box
 .box
+*.phar
