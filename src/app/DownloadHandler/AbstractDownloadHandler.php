@@ -28,7 +28,7 @@ abstract class AbstractDownloadHandler
 
     public function __construct()
     {
-        $this->runtimePath = $this->config->getConfig('path.runtime', getenv('HOME') . '/box/runtime');
+        $this->runtimePath = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
     }
 
     protected function fetchDownloadUrlFromGithubRelease(string $assetName, string $fullRepo, string $version): ?string

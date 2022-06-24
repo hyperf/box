@@ -34,7 +34,7 @@ class BuildPrepareCommand extends HyperfCommand
     {
         $refresh = $this->input->getOption('refresh');
         $refresh = $refresh !== false;
-        $runtimePath = $this->config->getConfig('path.runtime', getenv('HOME') . '/box/runtime');
+        $runtimePath = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
         $composer = $runtimePath . '/composer.phar';
         $php = $runtimePath . '/php8.1';
         $micro = $runtimePath . '/micro_php8.1.sfx';

@@ -8,7 +8,13 @@ use Hyperf\Utils\Arr;
 class Config
 {
 
-    protected string $configFile = '.box';
+    protected string $configFile;
+
+    public function __construct()
+    {
+        $this->configFile = getenv('HOME') . '/.box/.boxconfig';
+    }
+
 
     public function getConfigContent(): array
     {

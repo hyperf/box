@@ -47,8 +47,7 @@ class BuildSelfCommand extends HyperfCommand
             'cd src && ' .
              $composerUpadteCmd .
              '%s -d phar.readonly=Off bin/hyperf.php phar:build &&
-             cat %s ./hyperf-cli.phar > %s && 
-             rm -rf ./hyperf-cli.phar',
+             cat %s ./hyperf-cli.phar > %s',
             $php, $composer, $php, $micro, $boxBin
         );
         $result = exec($fullCommand);

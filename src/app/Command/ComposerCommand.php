@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Config;
 use Hyperf\Command\Annotation\Command;
-use Hyperf\Command\Command as HyperfCommand;
 use Hyperf\Utils\Str;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 #[Command]
-class ComposerCommand extends HyperfCommand
+class ComposerCommand extends AbstractCommand
 {
+
+    protected Config $config;
 
     public function __construct(protected ContainerInterface $container)
     {
         parent::__construct('composer');
+        $this->config = $this->container->get(Config::class);
     }
 
     public function configure()
@@ -29,11 +30,11 @@ class ComposerCommand extends HyperfCommand
 
     public function handle()
     {
-        $bin = '/usr/local/box/php8.1' . ' /usr/local/box/composer.phar';
-        $command = Str::replaceFirst('composer ', '',  (string)$this->input);
+        $path = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
+        $bin = $path . '/php8.1 ' . $path . '/composer.phar';
+        $command = Str::replaceFirst('composer ', '', (string)$this->input);
         $fullCommand = sprintf('%s %s', $bin, $command);
-        var_dump($fullCommand);
-        exec($fullCommand);
+        $this->proxyCommand($fullCommand);
     }
 
 }
