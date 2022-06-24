@@ -63,8 +63,7 @@ abstract class AbstractDownloadHandler
         $output = Context::get(OutputInterface::class);
         $progressBar = new ProgressBar($output);
         while (! feof($remoteFile)) {
-            fwrite($localFile, $freadStr = fread($remoteFile, 8192));
-            var_dump($freadStr);
+            fwrite($localFile, fread($remoteFile, 8192));
             $progressBar->advance(8192);
         }
         $progressBar->display();
