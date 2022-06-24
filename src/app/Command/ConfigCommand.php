@@ -1,20 +1,25 @@
 <?php
 
 declare(strict_types=1);
-
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace App\Command;
 
 use App\Config;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
-use Hyperf\Utils\Arr;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 #[Command]
 class ConfigCommand extends HyperfCommand
 {
-
     protected Config $config;
 
     public function __construct(protected ContainerInterface $container)
@@ -56,7 +61,7 @@ class ConfigCommand extends HyperfCommand
                 $key = 'versions.php';
                 $value = $this->config->getConfig($key);
                 $this->output->block([
-                    sprintf('%s: %s', $key, $value)
+                    sprintf('%s: %s', $key, $value),
                 ]);
                 break;
             case 'get':
@@ -76,7 +81,7 @@ class ConfigCommand extends HyperfCommand
                         break;
                     }
                     $this->output->block([
-                        sprintf('%s: %s', $key, $value)
+                        sprintf('%s: %s', $key, $value),
                     ]);
                 }
                 break;
@@ -84,6 +89,4 @@ class ConfigCommand extends HyperfCommand
                 throw new \Exception('Unexpected action');
         }
     }
-
-
 }

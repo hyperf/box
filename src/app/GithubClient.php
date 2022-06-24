@@ -1,21 +1,26 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace App;
-
 
 use GuzzleHttp\Client;
 use Hyperf\Di\Annotation\Inject;
-use Hyperf\Guzzle\ClientFactory;
-use function Swow\Debug\var_dump_return;
 
 class GithubClient
 {
-
     protected Client $httpClient;
 
     #[Inject]
     protected Config $config;
-    
+
     protected string $baseUrl = 'https://api.github.com/';
 
     public function __construct()
@@ -24,7 +29,7 @@ class GithubClient
             'headers' => [
                 'Accept' => 'application/vnd.github.v3+json',
                 'Authorization' => 'token ' . $this->getGithubToken(),
-            ]
+            ],
         ]);
     }
 
@@ -47,14 +52,13 @@ class GithubClient
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    protected function buildRepoUrl(string $repo): string
-    {
-        return $this->baseUrl . 'repos/' . $repo;
-    }
-
     public function getGithubToken(): string
     {
         return $this->config->getConfig('github.access-token') ?: '';
     }
 
+    protected function buildRepoUrl(string $repo): string
+    {
+        return $this->baseUrl . 'repos/' . $repo;
+    }
 }

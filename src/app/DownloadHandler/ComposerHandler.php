@@ -1,15 +1,26 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace App\DownloadHandler;
 
 use SplFileInfo;
 
 class ComposerHandler extends AbstractDownloadHandler
 {
-
     protected string $fullRepo = 'composer/composer';
+
     protected string $binName = 'composer.phar';
+
     protected string $getComposerOrgBaseUrl = 'getcomposer.org';
+
     protected string $githubBaseUrl = 'github.com';
 
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo

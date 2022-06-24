@@ -1,7 +1,15 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace App\DownloadHandler;
-
 
 use App\Config;
 use App\GithubClient;
@@ -10,26 +18,27 @@ use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Di\Annotation\Inject;
 use SplFileInfo;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function Swow\Debug\var_dump_return;
 
 abstract class AbstractDownloadHandler
 {
-
-
     #[Inject]
     protected GithubClient $githubClient;
+
     #[Inject]
     protected StdoutLoggerInterface $logger;
+
     #[Inject]
     protected Config $config;
+
     protected string $runtimePath;
 
     public function __construct()
     {
         $this->runtimePath = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
     }
+
+    abstract public function handle(string $repo, string $version, array $options = []): ?SplFileInfo;
 
     protected function fetchDownloadUrlFromGithubRelease(string $assetName, string $fullRepo, string $version): ?string
     {
@@ -54,7 +63,7 @@ abstract class AbstractDownloadHandler
         $mergeContextArr = array_merge([
             'ssl' => [
                 'verify_peer' => false,
-            ]
+            ],
         ], $context);
         $context = stream_context_create($mergeContextArr);
         $remoteFile = fopen($url, 'r', false, $context);
@@ -75,6 +84,4 @@ abstract class AbstractDownloadHandler
         $this->logger->info(sprintf('Download saved to %s', $savePath));
         return new SplFileInfo($savePath);
     }
-
-    abstract public function handle(string $repo, string $version, array $options = []): ?SplFileInfo;
 }

@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace App;
-
 
 use Hyperf\Utils\Arr;
 
 class Config
 {
-
     protected string $configFile;
 
     public function __construct()
@@ -15,7 +22,6 @@ class Config
         $this->configFile = getenv('HOME') . '/.box/.boxconfig';
         $this->init();
     }
-
 
     public function getConfigContent(): array
     {
@@ -57,17 +63,16 @@ class Config
             $content = [
                 'path' => [
                     'runtime' => getenv('HOME') . '/.box',
-                    'bin' => getenv('HOME') . '/.box'
+                    'bin' => getenv('HOME') . '/.box',
                 ],
                 'github' => [
                     'access-token' => '',
                 ],
                 'versions' => [
-                    'php' => '8.1'
+                    'php' => '8.1',
                 ],
             ];
             $this->setConfigContent($content);
         }
     }
-
 }

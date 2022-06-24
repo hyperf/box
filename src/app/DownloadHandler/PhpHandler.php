@@ -1,7 +1,15 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace App\DownloadHandler;
-
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -11,14 +19,15 @@ use SplFileInfo;
 
 class PhpHandler extends AbstractDownloadHandler
 {
-
     #[Inject]
     protected Client $httpClient;
+
     protected string $repo = 'dixyes/lwmbs';
+
     protected array $jobs
         = [
             'Darwin.x86_64' => '2554976476',
-            'Darwin.arm64' => '2554976476'
+            'Darwin.arm64' => '2554976476',
         ];
 
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
@@ -91,5 +100,4 @@ class PhpHandler extends AbstractDownloadHandler
             'allow_redirects' => false,
         ]);
     }
-
 }

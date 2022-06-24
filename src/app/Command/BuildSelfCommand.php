@@ -1,7 +1,14 @@
 <?php
 
 declare(strict_types=1);
-
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace App\Command;
 
 use App\Config;
@@ -12,7 +19,6 @@ use Symfony\Component\Console\Input\InputOption;
 #[Command]
 class BuildSelfCommand extends AbstractCommand
 {
-
     protected Config $config;
 
     public function __construct(protected ContainerInterface $container)
@@ -48,11 +54,12 @@ class BuildSelfCommand extends AbstractCommand
              $composerUpadteCmd .
              '%s -d phar.readonly=Off bin/hyperf.php phar:build &&
              cat %s ./box.phar > %s',
-            $php, $micro, $boxBin
+            $php,
+            $micro,
+            $boxBin
         );
         $this->liveCommand($fullCommand);
         chmod($boxBin, 0755);
         $this->output->info('Box build finished, saved to ' . $boxBin);
     }
-
 }

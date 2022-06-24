@@ -1,18 +1,25 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace App;
 
-
 use App\DownloadHandler\ComposerHandler;
-use App\DownloadHandler\MicroHandler;
 use App\DownloadHandler\DefaultHandler;
+use App\DownloadHandler\MicroHandler;
 use App\DownloadHandler\PhpHandler;
 use Hyperf\Di\Annotation\Inject;
 use Psr\Container\ContainerInterface;
 
 class DownloadManager
 {
-
     protected array $handlers = [
         'composer' => ComposerHandler::class,
         'micro' => MicroHandler::class,
@@ -22,6 +29,7 @@ class DownloadManager
 
     #[Inject]
     protected ContainerInterface $container;
+
     #[Inject]
     protected Config $config;
 
@@ -46,5 +54,4 @@ class DownloadManager
             chmod($path, 0755);
         }
     }
-
 }

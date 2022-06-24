@@ -1,7 +1,15 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace App\DownloadHandler;
-
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -10,7 +18,6 @@ use SplFileInfo;
 
 class MicroHandler extends PhpHandler
 {
-
     #[Inject]
     protected Client $httpClient;
 
@@ -42,5 +49,4 @@ class MicroHandler extends PhpHandler
         }
         return null;
     }
-
 }
