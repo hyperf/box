@@ -41,14 +41,14 @@ class BuildSelfCommand extends HyperfCommand
         $fastMode = $fastMode !== false;
         $composerUpadteCmd = '';
         if (! $fastMode) {
-            $composerUpadteCmd = '%s %s update -o -W --no-dev && ';
+            $composerUpadteCmd = sprintf('%s %s update -oW --no-dev && ', $php, $composer);
         }
         $fullCommand = sprintf(
             'cd src && ' .
              $composerUpadteCmd .
              '%s -d phar.readonly=Off bin/hyperf.php phar:build &&
-             cat %s ./hyperf-cli.phar > %s',
-            $php, $composer, $php, $micro, $boxBin
+             cat %s ./box.phar > %s',
+            $php, $micro, $boxBin
         );
         $result = exec($fullCommand);
         chmod($boxBin, 0755);
