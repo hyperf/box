@@ -36,7 +36,7 @@ class ConfigCommand extends HyperfCommand
         $action = $this->input->getArgument('action');
         switch ($action) {
             case 'list':
-                $this->output->block(json_encode($this->config->getConfigContent(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                $this->output->writeln(json_encode($this->config->getConfigContent(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
                 break;
             case 'set':
                 $key = $this->input->getArgument('key');
@@ -49,9 +49,17 @@ class ConfigCommand extends HyperfCommand
                 if (is_bool($value)) {
                     $value = $value ? 'true' : 'false';
                 }
-                $this->output->block([
-                    sprintf('%s: %s', $key, $value)
-                ]);
+                if (! $key) {
+                    $this->output->error('Config key missing');
+                } else {
+                    if (is_array($value)) {
+                        $this->output->error('Please specified the config key');
+                        break;
+                    }
+                    $this->output->block([
+                        sprintf('%s: %s', $key, $value)
+                    ]);
+                }
                 break;
             default:
                 throw new \Exception('Unexpected action');

@@ -37,7 +37,7 @@ class Config
         $this->setConfigContent($config);
     }
 
-    public function getConfig(string $key, mixed $default = null): mixed
+    public function getConfig(?string $key, mixed $default = null): mixed
     {
         $config = $this->getConfigContent();
         return Arr::get($config, $key, $default);
