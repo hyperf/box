@@ -6,12 +6,11 @@ namespace App\Command;
 
 use App\Config;
 use Hyperf\Command\Annotation\Command;
-use Hyperf\Command\Command as HyperfCommand;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 #[Command]
-class BuildSelfCommand extends HyperfCommand
+class BuildSelfCommand extends AbstractCommand
 {
 
     protected Config $config;
@@ -32,10 +31,11 @@ class BuildSelfCommand extends HyperfCommand
     public function handle()
     {
         $runtimePath = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
+        $currentPhpVersion = $this->config->getConfig('versions.php', '8.1');
         $binPath = $this->config->getConfig('path.bin', getenv('HOME') . '/.box');
         $composer = $runtimePath . '/composer.phar';
-        $php = $runtimePath . '/php8.1';
-        $micro = $runtimePath . '/micro_php8.1.sfx';
+        $php = $runtimePath . '/php' . $currentPhpVersion;
+        $micro = $runtimePath . '/micro_php' . $currentPhpVersion . '.sfx';
         $boxBin = $binPath . '/box';
         $fastMode = $this->input->getOption('fast');
         $fastMode = $fastMode !== false;
@@ -50,9 +50,9 @@ class BuildSelfCommand extends HyperfCommand
              cat %s ./box.phar > %s',
             $php, $micro, $boxBin
         );
-        $result = exec($fullCommand);
+        $this->liveCommand($fullCommand);
         chmod($boxBin, 0755);
-        $result && $this->output->info('Box build finished, saved to ' . $boxBin);
+        $this->output->info('Box build finished, saved to ' . $boxBin);
     }
 
 }

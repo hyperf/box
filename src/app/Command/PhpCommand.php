@@ -10,21 +10,21 @@ use Hyperf\Utils\Str;
 use Psr\Container\ContainerInterface;
 
 #[Command]
-class ComposerCommand extends AbstractCommand
+class PhpCommand extends AbstractCommand
 {
 
     protected Config $config;
 
     public function __construct(protected ContainerInterface $container)
     {
-        parent::__construct('composer');
+        parent::__construct('php');
         $this->config = $this->container->get(Config::class);
     }
 
     public function configure()
     {
         parent::configure();
-        $this->setDescription('The composer proxy command.');
+        $this->setDescription('The php proxy command.');
         $this->ignoreValidationErrors();
     }
 
@@ -32,8 +32,8 @@ class ComposerCommand extends AbstractCommand
     {
         $path = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
         $currentPhpVersion = $this->config->getConfig('versions.php', '8.1');
-        $bin = $path . '/php' . $currentPhpVersion . ' ' . $path . '/composer.phar';
-        $command = Str::replaceFirst('composer ', '', (string)$this->input);
+        $bin = $path . '/php' . $currentPhpVersion;
+        $command = Str::replaceFirst('php ', '', (string)$this->input);
         $fullCommand = sprintf('%s %s', $bin, $command);
         $this->liveCommand($fullCommand);
     }

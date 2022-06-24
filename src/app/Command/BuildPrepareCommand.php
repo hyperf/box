@@ -35,18 +35,19 @@ class BuildPrepareCommand extends HyperfCommand
         $refresh = $this->input->getOption('refresh');
         $refresh = $refresh !== false;
         $runtimePath = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
+        $currentPhpVersion = $this->config->getConfig('versions.php', '8.1');
         $composer = $runtimePath . '/composer.phar';
-        $php = $runtimePath . '/php8.1';
-        $micro = $runtimePath . '/micro_php8.1.sfx';
+        $php = $runtimePath . '/php' . $currentPhpVersion;
+        $micro = $runtimePath . '/micro_php' . $currentPhpVersion . '.sfx';
         $getCommand = $this->getApplication()->find('get');
         if (! file_exists($composer) || $refresh) {
             $getCommand->run(new ArrayInput(['pkg' => 'composer']), $this->output);
         }
         if (! file_exists($php) || $refresh) {
-            $getCommand->run(new ArrayInput(['pkg' => 'php']), $this->output);
+            $getCommand->run(new ArrayInput(['pkg' => 'php@' . $currentPhpVersion]), $this->output);
         }
         if (! file_exists($micro) || $refresh) {
-            $getCommand->run(new ArrayInput(['pkg' => 'micro']), $this->output);
+            $getCommand->run(new ArrayInput(['pkg' => 'micro@' . $currentPhpVersion]), $this->output);
         }
 
         $this->output->info('Box build is prepared.');

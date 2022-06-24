@@ -13,6 +13,7 @@ class Config
     public function __construct()
     {
         $this->configFile = getenv('HOME') . '/.box/.boxconfig';
+        $this->init();
     }
 
 
@@ -47,6 +48,26 @@ class Config
     {
         $config = $this->getConfigContent();
         return Arr::get($config, $key, $default);
+    }
+
+    public function init(): void
+    {
+        $content = $this->getConfigContent();
+        if (! $content) {
+            $content = [
+                'path' => [
+                    'runtime' => getenv('HOME') . '/.box',
+                    'bin' => getenv('HOME') . '/.box'
+                ],
+                'github' => [
+                    'access-token' => '',
+                ],
+                'versions' => [
+                    'php' => '8.1'
+                ],
+            ];
+            $this->setConfigContent($content);
+        }
     }
 
 }

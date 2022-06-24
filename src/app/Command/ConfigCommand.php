@@ -27,8 +27,8 @@ class ConfigCommand extends HyperfCommand
         parent::configure();
         $this->setDescription('Config of box.');
         $this->addArgument('action', InputArgument::REQUIRED, '');
-        $this->addArgument('key', InputArgument::OPTIONAL, '');
-        $this->addArgument('value', InputArgument::OPTIONAL, '');
+        $this->addArgument('arg1', InputArgument::OPTIONAL, '');
+        $this->addArgument('arg2', InputArgument::OPTIONAL, '');
     }
 
     public function handle()
@@ -39,15 +39,29 @@ class ConfigCommand extends HyperfCommand
                 $this->output->writeln(json_encode($this->config->getConfigContent(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
                 break;
             case 'set':
-                $key = $this->input->getArgument('key');
-                $value = $this->input->getArgument('value');
+                $key = $this->input->getArgument('arg1');
+                $value = $this->input->getArgument('arg2');
                 $this->config->updateConfig($key, $value);
                 break;
+            case 'set-php-version':
+                $value = $this->input->getArgument('arg1');
+                $this->config->updateConfig('versions.php', $value);
+                break;
+            case 'get-php-version':
+                $key = 'versions.php';
+                $value = $this->config->getConfig($key);
+                $this->output->block([
+                    sprintf('%s: %s', $key, $value)
+                ]);
+                break;
             case 'get':
-                $key = $this->input->getArgument('key');
+                $key = $this->input->getArgument('arg1');
                 $value = $this->config->getConfig($key);
                 if (is_bool($value)) {
                     $value = $value ? 'true' : 'false';
+                }
+                if (is_null($value)) {
+                    $value = 'null';
                 }
                 if (! $key) {
                     $this->output->error('Config key missing');

@@ -7,7 +7,7 @@ use Hyperf\Command\Command as HyperfCommand;
 abstract class AbstractCommand extends HyperfCommand
 {
 
-    protected function proxyCommand(string $command)
+    protected function liveCommand(string $command)
     {
         $handle = popen($command, 'r');
         while (! feof($handle)) {
