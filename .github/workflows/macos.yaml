@@ -21,7 +21,8 @@ jobs:
       - name: Download box
         id: download_box
         run: |
-          wget https://github.com/hyperf/box/releases/download/v0.0.1/box -O ./base-box
+          gh release download -R hyperf/box -p 'box'
+          mv box base-box
 
       - name: Build self
         id: build_self
