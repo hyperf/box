@@ -25,6 +25,7 @@ jobs:
         run: |
           gh release download -R hyperf/box -p box
           mv box base-box
+          chmod 755 ./base-box
 
       - name: Build self
         id: build_self
