@@ -11,10 +11,21 @@ declare(strict_types=1);
  */
 namespace App\Command;
 
+use App\Config;
 use Hyperf\Command\Command as HyperfCommand;
+use Hyperf\Di\Annotation\Inject;
 
 abstract class AbstractCommand extends HyperfCommand
 {
+
+    #[Inject]
+    protected Config $config;
+
+    public function __construct(string $name = null)
+    {
+        parent::__construct($name);
+    }
+
     protected function liveCommand(string $command)
     {
         $handle = popen($command, 'r');
@@ -24,4 +35,15 @@ abstract class AbstractCommand extends HyperfCommand
         }
         pclose($handle);
     }
+
+    protected function getRuntimePath(): string
+    {
+        return $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
+    }
+
+    protected function getCurrentPhpVersion(): string
+    {
+        return $this->config->getConfig('versions.php', '8.1');
+    }
+
 }
