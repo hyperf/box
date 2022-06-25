@@ -47,6 +47,7 @@ jobs:
 
       - name: Build Box
         id: box
+        continue-on-error: true
         run: |
           echo ${GITHUB_WORKSPACE}
           ./php src/bin/hyperf.php config set github.access-token ${{ env.GITHUB_TOKEN }}
