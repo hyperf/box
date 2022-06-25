@@ -50,7 +50,7 @@ jobs:
         run: |
           ./php src/bin/hyperf.php config set github.access-token ${{ env.GITHUB_TOKEN }}
           ./php src/bin/hyperf.php build-prepare
-          ./php src/bin/hyperf.php build-self -o=./box
+          ./php src/bin/hyperf.php build-self -o=/Users/runner/.box/box
 
       - name: Upload artifact for box
         if: steps.box.outcome == 'success'
