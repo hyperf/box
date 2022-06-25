@@ -24,16 +24,15 @@ jobs:
         id: download_box
         run: |
           gh run download 2554976476 -R dixyes/lwmbs -n cli_8.1_x86_64_836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
+          ls -a
           mv cli_8.1_x86_64_836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153 cli
           chmod 755 ./cli
 
       - name: Build self
         id: build_self
         run: |
-          ./base-box version
-          ./base-box build-prepare
-          ./base-box php -vs
-          ./base-box build-self -o=./box
+          ./cli src/bin/hyperf.php build-prepare
+          ./cli src/bin/hyperf.php build-self -o=./box
 
       - name: Upload artifact for box
         if: steps.box.outcome == 'success'
