@@ -35,7 +35,7 @@ jobs:
       - name: Vendor Installation
         id: vendor_installation
         run: |
-          ls -a
+          cd src
           ./php ./composer.phar install -o
 
       - name: Build self
