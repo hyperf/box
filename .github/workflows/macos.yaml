@@ -21,7 +21,7 @@ jobs:
       - name: Download box
         id: download_box
         run: |
-          gh release download -R hyperf/box -p 'box'
+          gh release download -R hyperf/box -p box
           mv box base-box
 
       - name: Build self
