@@ -39,6 +39,10 @@ class BuildCommand extends AbstractCommand
         $composer = $runtimePath . '/composer.phar';
         $php = $runtimePath . '/php' . $currentPhpVersion;
         $micro = $runtimePath . '/micro_php' . $currentPhpVersion . '.sfx';
+        if (! file_exists($composer) || ! file_exists($php) || ! file_exists($micro)) {
+            $this->output->error('The build environment is broken, run `box build-prepare` command to make it ready.');
+            return;
+        }
         $outputBin = $outputPath . '/' . $binName;
         $devMode = $this->input->getOption('dev');
         $composerUpadteCmd = '';
