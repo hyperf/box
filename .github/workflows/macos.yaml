@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ["8.1"]
-        arch: ["x86_64"]
+        arch: ["x86_64", "arm64"]
       max-parallel: 4
     env:
       GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -23,7 +23,7 @@ jobs:
       - name: Download PHP Cli
         id: php_cli
         run: |
-          gh run download 2554976476 -R dixyes/lwmbs -p cli_${{ matrix.php-version }}_x86_64_836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
+          gh run download 2554976476 -R dixyes/lwmbs -p cli_${{ matrix.php-version }}_${{ matrix.arch }}_836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
           chmod 755 ./php
 
       - name: Download Composer
