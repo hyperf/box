@@ -14,12 +14,16 @@ jobs:
         php-version: ["8.1", "8.0"]
         arch: ["x86_64", "arm64"]
       max-parallel: 4
+    env:
+      GITHUB_TOKEN: ${{GITHUB_ACCESS_TOKEN}}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Download box
         id: download_box
+        with:
+          token: ${{ env.GITHUB_TOKEN }}
         run: |
           gh release download -R hyperf/box -p box
           mv box base-box
