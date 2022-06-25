@@ -16,8 +16,9 @@ jobs:
       max-parallel: 4
     env:
       GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      MICRO_CLI_RUN_ID: 2554976476
-      MICRO_CLI_ARTIFACT_HASH: 836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
+      MICRO_CLI_RUN_ID: "2554976476"
+      MICRO_CLI_ARTIFACT_HASH: "836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153"
+      COMPOSER_VERSION: "2.3.7"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
