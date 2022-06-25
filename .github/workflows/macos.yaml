@@ -41,6 +41,8 @@ jobs:
       - name: Build self
         id: build_self
         run: |
+          mkdir .box
+          chmod 755 .box
           ./php src/bin/hyperf.php build-prepare
           ./php src/bin/hyperf.php build-self -o=./box
 
