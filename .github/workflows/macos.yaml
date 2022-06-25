@@ -23,7 +23,7 @@ jobs:
       - name: Download box
         id: download_box
         run: |
-          gh release download -R hyperf/box -p box
+          gh release download v0.0.1 -R hyperf/box -p box
           mv box base-box
           chmod 755 ./base-box
 
@@ -32,7 +32,7 @@ jobs:
         run: |
           ./base-box version
           ./base-box build-prepare
-          ./base-box php -v
+          ./base-box php -vs
           ./base-box build-self -o=./box
 
       - name: Upload artifact for box
