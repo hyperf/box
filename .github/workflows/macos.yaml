@@ -24,6 +24,7 @@ jobs:
         id: php_cli
         run: |
           gh run download 2554976476 -R dixyes/lwmbs -p "cli_${{ matrix.php-version }}_${{ matrix.arch }}*"
+          ls -a
           chmod 755 ./php
 
       - name: Download Composer
