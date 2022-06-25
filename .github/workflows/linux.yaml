@@ -22,20 +22,15 @@ jobs:
 
       - name: Download PHP Cli
         id: php_cli
-        env:
-          MICRO_CLI_RUN_ID: 2559455962
-          MICRO_CLI_ARTIFACT_HASH: 836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
         run: |
-          gh run download ${{ env.MICRO_CLI_RUN_ID }} -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_glibc_${{ matrix.arch }}_${{ MICRO_CLI_ARTIFACT_HASH }}
+          gh run download 2559455962 -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_glibc_${{ matrix.arch }}_836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
           ls -a
           chmod 755 ./php
 
       - name: Download Composer
         id: composer
-        env:
-          COMPOSER_VERSION: 2.3.7
         run: |
-          wget https://getcomposer.org/download/${{ COMPOSER_VERSION }}/composer.phar
+          wget https://getcomposer.org/download/2.3.7/composer.phar
           chmod 755 ./composer.phar
 
       - name: Vendor Installation
