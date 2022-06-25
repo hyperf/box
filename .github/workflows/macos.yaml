@@ -38,12 +38,16 @@ jobs:
           cd src
           ../php ../composer.phar install -o
 
-      - name: Build self
-        id: build_self
-        run: |
+      - name: Create .box folder
+        id: create_folder
+        run: |    
           cd ~
           mkdir .box
           chmod 755 .box
+
+      - name: Build self
+        id: build_self
+        run: |
           ./php src/bin/hyperf.php build-prepare
           ./php src/bin/hyperf.php build-self -o=./box
 
