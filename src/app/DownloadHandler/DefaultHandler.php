@@ -20,6 +20,11 @@ class DefaultHandler extends AbstractDownloadHandler
             'repo' => 'FriendsOfPHP/PHP-CS-Fixer',
             'bin' => 'php-cs-fixer.phar',
         ],
+        'phpunit' => [
+            'url' => 'https://phar.phpunit.de/phpunit-${{version}}.phar',
+            'latest' => '9',
+            'bin' => 'phpunit.phar',
+        ],
     ];
 
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
@@ -28,7 +33,16 @@ class DefaultHandler extends AbstractDownloadHandler
             throw new \RuntimeException('The package not found');
         }
         $definition = $this->definitions[$repo];
-        $url = $this->fetchDownloadUrlFromGithubRelease($definition['bin'], $definition['repo'], $version);
-        return $this->download($url, $this->runtimePath . '/', 0755);
+        if (isset($definition['repo'])) {
+            $url = $this->fetchDownloadUrlFromGithubRelease($definition['bin'], $definition['repo'], $version);
+        } elseif (isset($definition['url'])) {
+            if ($version === 'latest' && isset($definition['latest'])) {
+                $version = $definition['latest'];
+            }
+            $url = str_replace('${{version}}', $version, $definition['url']);
+        } else {
+            throw new \RuntimeException('The definition of package is invalid');
+        }
+        return $this->download($url, $this->runtimePath . '/', 0755, $definition['bin']);
     }
 }

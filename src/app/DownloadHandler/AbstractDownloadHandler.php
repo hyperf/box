@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App\DownloadHandler;
 
 use App\Config;
@@ -16,6 +17,7 @@ use App\GithubClient;
 use Hyperf\Context\Context;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\Utils\Str;
 use SplFileInfo;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -52,8 +54,13 @@ abstract class AbstractDownloadHandler
         return $url;
     }
 
-    protected function download(string $url, string $savePath, int $permissions, array $context = []): SplFileInfo
-    {
+    protected function download(
+        string $url,
+        string $savePath,
+        int $permissions,
+        string $renameTo = '',
+        array $context = []
+    ): SplFileInfo {
         $this->logger->info(sprintf('Downloading %s', $url));
         if (str_ends_with($savePath, '/')) {
             $explodedUrl = explode('/', $url);
@@ -79,7 +86,14 @@ abstract class AbstractDownloadHandler
         $output->writeln('');
         fclose($remoteFile);
         fclose($localFile);
-        rename($savePath . '.tmp', $savePath);
+        if ($renameTo) {
+            $explodedSavePath = explode('/', $savePath);
+            $filename = end($explodedSavePath);
+            rename($savePath . '.tmp', $afterRenameSavePath = Str::replaceLast($filename, $renameTo, $savePath));
+            $savePath = $afterRenameSavePath;
+        } else {
+            rename($savePath . '.tmp', $savePath);
+        }
         chmod($savePath, $permissions);
         $this->logger->info(sprintf('Download saved to %s', $savePath));
         return new SplFileInfo($savePath);
