@@ -38,16 +38,17 @@ jobs:
           cd src
           ../php ../composer.phar install -o
 
-      - name: Create .box folder
+      - name: Create ~/.box folder
         id: create_folder
         run: |    
           cd ~
           mkdir .box
           chmod 755 .box
 
-      - name: Build self
-        id: build_self
+      - name: Build Box
+        id: box
         run: |
+          echo ${GITHUB_WORKSPACE}
           ./php src/bin/hyperf.php config set github.access-token ${{ env.GITHUB_TOKEN }}
           ./php src/bin/hyperf.php build-prepare
           ./php src/bin/hyperf.php build-self --no-dev
