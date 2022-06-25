@@ -1,0 +1,42 @@
+name: MaccOS build
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  macos:
+    name: PHP ${{ matrix.php-version }} ${{ matrix.arch }}
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.1", "8.0"]
+        arch: ["x86_64", "arm64"]
+      max-parallel: 4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download box
+        id: download_box
+        run: |
+          wget https://github.com/hyperf/box/releases/download/v0.0.1/box -O ./base-box
+
+      - name: Build self
+        id: build_self
+        run: |
+          ./base-box build-self -o=./box
+
+      - name: Upload artifact for box
+        if: steps.box.outcome == 'success'
+        uses: actions/upload-artifact@v3
+        with:
+          name: box_${{ matrix.php-version }}_${{ matrix.arch }}_${{ steps.src_hash.outputs.hash }}
+          path: |
+            box
+
+      - name: Fail if box build failed
+        if: steps.box.outcome != 'success'
+        run: |
+          false
