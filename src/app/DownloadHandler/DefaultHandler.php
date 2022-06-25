@@ -15,7 +15,20 @@ use SplFileInfo;
 
 class DefaultHandler extends AbstractDownloadHandler
 {
+    protected array $definitions = [
+        'php-cs-fixer' => [
+            'repo' => 'FriendsOfPHP/PHP-CS-Fixer',
+            'bin' => 'php-cs-fixer.phar',
+        ],
+    ];
+
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
     {
+        if (! isset($this->definitions[$repo])) {
+            throw new \RuntimeException('The package not found');
+        }
+        $definition = $this->definitions[$repo];
+        $url = $this->fetchDownloadUrlFromGithubRelease($definition['bin'], $definition['repo'], $version);
+        return $this->download($url, $this->runtimePath . '/', 0755);
     }
 }
