@@ -22,8 +22,6 @@ jobs:
 
       - name: Download box
         id: download_box
-        with:
-          token: ${{ env.GITHUB_TOKEN }}
         run: |
           gh release download -R hyperf/box -p box
           mv box base-box
