@@ -17,14 +17,8 @@ use Hyperf\Di\Annotation\Inject;
 
 abstract class AbstractCommand extends HyperfCommand
 {
-
     #[Inject]
     protected Config $config;
-
-    public function __construct(string $name = null)
-    {
-        parent::__construct($name);
-    }
 
     protected function liveCommand(string $command)
     {
@@ -45,5 +39,4 @@ abstract class AbstractCommand extends HyperfCommand
     {
         return $this->config->getConfig('versions.php', '8.1');
     }
-
 }

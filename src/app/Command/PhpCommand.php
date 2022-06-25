@@ -11,7 +11,6 @@ declare(strict_types=1);
  */
 namespace App\Command;
 
-use App\Config;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Utils\Str;
 use Psr\Container\ContainerInterface;
@@ -19,12 +18,9 @@ use Psr\Container\ContainerInterface;
 #[Command]
 class PhpCommand extends AbstractCommand
 {
-    protected Config $config;
-
     public function __construct(protected ContainerInterface $container)
     {
         parent::__construct('php');
-        $this->config = $this->container->get(Config::class);
     }
 
     public function configure()

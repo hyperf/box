@@ -56,6 +56,6 @@ class BuildPrepareCommand extends HyperfCommand
             $getCommand->run(new ArrayInput(['pkg' => 'micro@' . $currentPhpVersion]), $this->output);
         }
 
-        $this->output->info('Box build is prepared.');
+        $this->output->info('It is ready to build, try it now.');
     }
 }
