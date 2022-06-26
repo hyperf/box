@@ -26,8 +26,10 @@ class PhpHandler extends AbstractDownloadHandler
 
     protected array $jobs
         = [
-            'Darwin.x86_64' => '2554976476',
-            'Darwin.arm64' => '2554976476',
+            'Darwin.x86_64' => '2562979555',
+            'Darwin.arm64' => '2562979555',
+            'Linux.x86_64' => '2562980761',
+            'Linux.aarch64' => '2562980761',
         ];
 
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
