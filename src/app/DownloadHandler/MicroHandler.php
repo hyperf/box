@@ -41,7 +41,12 @@ class MicroHandler extends PhpHandler
             rename($renameFrom = $this->runtimePath . '/micro.sfx', $renameTo = $this->runtimePath . '/micro_php' . $version . '.sfx');
             $this->logger->info(sprintf('Renamed %s to %s', $renameFrom, $renameTo));
             unlink($savePath);
-            unlink($this->runtimePath . '/micro.sfx.dwarf');
+            if (file_exists($this->runtimePath . '/micro.sfx.dwarf')) {
+                unlink($this->runtimePath . '/micro.sfx.dwarf');
+            }
+            if (file_exists($this->runtimePath . '/micro.sfx.debug')) {
+                unlink($this->runtimePath . '/micro.sfx.debug');
+            }
             $this->logger->info(sprintf('Deleted %s', $savePath));
             return new SplFileInfo($renameTo);
         } catch (GuzzleException $exception) {

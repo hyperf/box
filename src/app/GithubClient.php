@@ -68,7 +68,7 @@ class GithubClient
             }
             if (isset($links['next']['page']) && is_numeric($links['next']['page'])) {
                 $nextPageArtifacts = $this->getActionsArtifacts($repo, $jobId, intval($links['next']['page']));
-                $artifacts = array_merge($artifacts, $nextPageArtifacts);
+                $artifacts['artifacts'] = array_merge($artifacts['artifacts'], $nextPageArtifacts['artifacts']);
             }
         }
         return $artifacts;
