@@ -33,7 +33,7 @@ class PhpHandler extends AbstractDownloadHandler
 
     protected array $matchRules = [
         'Darwin' => '${{prefix}}_${{php-version}}_${{arch}}',
-        'Linux' => '${{prefix}}_static_${{php-version}}_${{arch}}',
+        'Linux' => '${{prefix}}_static_${{php-version}}_musl_${{arch}}',
     ];
 
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
@@ -97,7 +97,6 @@ class PhpHandler extends AbstractDownloadHandler
         $key = $os . '.' . $arch;
         $response = $this->githubClient->getActionsArtifacts($this->repo, $this->jobs[$key]);
         $searchKey = $this->buildSearchKey($os, $prefix, $version, $arch);
-        var_dump($searchKey);
         $artifact = $this->matchArtifact($response['artifacts'] ?? [], $searchKey);
         if (! isset($artifact['archive_download_url'])) {
             throw new \RuntimeException('Does not match any artifact.');
