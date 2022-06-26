@@ -52,6 +52,7 @@ jobs:
           ./php src/bin/hyperf.php config set github.access-token ${{ env.GITHUB_TOKEN }}
           ./php src/bin/hyperf.php config set-php-version ${{ matrix.php-version }}
           ./php src/bin/hyperf.php build-prepare
+          ls -a
           ./php src/bin/hyperf.php build-self --no-dev
           mv ~/.box/box ./box
 
