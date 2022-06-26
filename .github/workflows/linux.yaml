@@ -22,7 +22,7 @@ jobs:
       - name: Download PHP Cli
         id: php_cli
         run: |
-          gh run download 2559455962 -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_glibc_${{ matrix.arch }}_836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
+          gh run download 2562980761 -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
           ls -a
           chmod 755 ./php
 
