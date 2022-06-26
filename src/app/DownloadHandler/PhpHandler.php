@@ -24,13 +24,17 @@ class PhpHandler extends AbstractDownloadHandler
 
     protected string $repo = 'dixyes/lwmbs';
 
-    protected array $jobs
-        = [
-            'Darwin.x86_64' => '2562979555',
-            'Darwin.arm64' => '2562979555',
-            'Linux.x86_64' => '2562980761',
-            'Linux.aarch64' => '2562980761',
-        ];
+    protected array $jobs = [
+        'Darwin.x86_64' => '2562979555',
+        'Darwin.arm64' => '2562979555',
+        'Linux.x86_64' => '2562980761',
+        'Linux.aarch64' => '2562980761',
+    ];
+
+    protected array $matchRules = [
+        'Darwin' => '${{prefix}}_${{php-version}}_${{arch}}',
+        'Linux' => '${{prefix}}_static_${{php-version}}_${{arch}}',
+    ];
 
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
     {
@@ -92,8 +96,11 @@ class PhpHandler extends AbstractDownloadHandler
         $arch = php_uname('m');
         $key = $os . '.' . $arch;
         $response = $this->githubClient->getActionsArtifacts($this->repo, $this->jobs[$key]);
-        $searchKey = implode('_', [$prefix, $version, $arch]);
+        $searchKey = $this->buildSearchKey($os, $prefix, $version, $arch);
         $artifact = $this->matchArtifact($response['artifacts'] ?? [], $searchKey);
+        if (! isset($artifact['archive_download_url'])) {
+            throw new \RuntimeException('Does not match any artifact.');
+        }
         return $this->httpClient->get($artifact['archive_download_url'], [
             'headers' => [
                 'Accept' => 'application/vnd.github.v3+json',
@@ -101,5 +108,22 @@ class PhpHandler extends AbstractDownloadHandler
             ],
             'allow_redirects' => false,
         ]);
+    }
+
+    protected function buildSearchKey(string $os, string $prefix, string $version, string $arch): string
+    {
+        return $this->replaces($this->matchRules[$os], [
+            'prefix' => $prefix,
+            'php-version' => $version,
+            'arch' => $arch,
+        ]);
+    }
+
+    protected function replaces(string $subject, array $replaces): string
+    {
+        foreach ($replaces as $search => $replace) {
+            $subject = str_replace('${{' . $search . '}}', $replace, $subject);
+        }
+        return $subject;
     }
 }
