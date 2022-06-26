@@ -49,7 +49,6 @@ jobs:
         id: box
         continue-on-error: true
         run: |
-          echo ${GITHUB_WORKSPACE}
           ./php src/bin/hyperf.php config set github.access-token ${{ env.GITHUB_TOKEN }}
           ./php src/bin/hyperf.php config set-php-version ${{ matrix.php-version }}
           ./php src/bin/hyperf.php build-prepare
