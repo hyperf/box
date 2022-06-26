@@ -5,7 +5,8 @@ Box is committed to helping improve the programming experience of Hyperf applica
 ## This is still an early experimental version, have fun ~
 
 You could download the builded `box` binary file from Github Actions artifact of this project.    
-Click [here](https://github.com/hyperf/box/actions) to download ~
+Click [here](https://github.com/hyperf/box/actions) to download ~   
+Please notice that box only supports for Swow, but not Swoole, so your Hyperf application should created by hyperf/swow-skeleton or other else swow skeleton.
 
 ### Commands
 
