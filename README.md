@@ -4,7 +4,7 @@ Box is committed to helping improve the programming experience of Hyperf applica
 
 ## This is still an early experimental version, have fun ~
 
-You could download the builded `box` binary file from Github Actions artifact of this project. 
+You could download the builded `box` binary file from Github Actions artifact of this project.    
 Click [here](https://github.com/hyperf/box/actions) to download ~
 
 ### Commands
