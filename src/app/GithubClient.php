@@ -13,6 +13,7 @@ namespace App;
 
 use GuzzleHttp\Client;
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\Utils\Str;
 
 class GithubClient
 {
@@ -45,11 +46,32 @@ class GithubClient
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function getActionsArtifacts(string $repo, string $jobId)
+    public function getActionsArtifacts(string $repo, string $jobId, ?int $page = null)
     {
         $url = $this->buildRepoUrl($repo) . '/actions/runs/' . $jobId . '/artifacts';
+        if ($page) {
+            $url .= '?page=' . $page;
+        }
         $response = $this->httpClient->get($url);
-        return json_decode($response->getBody()->getContents(), true);
+        $artifacts = json_decode($response->getBody()->getContents(), true);
+        if ($response->hasHeader('link')) {
+            $links = [];
+            $link = $response->getHeaderLine('link');
+            $explodedLinks = explode(', ', $link);
+            foreach ($explodedLinks as $explodedLink) {
+                [$link, $rel] = explode(';', $explodedLink);
+                $link = trim($link, '<>');
+                $pageNum = Str::afterLast($link, '=');
+                $rel = str_replace('rel=', '', trim($rel));
+                $rel = str_replace('"', '', $rel);
+                $links[$rel] = ['link' => $link, 'page' => $pageNum];
+            }
+            if (isset($links['next']['page']) && is_numeric($links['next']['page'])) {
+                $nextPageArtifacts = $this->getActionsArtifacts($repo, $jobId, intval($links['next']['page']));
+                $artifacts = array_merge($artifacts, $nextPageArtifacts);
+            }
+        }
+        return $artifacts;
     }
 
     public function getGithubToken(): string

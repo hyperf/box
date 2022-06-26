@@ -56,7 +56,12 @@ class PhpHandler extends AbstractDownloadHandler
             rename($renameFrom = $this->runtimePath . '/php', $renameTo = $this->runtimePath . '/php' . $version);
             $this->logger->info(sprintf('Renamed %s to %s', $renameFrom, $renameTo));
             unlink($savePath);
-            unlink($this->runtimePath . '/php.dwarf');
+            if (file_exists($this->runtimePath . '/php.dwarf')) {
+                unlink($this->runtimePath . '/php.dwarf');
+            }
+            if (file_exists($this->runtimePath . '/php.debug')) {
+                unlink($this->runtimePath . '/php.debug');
+            }
             $this->logger->info(sprintf('Deleted %s', $savePath));
             return new SplFileInfo($renameTo);
         } catch (GuzzleException $exception) {
