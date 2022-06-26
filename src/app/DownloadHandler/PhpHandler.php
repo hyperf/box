@@ -103,7 +103,6 @@ class PhpHandler extends AbstractDownloadHandler
         $response = $this->githubClient->getActionsArtifacts($this->repo, $this->jobs[$key]);
         $searchKey = $this->buildSearchKey($os, $prefix, $version, $arch);
         $artifact = $this->matchArtifact($response['artifacts'] ?? [], $searchKey);
-        var_dump($searchKey, $artifact);
         if (! isset($artifact['archive_download_url'])) {
             throw new \RuntimeException('Does not match any artifact.');
         }

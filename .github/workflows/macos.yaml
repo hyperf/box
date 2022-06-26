@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ["8.1"]
-        arch: ["x86_64", "arm64"]
+        arch: ["x86_64"]
       max-parallel: 4
     env:
       GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
