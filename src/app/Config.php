@@ -40,7 +40,7 @@ class Config
         file_put_contents($this->configFile, json_encode($content, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
 
-    public function updateConfig(string $key, string $value): void
+    public function updateConfig(string $key, ?string $value): void
     {
         $config = $this->getConfigContent();
         if (in_array($value, ['bool', 'false'])) {
