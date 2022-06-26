@@ -2,6 +2,7 @@ name: MacOS build
 
 on:
   workflow_dispatch:
+  release:
 
 jobs:
   macos:
