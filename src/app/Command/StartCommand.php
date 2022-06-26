@@ -38,10 +38,10 @@ class StartCommand extends HyperfCommand
     {
         parent::configure();
         $this->setDescription('Start the sidecar server.');
-        $this->addOption('host', '', InputOption::VALUE_OPTIONAL, 'The host of sidecar server', '127.0.0.1');
-        $this->addOption('port', 'p', InputOption::VALUE_OPTIONAL, 'The port of sidecar server', 9764);
-        $this->addOption('backlog', '', InputOption::VALUE_OPTIONAL, 'The backlog of sidecar server', Socket::DEFAULT_BACKLOG);
-        $this->addOption('upstream', 'u', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'The target upstream servers of sidecar server', []);
+        $this->addOption('host', '', InputOption::VALUE_OPTIONAL, 'The host of proxy server', '127.0.0.1');
+        $this->addOption('port', 'p', InputOption::VALUE_OPTIONAL, 'The port of proxy server', 9764);
+        $this->addOption('backlog', '', InputOption::VALUE_OPTIONAL, 'The backlog of proxy server', Socket::DEFAULT_BACKLOG);
+        $this->addOption('upstream', 'u', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'The target upstream servers of proxy server', []);
 
     }
 
@@ -61,7 +61,7 @@ class StartCommand extends HyperfCommand
 
         $server = new HttpServer();
         $server->bind($host, $port)->listen($backlog);
-        $this->output->writeln(sprintf('<info>[INFO] Sidecar Server listening at %s:%d</info>', $host, $port));
+        $this->output->writeln(sprintf('<info>[INFO] Proxy Server listening at %s:%d</info>', $host, $port));
         while (true) {
             try {
                 $connection = $server->acceptConnection();
