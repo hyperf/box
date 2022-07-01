@@ -25,10 +25,10 @@ class PhpHandler extends AbstractDownloadHandler
     protected string $repo = 'dixyes/lwmbs';
 
     protected array $jobs = [
-        'Darwin.x86_64' => '2562979555',
-        'Darwin.arm64' => '2562979555',
-        'Linux.x86_64' => '2562980761',
-        'Linux.aarch64' => '2562980761',
+        'Darwin.x86_64' => '2594398665',
+        'Darwin.arm64' => '2594398665',
+        'Linux.x86_64' => '2594401174',
+        'Linux.aarch64' => '2594401174',
     ];
 
     protected array $matchRules = [
@@ -50,7 +50,7 @@ class PhpHandler extends AbstractDownloadHandler
                 throw new \RuntimeException('Download failed, cannot locate the PHP bin file in local.');
             }
             // Unzip the artifact file
-            exec('unzip ' . $savePath . ' -d ' . $this->runtimePath);
+            exec('unzip -o ' . $savePath . ' -d ' . $this->runtimePath);
             $this->logger->info('Unpacked zip file ' . $savePath);
             // ZipArchive::extractTo('runtime', $savePath);
             rename($renameFrom = $this->runtimePath . '/php', $renameTo = $this->runtimePath . '/php' . $version);
