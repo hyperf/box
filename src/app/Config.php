@@ -16,27 +16,22 @@ use Hyperf\Utils\Arr;
 class Config
 {
     protected string $configFile;
+    protected string $configFilePath;
 
     public function __construct()
     {
-        $this->configFile = getenv('HOME') . '/.box/.boxconfig';
+        $this->configFilePath = getenv('HOME') . '/.box';
+        $this->configFile = $this->configFilePath . '/.boxconfig';
         $this->init();
     }
 
     public function getConfigContent(): array
     {
-        if (! file_exists($this->configFile)) {
-            return [];
-        }
         return json_decode(file_get_contents($this->configFile), true);
     }
 
     public function setConfigContent(array $content): void
     {
-        if (! file_exists($this->configFile)) {
-            file_put_contents($this->configFile, '{}');
-            chmod($this->configFile, 0755);
-        }
         file_put_contents($this->configFile, json_encode($content, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
 
@@ -58,6 +53,13 @@ class Config
 
     public function init(): void
     {
+        if (! file_exists($this->configFile)) {
+            if (! file_exists($this->configFilePath)) {
+                mkdir($this->configFilePath, 0755, true);
+            }
+            file_put_contents($this->configFile, '{}');
+            chmod($this->configFile, 0755);
+        }
         $content = $this->getConfigContent();
         if (! $content) {
             $content = [
