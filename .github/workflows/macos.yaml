@@ -60,7 +60,7 @@ jobs:
         if: steps.box.outcome == 'success'
         uses: actions/upload-artifact@v3
         with:
-          name: box_php${{ matrix.php-version }}_${{ matrix.arch }}
+          name: box_${{ matrix.arch }}
           path: |
             box
 

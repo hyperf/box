@@ -5,7 +5,7 @@ on:
   release: 
 
 jobs:
-  macos:
+  x86_64:
     name: PHP ${{ matrix.php-version }} ${{ matrix.arch }}
     runs-on: ubuntu-latest
     strategy:
@@ -23,7 +23,7 @@ jobs:
       - name: Download PHP Cli
         id: php_cli
         run: |
-          gh run download 2562980761 -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
+          gh run download 2600362812 -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_3b7cea7f1563d18a98d3889db7cf0018391d8df57c0f77153eb1d1f28261bf96
           ls -a
           chmod 755 ./php
 
@@ -60,7 +60,70 @@ jobs:
         if: steps.box.outcome == 'success'
         uses: actions/upload-artifact@v3
         with:
-          name: box_php${{ matrix.php-version }}_${{ matrix.arch }}
+          name: box_${{ matrix.arch }}
+          path: |
+            box
+
+      - name: Fail if box build failed
+        if: steps.box.outcome != 'success'
+        run: |
+          false
+  arm64:
+    name: PHP ${{ matrix.php-version }} ${{ matrix.arch }}
+    runs-on: [self-hosted, linux, arm64]
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ "8.1" ]
+        arch: [ "aarch64" ]
+      max-parallel: 4
+    env:
+      GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download PHP Cli
+        id: php_cli
+        run: |
+          gh run download 2600362812 -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_3b7cea7f1563d18a98d3889db7cf0018391d8df57c0f77153eb1d1f28261bf96
+          ls -a
+          chmod 755 ./php
+
+      - name: Download Composer
+        id: composer
+        run: |
+          wget https://getcomposer.org/download/2.3.7/composer.phar
+          chmod 755 ./composer.phar
+
+      - name: Vendor Installation
+        id: vendor_installation
+        run: |
+          cd src
+          ../php ../composer.phar install -o
+
+      - name: Create ~/.box folder
+        id: create_folder
+        run: |
+          cd ~
+          mkdir .box
+          chmod 755 .box
+
+      - name: Build Box
+        id: box
+        continue-on-error: true
+        run: |
+          ./php src/bin/hyperf.php config set github.access-token ${{ env.GITHUB_TOKEN }}
+          ./php src/bin/hyperf.php config set-php-version ${{ matrix.php-version }}
+          ./php src/bin/hyperf.php build-prepare
+          ./php src/bin/hyperf.php build-self --no-dev
+          mv ~/.box/box ./box
+
+      - name: Upload artifact for box
+        if: steps.box.outcome == 'success'
+        uses: actions/upload-artifact@v3
+        with:
+          name: box_${{ matrix.arch }}
           path: |
             box
 
