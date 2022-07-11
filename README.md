@@ -22,10 +22,18 @@ sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
 ```
 
-##### Linux
+##### Linux x86_64
 
 ```base
 wget https://github.com/hyperf/box/releases/download/v0.0.3/box_php8.1_x86_64_linux -O box
+sudo mv ./box /usr/local/bin/box
+sudo chmod 755 /usr/local/bin/box
+// Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
+```
+##### Linux aarch64
+
+```base
+wget https://github.com/hyperf/box/releases/download/v0.0.3/box_php8.1_aarch64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
