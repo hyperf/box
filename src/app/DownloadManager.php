@@ -11,16 +11,18 @@ declare(strict_types=1);
  */
 namespace App;
 
-use App\DownloadHandler\ComposerHandler;
-use App\DownloadHandler\DefaultHandler;
-use App\DownloadHandler\MicroHandler;
-use App\DownloadHandler\PhpHandler;
 use Hyperf\Di\Annotation\Inject;
+use App\DownloadHandler\BoxHandler;
+use App\DownloadHandler\PhpHandler;
+use App\DownloadHandler\MicroHandler;
 use Psr\Container\ContainerInterface;
+use App\DownloadHandler\DefaultHandler;
+use App\DownloadHandler\ComposerHandler;
 
 class DownloadManager
 {
     protected array $handlers = [
+        'box' => BoxHandler::class,
         'composer' => ComposerHandler::class,
         'micro' => MicroHandler::class,
         'php' => PhpHandler::class,
