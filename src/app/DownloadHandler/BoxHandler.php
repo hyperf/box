@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\DownloadHandler;
 
+use Phar;
 use SplFileInfo;
 
 class BoxHandler extends ComposerHandler
@@ -33,7 +34,9 @@ class BoxHandler extends ComposerHandler
 
         $this->download($url, $this->runtimePath . '/', 0755);
 
-        rename($this->runtimePath . '/' . $this->binName, $renameTo = __DIR__ . '/box');
+        $renameTo = Phar::running(false);
+
+        rename($this->runtimePath . '/' . $this->binName, $renameTo);
 
         return new SplFileInfo($renameTo);
     }

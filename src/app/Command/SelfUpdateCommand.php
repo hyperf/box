@@ -29,11 +29,13 @@ class SelfUpdateCommand extends SymfonyCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = $this->getApplication()->find('get');
+        $application = $this->getApplication();
+        $application->setAutoExit(false);
         $arguments = [
+            'command' => 'get',
             'pkg' => 'box@latest',
         ];
 
-        return $command->run(new ArrayInput($arguments), $output);
+        return $application->run(new ArrayInput($arguments), $output);
     }
 }
