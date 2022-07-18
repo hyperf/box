@@ -2,23 +2,28 @@
 
 namespace App\Command;
 
-use Hyperf\Command\Command as HyperfCommand;
 use Psr\Container\ContainerInterface;
+use Hyperf\Command\Annotation\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\ArrayInput;
 
-class SelfUpdateCommand extends HyperfCommand
+#[Command()]
+class SelfUpdateCommand extends SymfonyCommand
 {
     public function __construct(protected ContainerInterface $container)
     {
         parent::__construct('self-update');
     }
 
-    public function handle()
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $command = $this->getApplication()->find('get');
         $arguments = [
-            'box@latest',
+            'pkg' => 'box@latest',
         ];
 
-        return $command->run();
+        return $command->run(new ArrayInput($arguments), $output);
     }
 }
