@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace App\DownloadHandler;
 
-use App\Config;
-use Hyperf\Di\Annotation\Inject;
 use SplFileInfo;
 
 class BoxHandler extends ComposerHandler
@@ -21,9 +19,6 @@ class BoxHandler extends ComposerHandler
     protected string $fullRepo = 'hyperf/box';
 
     protected string $binName = 'box';
-
-    #[Inject()]
-    protected Config $config;
 
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
     {
@@ -39,7 +34,7 @@ class BoxHandler extends ComposerHandler
 
         $this->download($url, $this->runtimePath . '/', 0755);
 
-        rename($this->runtimePath . '/' .$this->binName, $renameTo = $this->config->getConfig('path.bin') . '/box');
+        rename($this->runtimePath . '/' .$this->binName, $renameTo = __DIR__ . '/box');
 
         return new SplFileInfo($renameTo);
     }
