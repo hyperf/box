@@ -9,16 +9,15 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 namespace App;
 
-use Hyperf\Di\Annotation\Inject;
 use App\DownloadHandler\BoxHandler;
-use App\DownloadHandler\PhpHandler;
-use App\DownloadHandler\MicroHandler;
-use Psr\Container\ContainerInterface;
-use App\DownloadHandler\DefaultHandler;
 use App\DownloadHandler\ComposerHandler;
+use App\DownloadHandler\DefaultHandler;
+use App\DownloadHandler\MicroHandler;
+use App\DownloadHandler\PhpHandler;
+use Hyperf\Di\Annotation\Inject;
+use Psr\Container\ContainerInterface;
 
 class DownloadManager
 {

@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 namespace App\DownloadHandler;
 
 use SplFileInfo;
@@ -23,8 +22,8 @@ class BoxHandler extends ComposerHandler
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
     {
         $this->binName = match (PHP_OS) {
-            "Darwin" => 'box_php8.1_x86_64_macos',
-            "Linux" => match (php_uname('m')) {
+            'Darwin' => 'box_php8.1_x86_64_macos',
+            'Linux' => match (php_uname('m')) {
                 'x86_64' => 'box_php8.1_x86_64_linux',
                 default => 'box_php8.1_aarch64_linux',
             }
@@ -34,7 +33,7 @@ class BoxHandler extends ComposerHandler
 
         $this->download($url, $this->runtimePath . '/', 0755);
 
-        rename($this->runtimePath . '/' .$this->binName, $renameTo = __DIR__ . '/box');
+        rename($this->runtimePath . '/' . $this->binName, $renameTo = __DIR__ . '/box');
 
         return new SplFileInfo($renameTo);
     }
