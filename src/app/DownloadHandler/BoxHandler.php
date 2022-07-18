@@ -34,7 +34,9 @@ class BoxHandler extends ComposerHandler
 
         $this->download($url, $this->runtimePath . '/', 0755);
 
-        $renameTo = Phar::running(false);
+        $renameTo = Phar::running(false) ?: $this->runtimePath . '/box';
+
+        unlink($renameTo);
 
         rename($this->runtimePath . '/' . $this->binName, $renameTo);
 

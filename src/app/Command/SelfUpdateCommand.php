@@ -12,14 +12,12 @@ declare(strict_types=1);
 namespace App\Command;
 
 use Hyperf\Command\Annotation\Command;
+use Hyperf\Command\Command as HyperfCommand;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 #[Command()]
-class SelfUpdateCommand extends SymfonyCommand
+class SelfUpdateCommand extends HyperfCommand
 {
     public function __construct(protected ContainerInterface $container)
     {
@@ -27,7 +25,7 @@ class SelfUpdateCommand extends SymfonyCommand
         $this->setDescription('Updates box to the latest version.');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
         $application = $this->getApplication();
         $application->setAutoExit(false);
@@ -36,6 +34,6 @@ class SelfUpdateCommand extends SymfonyCommand
             'pkg' => 'box@latest',
         ];
 
-        return $application->run(new ArrayInput($arguments), $output);
+        $application->run(new ArrayInput($arguments), $this->output);
     }
 }
