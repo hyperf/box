@@ -15,6 +15,7 @@ class SelfUpdateCommand extends SymfonyCommand
     public function __construct(protected ContainerInterface $container)
     {
         parent::__construct('self-update');
+        $this->setDescription('Updates box to the latest version.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
