@@ -27,13 +27,6 @@ class SelfUpdateCommand extends HyperfCommand
 
     public function handle()
     {
-        $application = $this->getApplication();
-        $application->setAutoExit(false);
-        $arguments = [
-            'command' => 'get',
-            'pkg' => 'box@latest',
-        ];
-
-        $application->run(new ArrayInput($arguments), $this->output);
+        return $this->call('get', ['pkg' => 'box@latest']);
     }
 }
