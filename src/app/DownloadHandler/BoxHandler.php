@@ -14,7 +14,7 @@ namespace App\DownloadHandler;
 use Phar;
 use SplFileInfo;
 
-class BoxHandler extends ComposerHandler
+class BoxHandler extends AbstractDownloadHandler
 {
     protected string $fullRepo = 'hyperf/box';
 
@@ -22,7 +22,7 @@ class BoxHandler extends ComposerHandler
 
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
     {
-        $this->binName = match (PHP_OS) {
+        $binName = match (PHP_OS) {
             'Darwin' => 'box_php8.1_x86_64_macos',
             'Linux' => match (php_uname('m')) {
                 'x86_64' => 'box_php8.1_x86_64_linux',
@@ -30,16 +30,11 @@ class BoxHandler extends ComposerHandler
             }
         };
 
-        $url = $this->fetchDownloadUrlFromGithubRelease($this->binName, $this->fullRepo, $version);
+        $url = $this->fetchDownloadUrlFromGithubRelease($binName, $this->fullRepo, $version);
 
-        $this->download($url, $this->runtimePath . '/', 0755);
+        $savePath = Phar::running(false) ?: $this->runtimePath . '/';
+        $renameTo = 'box';
 
-        $renameTo = Phar::running(false) ?: $this->runtimePath . '/box';
-
-        unlink($renameTo);
-
-        rename($this->runtimePath . '/' . $this->binName, $renameTo);
-
-        return new SplFileInfo($renameTo);
+        return $this->download($url, $savePath, 0755, $renameTo);
     }
 }

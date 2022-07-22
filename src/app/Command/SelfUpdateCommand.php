@@ -14,7 +14,6 @@ namespace App\Command;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Console\Input\ArrayInput;
 
 #[Command()]
 class SelfUpdateCommand extends HyperfCommand
