@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 namespace App\DownloadHandler;
 
 use App\Config;
@@ -79,8 +78,9 @@ abstract class AbstractDownloadHandler
         $output = Context::get(OutputInterface::class);
         $progressBar = new ProgressBar($output);
         while (! feof($remoteFile)) {
-            fwrite($localFile, fread($remoteFile, 8192));
-            $progressBar->advance(8192);
+            fwrite($localFile, fread($remoteFile, 4096));
+            $progressBar->advance(4096);
+            flush();
         }
         $progressBar->display();
         $output->writeln('');

@@ -16,6 +16,7 @@ use Hyperf\Utils\Arr;
 class Config
 {
     protected string $configFile;
+
     protected string $configFilePath;
 
     public function __construct()

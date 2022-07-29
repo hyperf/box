@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App;
 
+use App\DownloadHandler\BoxHandler;
 use App\DownloadHandler\ComposerHandler;
 use App\DownloadHandler\DefaultHandler;
 use App\DownloadHandler\MicroHandler;
@@ -21,6 +22,7 @@ use Psr\Container\ContainerInterface;
 class DownloadManager
 {
     protected array $handlers = [
+        'box' => BoxHandler::class,
         'composer' => ComposerHandler::class,
         'micro' => MicroHandler::class,
         'php' => PhpHandler::class,
