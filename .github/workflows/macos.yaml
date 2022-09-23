@@ -69,17 +69,11 @@ jobs:
         run: |
           false
 
-      - name: Create release
-        if: steps.box.outcome == 'success'
-        id: create_release
-        uses: actions/create-release@latest
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: true
 
       - name: Upload Release Asset
         if: steps.box.outcome == 'success'
@@ -88,7 +82,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./box
           asset_name: box_${{ matrix.arch }}.zip
-          asset_content_type: application/zip
