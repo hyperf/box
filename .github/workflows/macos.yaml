@@ -84,5 +84,5 @@ jobs:
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./box
-          asset_name: box_${{ matrix.arch }}
+          asset_name: box_${{ matrix.arch }}_macos
           asset_content_type: application/x-sh
