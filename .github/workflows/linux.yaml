@@ -86,6 +86,7 @@ jobs:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./box
           asset_name: box_${{ matrix.arch }}
+          asset_content_type: application/x-sh
   arm64:
     name: PHP ${{ matrix.php-version }} ${{ matrix.arch }}
     runs-on: [self-hosted, linux, arm64]
@@ -166,3 +167,4 @@ jobs:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./box
           asset_name: box_${{ matrix.arch }}
+          asset_content_type: application/x-sh

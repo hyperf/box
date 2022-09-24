@@ -85,3 +85,4 @@ jobs:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./box
           asset_name: box_${{ matrix.arch }}
+          asset_content_type: application/x-sh
