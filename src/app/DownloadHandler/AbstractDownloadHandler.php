@@ -84,6 +84,7 @@ abstract class AbstractDownloadHandler
 
         $client->get($url);
         $output->writeln('');
+        $output->writeln('');
         if ($renameTo) {
             $explodedSavePath = explode('/', $savePath);
             $filename = end($explodedSavePath);
