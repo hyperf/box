@@ -16,7 +16,7 @@ Please notice that box **ONLY** supports for **Swow**, but **NOT** Swoole, so yo
 ##### Mac
 
 ```base
-wget https://github.com/hyperf/box/releases/download/v0.0.3/box_php8.1_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.0.4/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
@@ -25,13 +25,13 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```base
-wget https://github.com/hyperf/box/releases/download/v0.0.3/box_php8.1_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.0.4/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
 ```
 ##### Linux aarch64
-
+At present, we are short of ARRCH64 Github Actions Runner, so we cannot timely construct the bin file of ARRCH64 version.
 ```base
 wget https://github.com/hyperf/box/releases/download/v0.0.3/box_php8.1_aarch64_linux -O box
 sudo mv ./box /usr/local/bin/box
