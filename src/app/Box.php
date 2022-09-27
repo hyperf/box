@@ -13,5 +13,5 @@ namespace App;
 
 class Box
 {
-    public const VERSION = '0.0.3';
+    public const VERSION = '0.0.4';
 }
