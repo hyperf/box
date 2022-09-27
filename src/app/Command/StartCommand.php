@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 namespace App\Command;
 
 use Exception;
@@ -42,20 +41,19 @@ class StartCommand extends HyperfCommand
         $this->addOption('port', 'p', InputOption::VALUE_OPTIONAL, 'The port of proxy server', 9764);
         $this->addOption('backlog', '', InputOption::VALUE_OPTIONAL, 'The backlog of proxy server', Socket::DEFAULT_BACKLOG);
         $this->addOption('upstream', 'u', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'The target upstream servers of proxy server', []);
-
     }
 
     public function handle()
     {
         $host = $this->input->getOption('host');
-        $port = (int)$this->input->getOption('port');
-        $backlog = (int)$this->input->getOption('backlog');
+        $port = (int) $this->input->getOption('port');
+        $backlog = (int) $this->input->getOption('backlog');
         $upstreams = $this->input->getOption('upstream');
         foreach ($upstreams as $key => $upstream) {
             [$upstreamHost, $upstreamPort] = explode(':', $upstream);
             $upstreams[$key] = [
                 'host' => $upstreamHost,
-                'port' => (int)$upstreamPort,
+                'port' => (int) $upstreamPort,
             ];
         }
 
