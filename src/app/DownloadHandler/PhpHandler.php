@@ -25,10 +25,10 @@ class PhpHandler extends AbstractDownloadHandler
     protected string $repo = 'dixyes/lwmbs';
 
     protected array $jobs = [
-        'Darwin.x86_64' => '2594398665',
-        'Darwin.arm64' => '2594398665',
-        'Linux.x86_64' => '2594401174',
-        'Linux.aarch64' => '2594401174',
+        'Darwin.x86_64' => '2969003447',
+        'Darwin.arm64' => '2969003447',
+        'Linux.x86_64' => '2961452571',
+        'Linux.aarch64' => '2961452571',
     ];
 
     protected array $matchRules = [
