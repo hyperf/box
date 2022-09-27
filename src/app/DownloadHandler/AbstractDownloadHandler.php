@@ -14,6 +14,7 @@ namespace App\DownloadHandler;
 use App\Config;
 use App\GithubClient;
 use GuzzleHttp\Client;
+use GuzzleHttp\TransferStats;
 use Hyperf\Context\Context;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Di\Annotation\Inject;
@@ -107,11 +108,13 @@ abstract class AbstractDownloadHandler
     {
         Coroutine::create(function () use ($output, $channel) {
             $progressBar = new ProgressBar($output);
+            $progressBar->setFormat('%current% kb [%bar%]');
             while ([$downloadedBytes, $downloadTotal] = $channel->pop(-1)) {
                 if ($downloadTotal && $progressBar->getMaxSteps() !== $downloadTotal) {
-                    $progressBar->setMaxSteps($downloadTotal);
+                    $progressBar->setMaxSteps($this->byteToKb($downloadTotal));
+                    $progressBar->setFormat('%current% kb / %max% kb [%bar%] %percent:3s%% %elapsed:6s% / %estimated:-6s%');
                 }
-                $downloadedBytes && $progressBar->setProgress($downloadedBytes);
+                $downloadedBytes && $progressBar->setProgress($this->byteToKb($downloadedBytes));
                 if ($downloadTotal && $downloadedBytes >= $downloadTotal) {
                     break;
                 }
@@ -120,5 +123,10 @@ abstract class AbstractDownloadHandler
             $progressBar->finish();
             $channel->close();
         });
+    }
+
+    protected function byteToKb(int $byte): int
+    {
+        return (int) ceil($byte / 1024);
     }
 }
