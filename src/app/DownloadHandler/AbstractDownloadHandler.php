@@ -18,6 +18,7 @@ use Hyperf\Context\Context;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\Engine\Channel;
+use Hyperf\Engine\Coroutine;
 use Hyperf\Utils\Str;
 use Psr\Http\Message\ResponseInterface;
 use SplFileInfo;
@@ -70,19 +71,23 @@ abstract class AbstractDownloadHandler
         }
         $sink = $savePath . '.tmp';
 
-        $chan = new Channel(1);
+        $channel = new Channel(1);
         $client = new Client([
             'sink' => $sink,
-            'on_headers' => static function (ResponseInterface $response) use ($chan) {
-                $chan->push($response->getHeaderLine('content-length'));
+            'progress' => static function(
+                $downloadTotal,
+                $downloadedBytes,
+            ) use ($channel) {
+                $channel->push([$downloadedBytes, $downloadTotal]);
             },
         ]);
 
         /** @var OutputInterface $output */
         $output = Context::get(OutputInterface::class);
-        $this->showProgressBar($output, $chan, $sink);
+        $this->showProgressBar($output, $channel);
 
         $client->get($url);
+
         $output->writeln('');
         $output->writeln('');
         if ($renameTo) {
@@ -98,26 +103,22 @@ abstract class AbstractDownloadHandler
         return new SplFileInfo($savePath);
     }
 
-    protected function showProgressBar(OutputInterface $output, Channel $chan, string $sink): void
+    protected function showProgressBar(OutputInterface $output, Channel $channel): void
     {
-        go(function () use ($output, $chan, $sink) {
-            $max = $chan->pop(-1);
-            $progressBar = new ProgressBar($output, (int) $max);
-            $before = 0;
-            while (true) {
-                usleep(10000);
-                if (file_exists($sink)) {
-                    clearstatcache();
-                    $size = filesize($sink);
-                    $progressBar->advance(filesize($sink) - $before);
-                    $before = $size;
-                    if ($size >= $max) {
-                        break;
-                    }
+        Coroutine::create(function () use ($output, $channel) {
+            $progressBar = new ProgressBar($output);
+            while ([$downloadedBytes, $downloadTotal] = $channel->pop(-1)) {
+                if ($downloadTotal && $progressBar->getMaxSteps() !== $downloadTotal) {
+                    $progressBar->setMaxSteps($downloadTotal);
+                }
+                $downloadedBytes && $progressBar->setProgress($downloadedBytes);
+                if ($downloadTotal && $downloadedBytes >= $downloadTotal) {
+                    break;
                 }
             }
-
             $progressBar->display();
+            $progressBar->finish();
+            $channel->close();
         });
     }
 }
