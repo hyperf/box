@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App\Command;
 
 use App\Config;
@@ -22,12 +23,11 @@ abstract class AbstractCommand extends HyperfCommand
 
     protected function liveCommand(string $command)
     {
-        $handle = popen($command, 'r');
-        while (! feof($handle)) {
-            $data = fgets($handle);
-            echo $data;
-        }
-        pclose($handle);
+        proc_open($command, [
+            0 => STDIN,
+            1 => STDOUT,
+            2 => STDERR
+        ], $pipes);
     }
 
     protected function getRuntimePath(): string
