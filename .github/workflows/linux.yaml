@@ -87,7 +87,7 @@ jobs:
           asset_path: ./box
           asset_name: box_${{ matrix.arch }}_linux
           asset_content_type: application/x-sh
-  arrch64:
+  aarch64:
     name: PHP ${{ matrix.php-version }} ${{ matrix.arch }}
     runs-on: [self-hosted, linux, arm64]
     strategy:
