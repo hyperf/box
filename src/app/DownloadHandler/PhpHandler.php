@@ -49,6 +49,9 @@ class PhpHandler extends AbstractDownloadHandler
             if (! file_exists($savePath)) {
                 throw new \RuntimeException('Download failed, cannot locate the PHP bin file in local.');
             }
+            if (! $this->isBinExists('unzip')) {
+                throw new \RuntimeException('Download failed, unzip command not found.');
+            }
             // Unzip the artifact file
             exec('unzip -o ' . $savePath . ' -d ' . $this->runtimePath);
             $this->logger->info('Unpacked zip file ' . $savePath);
@@ -130,5 +133,11 @@ class PhpHandler extends AbstractDownloadHandler
             $subject = str_replace('${{' . $search . '}}', $replace, $subject);
         }
         return $subject;
+    }
+
+    protected function isBinExists(string $string): bool
+    {
+        $result = shell_exec(sprintf("which %s", escapeshellarg($string)));
+        return ! empty($result) && ! str_contains($result, 'not found');
     }
 }
