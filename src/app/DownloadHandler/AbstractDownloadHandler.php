@@ -9,15 +9,17 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 namespace App\DownloadHandler;
 
 use App\Config;
 use App\GithubClient;
+use GuzzleHttp\Client;
 use Hyperf\Context\Context;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\Engine\Channel;
 use Hyperf\Utils\Str;
+use Psr\Http\Message\ResponseInterface;
 use SplFileInfo;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,8 +60,7 @@ abstract class AbstractDownloadHandler
         string $url,
         string $savePath,
         int $permissions,
-        string $renameTo = '',
-        array $context = []
+        string $renameTo = ''
     ): SplFileInfo {
         $this->logger->info(sprintf('Downloading %s', $url));
         if (str_ends_with($savePath, '/')) {
@@ -67,35 +68,56 @@ abstract class AbstractDownloadHandler
             $filename = end($explodedUrl);
             $savePath = $savePath . $filename;
         }
-        $mergeContextArr = array_merge([
-            'ssl' => [
-                'verify_peer' => false,
-            ],
-        ], $context);
-        $context = stream_context_create($mergeContextArr);
-        $remoteFile = fopen($url, 'r', false, $context);
-        $localFile = fopen($savePath . '.tmp', 'w');
+        $sink = $savePath . '.tmp';
+
+        $chan = new Channel(1);
+        $client = new Client([
+            'sink' => $sink,
+            'on_headers' => static function (ResponseInterface $response) use ($chan) {
+                $chan->push($response->getHeaderLine('content-length'));
+            },
+        ]);
+
         /** @var OutputInterface $output */
         $output = Context::get(OutputInterface::class);
-        $progressBar = new ProgressBar($output);
-        while (! feof($remoteFile)) {
-            fwrite($localFile, fread($remoteFile, 8192));
-            $progressBar->advance(8192);
-        }
-        $progressBar->display();
+        $this->showProgressBar($output, $chan, $sink);
+
+        $client->get($url);
         $output->writeln('');
-        fclose($remoteFile);
-        fclose($localFile);
+        $output->writeln('');
         if ($renameTo) {
             $explodedSavePath = explode('/', $savePath);
             $filename = end($explodedSavePath);
-            rename($savePath . '.tmp', $afterRenameSavePath = Str::replaceLast($filename, $renameTo, $savePath));
+            rename($sink, $afterRenameSavePath = Str::replaceLast($filename, $renameTo, $savePath));
             $savePath = $afterRenameSavePath;
         } else {
-            rename($savePath . '.tmp', $savePath);
+            rename($sink, $savePath);
         }
         chmod($savePath, $permissions);
         $this->logger->info(sprintf('Download saved to %s', $savePath));
         return new SplFileInfo($savePath);
+    }
+
+    protected function showProgressBar(OutputInterface $output, Channel $chan, string $sink): void
+    {
+        go(function () use ($output, $chan, $sink) {
+            $max = $chan->pop(-1);
+            $progressBar = new ProgressBar($output, (int) $max);
+            $before = 0;
+            while (true) {
+                usleep(10000);
+                if (file_exists($sink)) {
+                    clearstatcache();
+                    $size = filesize($sink);
+                    $progressBar->advance(filesize($sink) - $before);
+                    $before = $size;
+                    if ($size >= $max) {
+                        break;
+                    }
+                }
+            }
+
+            $progressBar->display();
+        });
     }
 }
