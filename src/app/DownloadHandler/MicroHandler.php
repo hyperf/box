@@ -34,6 +34,9 @@ class MicroHandler extends PhpHandler
             if (! file_exists($savePath)) {
                 throw new \RuntimeException('Download failed, cannot locate the PHP bin file in local.');
             }
+            if (! $this->isBinExists('unzip')) {
+                throw new \RuntimeException('Download failed, unzip command not found.');
+            }
             // Unzip the artifact file
             exec('unzip -o ' . $savePath . ' -d ' . $this->runtimePath);
             $this->logger->info('Unpacked zip file ' . $savePath);
