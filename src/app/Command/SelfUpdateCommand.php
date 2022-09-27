@@ -15,17 +15,17 @@ use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 use Psr\Container\ContainerInterface;
 
-#[Command()]
+#[Command]
 class SelfUpdateCommand extends HyperfCommand
 {
     public function __construct(protected ContainerInterface $container)
     {
         parent::__construct('self-update');
-        $this->setDescription('Updates box to the latest version.');
+        $this->setDescription('Upgrade box to the latest version.');
     }
 
     public function handle()
     {
-        return $this->call('get', ['pkg' => 'box@latest']);
+        $this->call('get', ['pkg' => 'box@latest']);
     }
 }
