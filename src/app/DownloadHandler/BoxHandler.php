@@ -23,10 +23,10 @@ class BoxHandler extends AbstractDownloadHandler
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
     {
         $assetName = match (PHP_OS) {
-            'Darwin' => 'box_php8.1_x86_64_macos',
+            'Darwin' => 'box_x86_64_macos',
             'Linux' => match (php_uname('m')) {
-                'x86_64' => 'box_php8.1_x86_64_linux',
-                default => 'box_php8.1_aarch64_linux',
+                'x86_64' => 'box_x86_64_linux',
+                default => 'box_aarch64_linux',
             }
         };
         $url = $this->fetchDownloadUrlFromGithubRelease($assetName, $this->fullRepo, $version);
