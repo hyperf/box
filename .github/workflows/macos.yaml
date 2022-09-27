@@ -23,7 +23,7 @@ jobs:
       - name: Download PHP Cli
         id: php_cli
         run: |
-          gh run download 2554976476 -R dixyes/lwmbs -n cli_${{ matrix.php-version }}_${{ matrix.arch }}_836852491eee2c2b98994ca7833ea748bb391fdbfd102f160d56e7d769ccf153
+          gh run download 3102976077 -R dixyes/lwmbs -n cli_${{ matrix.php-version }}_${{ matrix.arch }}_66708887d489fdf980d2c5a1c6d9b1f040d1f739ab19944385c9e129a6d4176a
           chmod 755 ./php
 
       - name: Download Composer
@@ -68,3 +68,21 @@ jobs:
         if: steps.box.outcome != 'success'
         run: |
           false
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        if: steps.box.outcome == 'success'
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./box
+          asset_name: box_${{ matrix.arch }}_macos
+          asset_content_type: application/x-sh
