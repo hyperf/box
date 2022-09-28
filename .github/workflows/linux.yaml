@@ -1,8 +1,9 @@
 name: Linux build
 
 on:
-  workflow_dispatch:
-  release: 
+  push:
+    tags:
+      - '*'
 
 jobs:
   x86_64:

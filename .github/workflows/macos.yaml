@@ -1,8 +1,9 @@
 name: MacOS build
 
 on:
-  workflow_dispatch:
-  release:
+  push:
+    tags:
+      - '*'
 
 jobs:
   macos:
