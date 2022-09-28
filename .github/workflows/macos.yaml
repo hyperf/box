@@ -54,9 +54,10 @@ jobs:
           ./php src/bin/hyperf.php config set-php-version ${{ matrix.php-version }}
           ./php src/bin/hyperf.php build-prepare
           ./php src/bin/hyperf.php build-self --no-dev
+          mv ~/.box/box ./box
           pwd
           ls -al ./
-          mv ~/.box/box ./box
+          chmod 755 ./box
           ./box version
 
       - name: Upload artifact for box
