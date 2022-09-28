@@ -1,3 +1,5 @@
+English | [中文](./README-CN.md)
+
 # box, by Hyperf
 
 Box is committed to helping improve the programming experience of Hyperf applications, managing the PHP environment and related dependencies, providing the ability to package Hyperf applications as binary programs, and also providing reverse proxy services for managing and deploying Hyperf applications.
@@ -15,7 +17,7 @@ Please notice that box **ONLY** supports for **Swow**, but **NOT** Swoole, so yo
 
 ##### Mac
 
-```base
+```bash
 wget https://github.com/hyperf/box/releases/download/v0.0.4/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
@@ -24,7 +26,7 @@ sudo chmod 755 /usr/local/bin/box
 
 ##### Linux x86_64
 
-```base
+```bash
 wget https://github.com/hyperf/box/releases/download/v0.0.4/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
@@ -32,7 +34,7 @@ sudo chmod 755 /usr/local/bin/box
 ```
 ##### Linux aarch64
 At present, we are short of ARRCH64 Github Actions Runner, so we cannot timely construct the bin file of ARRCH64 version.
-```base
+```bash
 wget https://github.com/hyperf/box/releases/download/v0.0.3/box_php8.1_aarch64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
