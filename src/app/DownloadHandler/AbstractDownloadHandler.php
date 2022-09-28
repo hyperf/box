@@ -51,7 +51,7 @@ abstract class AbstractDownloadHandler
         $release = $this->githubClient->getRelease($fullRepo, $version);
         $url = null;
         foreach ($release['assets'] ?? [] as $asset) {
-            if ($asset['name'] === $assetName) {
+            if ($asset['name'] === $assetName && $asset['browser_download_url']) {
                 $url = $asset['browser_download_url'];
             }
         }
@@ -59,11 +59,14 @@ abstract class AbstractDownloadHandler
     }
 
     protected function download(
-        string $url,
+        ?string $url,
         string $savePath,
         int $permissions,
         string $renameTo = ''
     ): SplFileInfo {
+        if (! $url) {
+            throw new \RuntimeException('Download url is empty, maybe the url parse failed.');
+        }
         $this->logger->info(sprintf('Downloading %s', $url));
         if (str_ends_with($savePath, '/')) {
             $explodedUrl = explode('/', $url);
