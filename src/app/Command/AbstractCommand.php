@@ -23,11 +23,24 @@ abstract class AbstractCommand extends HyperfCommand
 
     protected function liveCommand(string $command)
     {
-        proc_open($command, [
-            0 => STDIN,
-            1 => STDOUT,
-            2 => STDERR
-        ], $pipes);
+        if ($this->isFunctionExists('passthru')) {
+            passthru($command);
+        } elseif ($this->isFunctionExists('proc_open')) {
+            proc_open($command, [
+                0 => STDIN,
+                1 => STDOUT,
+                2 => STDERR
+            ], $pipes);
+        } elseif ($this->isFunctionExists(['popen', 'pclose', 'feof', 'fgets'])) {
+            $handle = popen($command, 'r');
+            while (! feof($handle)) {
+                $data = fgets($handle);
+                echo $data;
+            }
+            pclose($handle);
+        } else {
+            throw new RuntimeException('No available function to run command.');
+        }
     }
 
     protected function getRuntimePath(): string
@@ -38,5 +51,17 @@ abstract class AbstractCommand extends HyperfCommand
     protected function getCurrentPhpVersion(): string
     {
         return $this->config->getConfig('versions.php', '8.1');
+    }
+
+    protected function isFunctionExists(string|array $functions): bool
+    {
+        $isExists = true;
+        foreach ((array) $functions as $function) {
+            if (! function_exists($function)) {
+                $isExists = false;
+                break;
+            }
+        }
+        return $isExists;
     }
 }
