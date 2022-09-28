@@ -1,0 +1,70 @@
+name: MacOS build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  macos:
+    name: PHP ${{ matrix.php-version }} ${{ matrix.arch }}
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.1"]
+        arch: ["x86_64"]
+      max-parallel: 4
+    env:
+      GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download PHP Cli
+        id: php_cli
+        run: |
+          gh run download 3102976077 -R dixyes/lwmbs -n cli_${{ matrix.php-version }}_${{ matrix.arch }}_66708887d489fdf980d2c5a1c6d9b1f040d1f739ab19944385c9e129a6d4176a
+          chmod 755 ./php
+
+      - name: Download Composer
+        id: composer
+        run: |
+          wget https://getcomposer.org/download/2.3.7/composer.phar
+          chmod 755 ./composer.phar
+
+      - name: Vendor Installation
+        id: vendor_installation
+        run: |
+          cd src
+          ../php ../composer.phar install -o
+
+      - name: Create ~/.box folder
+        id: create_folder
+        run: |    
+          cd ~
+          mkdir .box
+          chmod 755 .box
+
+      - name: Build Box
+        id: box
+        continue-on-error: true
+        run: |
+          ./php src/bin/hyperf.php config set github.access-token ${{ env.GITHUB_TOKEN }}
+          ./php src/bin/hyperf.php config set-php-version ${{ matrix.php-version }}
+          ./php src/bin/hyperf.php build-prepare
+          ./php src/bin/hyperf.php build-self --no-dev
+          mv ~/.box/box ./box
+#          ./box version
+
+      - name: Upload artifact for box
+        if: steps.box.outcome == 'success'
+        uses: actions/upload-artifact@v3
+        with:
+          name: box_${{ matrix.arch }}
+          path: |
+            box
+
+      - name: Fail if box build failed
+        if: steps.box.outcome != 'success'
+        run: |
+          false
