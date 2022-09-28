@@ -54,6 +54,8 @@ jobs:
           ./php src/bin/hyperf.php config set-php-version ${{ matrix.php-version }}
           ./php src/bin/hyperf.php build-prepare
           ./php src/bin/hyperf.php build-self --no-dev
+          pwd
+          ls -al ./
           mv ~/.box/box ./box
           ./box version
 
