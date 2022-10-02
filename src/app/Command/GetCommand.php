@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App\Command;
 
 use App\DownloadManager;
@@ -38,6 +39,7 @@ class GetCommand extends HyperfCommand
         $this->setDescription('Get the runtime or library into your project.');
         $this->addArgument('pkg', InputArgument::REQUIRED, 'The package name');
         $this->addOption('source', 's', InputOption::VALUE_OPTIONAL, 'The download source.');
+        $this->addOption('versions', '', InputOption::VALUE_NONE, 'Print the package versions only.');
     }
 
     public function handle()
@@ -46,12 +48,18 @@ class GetCommand extends HyperfCommand
         Context::set(OutputInterface::class, $this->output);
         $pkg = $this->input->getArgument('pkg');
         $source = $this->input->getOption('source');
+        $versions = $this->input->getOption('versions');
         [$pkg, $version] = $this->parsePkgVersion($pkg);
         $options = [];
         if ($source) {
             $options['source'] = $source;
         }
-        $this->downloadManager->get($pkg, $version, $options);
+        if ($versions) {
+            $versions = $this->downloadManager->versions($pkg, $options);
+            $this->output->writeln($versions);
+        } else {
+            $this->downloadManager->get($pkg, $version, $options);
+        }
     }
 
     protected function parsePkgVersion(string $pkg): array

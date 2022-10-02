@@ -9,8 +9,10 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App\DownloadHandler;
 
+use App\Exception\NotSupportVersionsException;
 use SplFileInfo;
 
 class ComposerHandler extends AbstractDownloadHandler
@@ -33,6 +35,17 @@ class ComposerHandler extends AbstractDownloadHandler
             default => $this->fetchDownloadUrlFromGetComposerOrg($version),
         };
         return $this->download($url, $this->runtimePath . '/', 0755);
+    }
+
+    public function versions(string $repo, array $options = []): array
+    {
+        if (! isset($options['source'])) {
+            $options['source'] = $this->getComposerOrgBaseUrl;
+        }
+        return match ($options['source']) {
+            $this->githubBaseUrl => $this->fetchVersionsFromGithubRelease($this->fullRepo),
+            default => throw new NotSupportVersionsException($repo),
+        };
     }
 
     protected function fetchDownloadUrlFromGetComposerOrg(string $version): string

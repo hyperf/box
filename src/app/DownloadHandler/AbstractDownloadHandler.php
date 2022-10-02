@@ -9,9 +9,11 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App\DownloadHandler;
 
 use App\Config;
+use App\Exception\NotSupportVersionsException;
 use App\GithubClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\TransferStats;
@@ -46,6 +48,8 @@ abstract class AbstractDownloadHandler
 
     abstract public function handle(string $repo, string $version, array $options = []): ?SplFileInfo;
 
+    abstract public function versions(string $repo, array $options = []): array;
+
     protected function fetchDownloadUrlFromGithubRelease(string $assetName, string $fullRepo, string $version): ?string
     {
         $release = $this->githubClient->getRelease($fullRepo, $version);
@@ -56,6 +60,31 @@ abstract class AbstractDownloadHandler
             }
         }
         return $url;
+    }
+
+    protected function fetchVersionsFromGithubRelease(string $fullRepo, ?string $assetName = null): array
+    {
+        $releases = $this->githubClient->getReleases($fullRepo);
+        $versions = [];
+        // Sort releases by published_at desc, also ignore error.
+        usort($releases, function ($a, $b) {
+            return strtotime($b['published_at'] ?? '0') <=> strtotime($a['published_at'] ?? '0');
+        });
+        // Filter releases which has assets, if the asset name is not null, then validate its.
+        foreach ($releases as $release) {
+            if (! empty($release['assets'])) {
+                if ($assetName) {
+                    foreach ($release['assets'] as $asset) {
+                        if ($asset['name'] === $assetName) {
+                            $versions[] = $release['tag_name'];
+                        }
+                    }
+                } else {
+                    $versions[] = $release['tag_name'];
+                }
+            }
+        }
+        return $versions;
     }
 
     protected function download(
@@ -78,7 +107,7 @@ abstract class AbstractDownloadHandler
         $channel = new Channel(1);
         $client = new Client([
             'sink' => $sink,
-            'progress' => static function(
+            'progress' => static function (
                 $downloadTotal,
                 $downloadedBytes,
             ) use ($channel) {
@@ -130,6 +159,6 @@ abstract class AbstractDownloadHandler
 
     protected function byteToKb(int $byte): int
     {
-        return (int) ceil($byte / 1024);
+        return (int)ceil($byte / 1024);
     }
 }
