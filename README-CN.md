@@ -61,7 +61,7 @@ Box 需要一个 Github 访问令牌来请求 Github API，以检索包的版本
 - `box config unset <key>`按 key 删除配置值
 - `box config set-php-version <version>`设置 box 的当前 PHP 版本，可用值：8.0 | 8.1
 - `box config get-php-version <version>`获取 box 的当前设置的 PHP 版本
-- `box start -u <upsteamHost:upstreamPort>` 为上游服务器启动代理 HTTP 服务器
+- `box reverse-proxy -u <upsteamHost:upstreamPort>` 启动一个反向代理 HTTP 服务器，用于将 HTTP 请求转发到指定的多个上游服务器
 - `box php <argument>` 通过当前 box 的 PHP 版本运行任何 PHP 命令
 - `box composer <argument>`通过当前 box 的 PHP 版本运行任何 Composer 命令，composer bin 的版本取决于最后执行的`get composer`命令
 - `box php-cs-fixer <argument>` 通过当前 box 的 PHP 版本运行任何 php-cs-fixer 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
