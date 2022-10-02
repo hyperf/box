@@ -1,13 +1,14 @@
-name: Linux build
+name: MacOS build
 
 on:
-  workflow_dispatch:
-  release: 
+  push:
+    tags:
+      - '*'
 
 jobs:
-  x86_64:
+  macos:
     name: PHP ${{ matrix.php-version }} ${{ matrix.arch }}
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
@@ -15,7 +16,7 @@ jobs:
         arch: ["x86_64"]
       max-parallel: 4
     env:
-      GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,8 +24,7 @@ jobs:
       - name: Download PHP Cli
         id: php_cli
         run: |
-          gh run download 2600362812 -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_3b7cea7f1563d18a98d3889db7cf0018391d8df57c0f77153eb1d1f28261bf96
-          ls -a
+          gh run download 3102976077 -R dixyes/lwmbs -n cli_${{ matrix.php-version }}_${{ matrix.arch }}_66708887d489fdf980d2c5a1c6d9b1f040d1f739ab19944385c9e129a6d4176a
           chmod 755 ./php
 
       - name: Download Composer
@@ -55,7 +55,6 @@ jobs:
           ./php src/bin/hyperf.php build-prepare
           ./php src/bin/hyperf.php build-self --no-dev
           mv ~/.box/box ./box
-          ./box version
 
       - name: Upload artifact for box
         if: steps.box.outcome == 'success'
@@ -69,7 +68,6 @@ jobs:
         if: steps.box.outcome != 'success'
         run: |
           false
-          steps:
 
       - name: Get release
         id: get_release
@@ -86,5 +84,5 @@ jobs:
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ./box
-          asset_name: box_${{ matrix.arch }}_linux
+          asset_name: box_${{ matrix.arch }}_macos
           asset_content_type: application/x-sh

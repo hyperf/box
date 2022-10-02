@@ -33,7 +33,9 @@ sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
 ```
 ##### Linux aarch64
+
 At present, we are short of ARRCH64 Github Actions Runner, so we cannot timely construct the bin file of ARRCH64 version.
+
 ```bash
 wget https://github.com/hyperf/box/releases/download/v0.0.3/box_php8.1_aarch64_linux -O box
 sudo mv ./box /usr/local/bin/box
@@ -61,7 +63,7 @@ Box needs a Github Access Token to request github api, to retrieve the versions 
 - `box config unset <key>` to unset the config value by key
 - `box config set-php-version <version>` to set the current PHP version of box, available value: 8.0 | 8.1
 - `box config get-php-version <version>` to get the current PHP version of box
-- `box start -u <upsteamHost:upstreamPort>` to start a proxy HTTP server for the upstream server
+- `box reverse-proxy -u <upsteamHost:upstreamPort>` to start a reverse proxy HTTP server for the upstream servers
 - `box php <argument>` to run any PHP command via current PHP version of box
 - `box composer <argument>` to run any Composer command via box, the version of the composer bin depends on the last executed `get composer` command
 - `box php-cs-fixer <argument>` to run any php-cs-fixer command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command
