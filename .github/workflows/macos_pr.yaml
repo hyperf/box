@@ -58,7 +58,7 @@ jobs:
         if: steps.box.outcome == 'success'
         uses: actions/upload-artifact@v3
         with:
-          name: box_${{ matrix.arch }}
+          name: box_${{ matrix.arch }}_macos
           path: |
             box
 
