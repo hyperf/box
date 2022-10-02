@@ -9,7 +9,7 @@ Box 致力于帮助提升 Hyperf 应用程序的编程体验，管理 PHP 环境
 您可以从该项目的 Github Actions 附件中下载最新构建的 `box` 二进制文件。
 点击 [这里](https://github.com/hyperf/box/actions) 下载 ~
 
-请注意 box **仅支持Swow**, 暂 **不支持** Swoole，故你的项目骨架应由 [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) 项目创建或其它 Swow 骨架创建。
+请注意 box **仅支持 Swow**, 暂 **不支持** Swoole，故你的项目骨架应由 [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) 项目创建或其它 Swow 骨架创建。
 
 ### 使用
 
@@ -18,7 +18,7 @@ Box 致力于帮助提升 Hyperf 应用程序的编程体验，管理 PHP 环境
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.0.4/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.0.8/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -27,13 +27,15 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.0.4/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.0.8/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
 ```
 ##### Linux aarch64
+
 目前我们缺少 ARRCH64 Github Actions Runner，所以无法及时构建 ARRCH64 版本的 bin 文件。
+
 ```bash
 wget https://github.com/hyperf/box/releases/download/v0.0.3/box_php8.1_aarch64_linux -O box
 sudo mv ./box /usr/local/bin/box
