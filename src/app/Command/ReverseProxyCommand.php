@@ -27,21 +27,21 @@ use Swow\SocketException;
 use Symfony\Component\Console\Input\InputOption;
 
 #[Command]
-class StartCommand extends HyperfCommand
+class ReverseProxyCommand extends HyperfCommand
 {
     public function __construct(protected ContainerInterface $container)
     {
-        parent::__construct('start');
+        parent::__construct('reverse-proxy');
     }
 
     public function configure()
     {
         parent::configure();
-        $this->setDescription('Start the sidecar server.');
-        $this->addOption('host', '', InputOption::VALUE_OPTIONAL, 'The host of proxy server', '127.0.0.1');
-        $this->addOption('port', 'p', InputOption::VALUE_OPTIONAL, 'The port of proxy server', 9764);
-        $this->addOption('backlog', '', InputOption::VALUE_OPTIONAL, 'The backlog of proxy server', Socket::DEFAULT_BACKLOG);
-        $this->addOption('upstream', 'u', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'The target upstream servers of proxy server', []);
+        $this->setDescription('Start the reverse proxy server for upstreams.');
+        $this->addOption('host', '', InputOption::VALUE_OPTIONAL, 'The host of the reverse proxy server', '127.0.0.1');
+        $this->addOption('port', 'p', InputOption::VALUE_OPTIONAL, 'The port of the reverse proxy server', 9764);
+        $this->addOption('backlog', '', InputOption::VALUE_OPTIONAL, 'The backlog of the reverse proxy server', Socket::DEFAULT_BACKLOG);
+        $this->addOption('upstream', 'u', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'The target upstream servers of the reverse proxy server', []);
     }
 
     public function handle()
@@ -60,7 +60,7 @@ class StartCommand extends HyperfCommand
 
         $server = new HttpServer();
         $server->bind($host, $port)->listen($backlog);
-        $this->output->writeln(sprintf('<info>[INFO] Proxy Server listening at %s:%d</info>', $host, $port));
+        $this->output->writeln(sprintf('<info>[INFO] Reverse Proxy Server listening at %s:%d</info>', $host, $port));
         while (true) {
             try {
                 $connection = $server->acceptConnection();

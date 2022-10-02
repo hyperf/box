@@ -63,7 +63,7 @@ Box needs a Github Access Token to request github api, to retrieve the versions 
 - `box config unset <key>` to unset the config value by key
 - `box config set-php-version <version>` to set the current PHP version of box, available value: 8.0 | 8.1
 - `box config get-php-version <version>` to get the current PHP version of box
-- `box start -u <upsteamHost:upstreamPort>` to start a proxy HTTP server for the upstream server
+- `box reverse-proxy -u <upsteamHost:upstreamPort>` to start a reverse proxy HTTP server for the upstream servers
 - `box php <argument>` to run any PHP command via current PHP version of box
 - `box composer <argument>` to run any Composer command via box, the version of the composer bin depends on the last executed `get composer` command
 - `box php-cs-fixer <argument>` to run any php-cs-fixer command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command
