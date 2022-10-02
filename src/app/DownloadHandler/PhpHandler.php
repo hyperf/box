@@ -9,8 +9,10 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App\DownloadHandler;
 
+use App\Exception\NotSupportVersionsException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Di\Annotation\Inject;
@@ -24,17 +26,19 @@ class PhpHandler extends AbstractDownloadHandler
 
     protected string $repo = 'dixyes/lwmbs';
 
-    protected array $jobs = [
-        'Darwin.x86_64' => '2969003447',
-        'Darwin.arm64' => '2969003447',
-        'Linux.x86_64' => '2961452571',
-        'Linux.aarch64' => '2961452571',
-    ];
+    protected array $jobs
+        = [
+            'Darwin.x86_64' => '2969003447',
+            'Darwin.arm64' => '2969003447',
+            'Linux.x86_64' => '2961452571',
+            'Linux.aarch64' => '2961452571',
+        ];
 
-    protected array $matchRules = [
-        'Darwin' => '${{prefix}}_${{php-version}}_${{arch}}',
-        'Linux' => '${{prefix}}_static_${{php-version}}_musl_${{arch}}',
-    ];
+    protected array $matchRules
+        = [
+            'Darwin' => '${{prefix}}_${{php-version}}_${{arch}}',
+            'Linux' => '${{prefix}}_static_${{php-version}}_musl_${{arch}}',
+        ];
 
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
     {
@@ -139,5 +143,12 @@ class PhpHandler extends AbstractDownloadHandler
     {
         $result = shell_exec(sprintf("which %s", escapeshellarg($string)));
         return ! empty($result) && ! str_contains($result, 'not found');
+    }
+
+    public function versions(string $repo, array $options = []): array
+    {
+        return [
+            '8.1', '8.0'
+        ];
     }
 }

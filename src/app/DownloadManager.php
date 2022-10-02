@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App;
 
 use App\DownloadHandler\BoxHandler;
@@ -46,6 +47,17 @@ class DownloadManager
         $handler = $this->container->get($this->handlers[$key]);
         $file = $handler->handle($pkg, $version, $options);
         chmod($file->getRealPath(), 0755);
+    }
+
+    public function versions(string $pkg, array $options): array
+    {
+        /** @var \App\DownloadHandler\AbstractDownloadHandler $handler */
+        $key = 'default';
+        if (isset($this->handlers[$pkg])) {
+            $key = $pkg;
+        }
+        $handler = $this->container->get($this->handlers[$key]);
+        return $handler->versions($pkg, $options);
     }
 
     protected function createRuntimePath(): void

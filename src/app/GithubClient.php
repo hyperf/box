@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App;
 
 use GuzzleHttp\Client;
@@ -42,6 +43,13 @@ class GithubClient
         } else {
             $url = $baseUrl . '/releases/tags/' . $version;
         }
+        $response = $this->httpClient->get($url);
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function getReleases(string $fullRepo): array
+    {
+        $url = $this->buildRepoUrl($fullRepo) . '/releases';
         $response = $this->httpClient->get($url);
         return json_decode($response->getBody()->getContents(), true);
     }

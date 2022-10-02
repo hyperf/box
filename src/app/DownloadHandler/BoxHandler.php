@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App\DownloadHandler;
 
 use Phar;
@@ -20,18 +21,33 @@ class BoxHandler extends AbstractDownloadHandler
 
     protected string $binName = 'box';
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->binName = $this->getAssetName();
+    }
+
     public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
     {
-        $assetName = match (PHP_OS) {
+        $url = $this->fetchDownloadUrlFromGithubRelease($this->getAssetName(), $this->fullRepo, $version);
+        $savePath = Phar::running(false) ?: $this->runtimePath . '/';
+
+        return $this->download($url, $savePath, 0755, $this->binName);
+    }
+
+    public function versions(string $repo, array $options = []): array
+    {
+        return $this->fetchVersionsFromGithubRelease($this->fullRepo, $this->getAssetName());
+    }
+
+    protected function getAssetName(): string
+    {
+        return match (PHP_OS) {
             'Darwin' => 'box_x86_64_macos',
             'Linux' => match (php_uname('m')) {
                 'x86_64' => 'box_x86_64_linux',
                 default => 'box_aarch64_linux',
             }
         };
-        $url = $this->fetchDownloadUrlFromGithubRelease($assetName, $this->fullRepo, $version);
-        $savePath = Phar::running(false) ?: $this->runtimePath . '/';
-
-        return $this->download($url, $savePath, 0755, $this->binName);
     }
 }

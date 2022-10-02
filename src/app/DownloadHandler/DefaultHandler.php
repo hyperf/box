@@ -9,8 +9,10 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace App\DownloadHandler;
 
+use App\Exception\NotSupportVersionsException;
 use SplFileInfo;
 
 class DefaultHandler extends AbstractDownloadHandler
@@ -44,5 +46,17 @@ class DefaultHandler extends AbstractDownloadHandler
             throw new \RuntimeException('The definition of package is invalid');
         }
         return $this->download($url, $this->runtimePath . '/', 0755, $definition['bin']);
+    }
+
+    public function versions(string $repo, array $options = []): array
+    {
+        if (! isset($this->definitions[$repo])) {
+            throw new \RuntimeException('The package not found');
+        }
+        $definition = $this->definitions[$repo];
+        if (! isset($definition['repo'])) {
+            throw new NotSupportVersionsException($repo);
+        }
+        return $this->fetchVersionsFromGithubRelease($definition['repo'], $definition['bin']);
     }
 }
