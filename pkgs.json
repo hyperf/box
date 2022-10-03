@@ -1,0 +1,52 @@
+{
+    "php-cs-fixer": {
+        "repo": "FriendsOfPHP/PHP-CS-Fixer",
+        "bin": "php-cs-fixer.phar"
+    },
+    "phpunit": {
+        "url": "https://phar.phpunit.de/phpunit-${{version}}.phar",
+        "latest": "9",
+        "bin": "phpunit.phar"
+    },
+    "php": {
+        "repo": "dixyes/lwmbs",
+        "jobs": {
+            "Darwin.x86_64": "2969003447",
+            "Darwin.arm64": "2969003447",
+            "Linux.x86_64": "2961452571",
+            "Linux.aarch64": "2961452571"
+        },
+        "job_artifact_match_rule": {
+            "Darwin": "${{prefix}}_${{php-version}}_${{arch}}",
+            "Linux": "${{prefix}}_static_${{php-version}}_musl_${{arch}}"
+        },
+        "latest": "8.1",
+        "versions": ["8.1", "8.0"]
+    },
+    "box": {
+        "repo": "hyperf/box",
+        "bin": "box.phar",
+        "release_asset_match_rule": {
+            "Darwin": "box_x86_64_macos",
+            "Linux": {
+                "x86_64": "box_x86_64_linux",
+                "aarch64": "box_aarch64_linux"
+            }
+        }
+    },
+    "composer": {
+        "repo": "composer/composer",
+        "bin": "composer.phar",
+        "sources": {
+            "github.com": {
+                "type": "github"
+            },
+            "getcomposer.org": {
+                "type": "url",
+                "url": "https://getcomposer.org/download/{{$version}}/{{$bin}}"
+            }
+        },
+        "latest": "latest",
+        "latest_fetch_type": "github"
+    }
+}
