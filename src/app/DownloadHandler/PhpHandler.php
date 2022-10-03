@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace App\DownloadHandler;
 
-use App\Exception\NotSupportVersionsException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Di\Annotation\Inject;
