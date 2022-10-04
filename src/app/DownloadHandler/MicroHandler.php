@@ -22,11 +22,11 @@ class MicroHandler extends PhpHandler
     #[Inject]
     protected Client $httpClient;
 
-    public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
+    public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo
     {
         $version = $this->prehandleVersion($version);
         try {
-            $response = $this->getArtifact($version, 'micro');
+            $response = $this->getArtifact($this->getDefinition($pkgName), $version, 'micro');
             if ($response->getStatusCode() !== 302 || ! $response->getHeaderLine('Location')) {
                 throw new \RuntimeException('Download failed, cannot retrieve the download url from artifact.');
             }

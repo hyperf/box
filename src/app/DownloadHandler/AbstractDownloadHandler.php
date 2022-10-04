@@ -15,6 +15,8 @@ namespace App\DownloadHandler;
 use App\Config;
 use App\Exception\NotSupportVersionsException;
 use App\GithubClient;
+use App\PkgDefinition\Definition;
+use App\PkgDefinitionManager;
 use GuzzleHttp\Client;
 use GuzzleHttp\TransferStats;
 use Hyperf\Context\Context;
@@ -39,6 +41,9 @@ abstract class AbstractDownloadHandler
     #[Inject]
     protected Config $config;
 
+    #[Inject]
+    protected PkgDefinitionManager $pkgsDefinitionManager;
+
     protected string $runtimePath;
 
     public function __construct()
@@ -46,9 +51,9 @@ abstract class AbstractDownloadHandler
         $this->runtimePath = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
     }
 
-    abstract public function handle(string $repo, string $version, array $options = []): ?SplFileInfo;
+    abstract public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo;
 
-    abstract public function versions(string $repo, array $options = []): array;
+    abstract public function versions(string $pkgName, array $options = []): array;
 
     protected function fetchDownloadUrlFromGithubRelease(string $assetName, string $fullRepo, string $version): ?string
     {
@@ -160,5 +165,18 @@ abstract class AbstractDownloadHandler
     protected function byteToKb(int $byte): int
     {
         return (int)ceil($byte / 1024);
+    }
+
+    protected function getDefinition(string $pkgName): ?Definition
+    {
+        return $this->pkgsDefinitionManager->getDefinition($pkgName);
+    }
+
+    protected function replaces(string $subject, array $replaces): string
+    {
+        foreach ($replaces as $search => $replace) {
+            $subject = str_replace('${{' . $search . '}}', $replace, $subject);
+        }
+        return $subject;
     }
 }
