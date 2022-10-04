@@ -18,7 +18,7 @@ Please notice that box **ONLY** supports for **Swow**, but **NOT** Swoole, so yo
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.0.9/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.1.0/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
@@ -27,7 +27,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.0.9/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.1.0/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
@@ -67,4 +67,5 @@ Box needs a Github Access Token to request github api, to retrieve the versions 
 - `box php <argument>` to run any PHP command via current PHP version of box
 - `box composer <argument>` to run any Composer command via box, the version of the composer bin depends on the last executed `get composer` command
 - `box php-cs-fixer <argument>` to run any php-cs-fixer command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command
+- `box cs-fix <argument>` to run `php-cs-fix fix` command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command
 - `box version` to dump the current version of the box bin

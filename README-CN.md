@@ -18,7 +18,7 @@ Box 致力于帮助提升 Hyperf 应用程序的编程体验，管理 PHP 环境
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.0.9/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.1.0/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -27,7 +27,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.0.9/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.1.0/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -66,5 +66,6 @@ Box 需要一个 Github 访问令牌来请求 Github API，以检索包的版本
 - `box reverse-proxy -u <upsteamHost:upstreamPort>` 启动一个反向代理 HTTP 服务器，用于将 HTTP 请求转发到指定的多个上游服务器
 - `box php <argument>` 通过当前 box 的 PHP 版本运行任何 PHP 命令
 - `box composer <argument>`通过当前 box 的 PHP 版本运行任何 Composer 命令，composer bin 的版本取决于最后执行的`get composer`命令
-- `box php-cs-fixer <argument>` 通过当前 box 的 PHP 版本运行任何 php-cs-fixer 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
+- `box php-cs-fixer <argument>` 通过当前 box 的 PHP 版本运行任何 `php-cs-fixer` 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
+- `box cs-fix <argument>` 通过当前 box 的 PHP 版本运行 `php-cs-fixer fix` 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
 - `box version` 输出当前 box bin 的版本号
