@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace App\DownloadHandler;
 
+use App\Box;
 use App\Config;
+use App\Exception\BoxException;
 use App\Exception\NotSupportVersionsException;
 use App\GithubClient;
 use App\PkgDefinition\Definition;
@@ -82,6 +84,7 @@ abstract class AbstractDownloadHandler
                     foreach ($release['assets'] as $asset) {
                         if (str_contains($asset['name'], $assetKeyword)) {
                             $versions[] = $release['tag_name'];
+                            break;
                         }
                     }
                 } else {
@@ -200,5 +203,16 @@ abstract class AbstractDownloadHandler
             $subject = str_replace('${{' . $search . '}}', $replace, $subject);
         }
         return $subject;
+    }
+
+    protected function latestVersionCheck(string $currentVersion, Definition $definition, array $options = []): void
+    {
+        if (isset($options['reinstall']) && $options['reinstall']) {
+            return;
+        }
+        $latestVersion = $this->versions($definition->getPkgName())[0] ?? '';
+        if ($latestVersion && version_compare($currentVersion, $latestVersion, '>=')) {
+            throw new BoxException(sprintf('Your %s version %s is latest, no need to update, add `--reinstall` or `-r` option to force reinstall the package.', $definition->getPkgName(), $currentVersion));
+        }
     }
 }

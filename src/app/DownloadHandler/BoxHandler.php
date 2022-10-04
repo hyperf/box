@@ -12,48 +12,35 @@ declare(strict_types=1);
 
 namespace App\DownloadHandler;
 
-use Phar;
 use App\Box;
+use Phar;
 use SplFileInfo;
-use RuntimeException;
 
 class BoxHandler extends AbstractDownloadHandler
 {
-    protected string $fullRepo = 'hyperf/box';
-
-    protected string $binName = 'box';
 
     public function __construct()
     {
         parent::__construct();
-        $this->binName = $this->getAssetName();
     }
 
     public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo
     {
-        if (version_compare(Box::VERSION, $this->versions($this->binName)[0] ?? '', '>=')) {
-            throw new RuntimeException(sprintf("The latest version [v%s] is already installed.", Box::VERSION), 1);
+        $definition = $this->getDefinition($pkgName);
+        $this->latestVersionCheck(Box::VERSION, $definition, $options);
+        $assetName = $definition->getReleaseAssetMatchRule()[PHP_OS_FAMILY . '.' . php_uname('m')] ?? '';
+        if (! $assetName) {
+            throw new BoxException('Can not found any matched asset for your system.');
         }
-
-        $url = $this->fetchDownloadUrlFromGithubRelease($this->getAssetName(), $this->fullRepo, $version);
+        $url = $this->fetchDownloadUrlFromGithubRelease($assetName, $definition->getRepo(), $version);
         $savePath = Phar::running(false) ?: $this->runtimePath . '/';
 
-        return $this->download($url, $savePath, 0755, $this->binName);
+        return $this->download($url, $savePath, 0755, $definition->getBin());
     }
 
     public function versions(string $pkgName, array $options = []): array
     {
-        return $this->fetchVersionsFromGithubRelease($this->fullRepo, $this->getAssetName());
-    }
-
-    protected function getAssetName(): string
-    {
-        return match (PHP_OS) {
-            'Darwin' => 'box_x86_64_macos',
-            'Linux' => match (php_uname('m')) {
-                'x86_64' => 'box_x86_64_linux',
-                default => 'box_aarch64_linux',
-            }
-        };
+        $definition = $this->getDefinition($pkgName);
+        return $this->fetchVersionsFromGithubRelease($definition->getRepo(), $definition->getReleaseAssetKeyword());
     }
 }

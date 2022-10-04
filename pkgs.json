@@ -46,6 +46,7 @@
     "box": {
         "repo": "hyperf/box",
         "bin": "box",
+        "release_asset_keyword": "box",
         "release_asset_match_rule": {
             "Darwin.x86_64": "box_x86_64_macos",
             "Darwin.arm64": "box_arm64_macos",
