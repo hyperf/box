@@ -2,7 +2,6 @@
 
 namespace App\PkgDefinition;
 
-
 class Definition
 {
     protected string $pkgName = '';
@@ -141,5 +140,4 @@ class Definition
         $this->sources = $sources;
         return $this;
     }
-
 }

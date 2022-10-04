@@ -17,7 +17,6 @@ use SplFileInfo;
 
 class DefaultHandler extends AbstractDownloadHandler
 {
-
     public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo
     {
         $definition = $this->getDefinition($pkgName);
@@ -48,5 +47,4 @@ class DefaultHandler extends AbstractDownloadHandler
         }
         return $this->fetchVersionsFromGithubRelease($definition->getRepo(), $definition->getBin());
     }
-
 }

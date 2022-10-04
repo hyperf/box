@@ -2,7 +2,6 @@
 
 namespace App;
 
-
 use App\PkgDefinition\Definition;
 use GuzzleHttp\Client;
 use Hyperf\Contract\StdoutLoggerInterface;
@@ -10,7 +9,6 @@ use Hyperf\Di\Annotation\Inject;
 
 class PkgDefinitionManager
 {
-
     #[Inject]
     protected StdoutLoggerInterface $logger;
 
@@ -65,5 +63,4 @@ class PkgDefinitionManager
         }
         return true;
     }
-
 }

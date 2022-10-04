@@ -2,10 +2,8 @@
 
 namespace App\PkgDefinition;
 
-
 class Source
 {
-
     protected string $name;
     protected string $type = 'github';
     protected string $url = '';

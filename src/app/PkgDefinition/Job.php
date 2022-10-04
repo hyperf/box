@@ -2,7 +2,6 @@
 
 namespace App\PkgDefinition;
 
-
 class Job
 {
     protected string $os;
@@ -48,5 +47,4 @@ class Job
         $this->jobId = $jobId;
         return $this;
     }
-
 }

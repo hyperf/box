@@ -2,7 +2,6 @@
 
 namespace App\PkgDefinition;
 
-
 class Jobs
 {
     /**

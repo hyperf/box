@@ -2,10 +2,8 @@
 
 namespace App\PkgDefinition;
 
-
 class Sources
 {
-
     protected array $sources = [];
 
     public function __construct(array $sources)
@@ -37,5 +35,4 @@ class Sources
         $this->sources = $sources;
         return $this;
     }
-
 }

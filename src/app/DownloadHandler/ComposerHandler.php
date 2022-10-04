@@ -18,8 +18,6 @@ use SplFileInfo;
 
 class ComposerHandler extends AbstractDownloadHandler
 {
-
-
     protected string $fullRepo = 'composer/composer';
 
     protected string $githubBaseUrl = 'github.com';
@@ -69,5 +67,4 @@ class ComposerHandler extends AbstractDownloadHandler
             'bin' => $definition->getBin(),
         ]);
     }
-
 }

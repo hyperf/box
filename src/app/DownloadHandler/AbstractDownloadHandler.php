@@ -179,5 +179,4 @@ abstract class AbstractDownloadHandler
         }
         return $subject;
     }
-
 }
