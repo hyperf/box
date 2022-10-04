@@ -65,6 +65,7 @@ Box needs a Github Access Token to request github api, to retrieve the versions 
 - `box config get-php-version <version>` to get the current PHP version of box
 - `box reverse-proxy -u <upsteamHost:upstreamPort>` to start a reverse proxy HTTP server for the upstream servers
 - `box php <argument>` to run any PHP command via current PHP version of box
+- `box swoole-cli <argument>` to run any command via swoole-cli, since box v0.1.1
 - `box composer <argument>` to run any Composer command via box, the version of the composer bin depends on the last executed `get composer` command
 - `box php-cs-fixer <argument>` to run any php-cs-fixer command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command
 - `box cs-fix <argument>` to run `php-cs-fix fix` command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command

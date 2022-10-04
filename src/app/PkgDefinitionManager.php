@@ -35,6 +35,11 @@ class PkgDefinitionManager
         return null;
     }
 
+    public function hasDefinition(string $pkg): bool
+    {
+        return isset($this->pkgs[$pkg]);
+    }
+
     public function getPkgs(): array
     {
         return $this->pkgs;

@@ -13,6 +13,7 @@ class Definition
     protected ?Jobs $jobs = null;
     protected array $jobArtifactMatchRule = [];
     protected array $releaseAssetMatchRule = [];
+    protected string $releaseAssetKeyword = '';
     protected array $versions = [];
     protected ?Sources $sources = null;
 
@@ -27,6 +28,7 @@ class Definition
         isset($data['jobs']) && is_array($data['jobs']) && $this->setJobs(new Jobs($data['jobs']));
         isset($data['job_artifact_match_rule']) && is_array($data['job_artifact_match_rule']) && $this->setJobArtifactMatchRule($data['job_artifact_match_rule']);
         isset($data['release_asset_match_rule']) && is_array($data['release_asset_match_rule']) && $this->setReleaseAssetMatchRule($data['release_asset_match_rule']);
+        isset($data['release_asset_keyword']) && is_string($data['release_asset_keyword']) && $this->setReleaseAssetKeyword($data['release_asset_keyword']);
         isset($data['versions']) && is_array($data['versions']) && $this->setVersions($data['versions']);
         isset($data['sources']) && is_array($data['sources']) && $this->setSources(new Sources($data['sources']));
     }
@@ -138,6 +140,17 @@ class Definition
     public function setSources(Sources $sources): Definition
     {
         $this->sources = $sources;
+        return $this;
+    }
+
+    public function getReleaseAssetKeyword(): string
+    {
+        return $this->releaseAssetKeyword;
+    }
+
+    public function setReleaseAssetKeyword(string $releaseAssetKeyword): Definition
+    {
+        $this->releaseAssetKeyword = $releaseAssetKeyword;
         return $this;
     }
 }
