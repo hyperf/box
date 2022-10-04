@@ -21,7 +21,7 @@ use App\DownloadHandler\SwooleCliHandler;
 use App\Exception\PkgDefinitionNotFoundException;
 use Hyperf\Di\Annotation\Inject;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Finder\SplFileInfo;
+use SplFileInfo;
 
 class DownloadManager
 {
