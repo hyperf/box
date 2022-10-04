@@ -17,46 +17,36 @@ use SplFileInfo;
 
 class DefaultHandler extends AbstractDownloadHandler
 {
-    protected array $definitions = [
-        'php-cs-fixer' => [
-            'repo' => 'FriendsOfPHP/PHP-CS-Fixer',
-            'bin' => 'php-cs-fixer.phar',
-        ],
-        'phpunit' => [
-            'url' => 'https://phar.phpunit.de/phpunit-${{version}}.phar',
-            'latest' => '9',
-            'bin' => 'phpunit.phar',
-        ],
-    ];
 
-    public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
+    public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo
     {
-        if (! isset($this->definitions[$repo])) {
+        $definition = $this->getDefinition($pkgName);
+        if (! $definition) {
             throw new \RuntimeException('The package not found');
         }
-        $definition = $this->definitions[$repo];
-        if (isset($definition['repo'])) {
-            $url = $this->fetchDownloadUrlFromGithubRelease($definition['bin'], $definition['repo'], $version);
-        } elseif (isset($definition['url'])) {
-            if ($version === 'latest' && isset($definition['latest'])) {
-                $version = $definition['latest'];
+        if ($definition->getRepo()) {
+            $url = $this->fetchDownloadUrlFromGithubRelease($definition->getBin(), $definition->getRepo(), $version);
+        } elseif ($definition->getUrl()) {
+            if ($version === 'latest' && $definition->getLatest()) {
+                $version = $definition->getLatest();
             }
-            $url = str_replace('${{version}}', $version, $definition['url']);
+            $url = str_replace('${{version}}', $version, $definition->getUrl());
         } else {
             throw new \RuntimeException('The definition of package is invalid');
         }
-        return $this->download($url, $this->runtimePath . '/', 0755, $definition['bin']);
+        return $this->download($url, $this->runtimePath . '/', 0755, $definition->getBin());
     }
 
-    public function versions(string $repo, array $options = []): array
+    public function versions(string $pkgName, array $options = []): array
     {
-        if (! isset($this->definitions[$repo])) {
+        $definition = $this->getDefinition($pkgName);
+        if (! $definition) {
             throw new \RuntimeException('The package not found');
         }
-        $definition = $this->definitions[$repo];
-        if (! isset($definition['repo'])) {
-            throw new NotSupportVersionsException($repo);
+        if (! $definition->getRepo()) {
+            throw new NotSupportVersionsException($pkgName);
         }
-        return $this->fetchVersionsFromGithubRelease($definition['repo'], $definition['bin']);
+        return $this->fetchVersionsFromGithubRelease($definition->getRepo(), $definition->getBin());
     }
+
 }

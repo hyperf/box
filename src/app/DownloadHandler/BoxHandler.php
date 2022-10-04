@@ -27,7 +27,7 @@ class BoxHandler extends AbstractDownloadHandler
         $this->binName = $this->getAssetName();
     }
 
-    public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
+    public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo
     {
         $url = $this->fetchDownloadUrlFromGithubRelease($this->getAssetName(), $this->fullRepo, $version);
         $savePath = Phar::running(false) ?: $this->runtimePath . '/';
@@ -35,7 +35,7 @@ class BoxHandler extends AbstractDownloadHandler
         return $this->download($url, $savePath, 0755, $this->binName);
     }
 
-    public function versions(string $repo, array $options = []): array
+    public function versions(string $pkgName, array $options = []): array
     {
         return $this->fetchVersionsFromGithubRelease($this->fullRepo, $this->getAssetName());
     }

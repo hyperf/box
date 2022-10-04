@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace App\DownloadHandler;
 
+use App\PkgDefinition\Definition;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Di\Annotation\Inject;
@@ -23,27 +24,11 @@ class PhpHandler extends AbstractDownloadHandler
     #[Inject]
     protected Client $httpClient;
 
-    protected string $repo = 'dixyes/lwmbs';
-
-    protected array $jobs
-        = [
-            'Darwin.x86_64' => '2969003447',
-            'Darwin.arm64' => '2969003447',
-            'Linux.x86_64' => '2961452571',
-            'Linux.aarch64' => '2961452571',
-        ];
-
-    protected array $matchRules
-        = [
-            'Darwin' => '${{prefix}}_${{php-version}}_${{arch}}',
-            'Linux' => '${{prefix}}_static_${{php-version}}_musl_${{arch}}',
-        ];
-
-    public function handle(string $repo, string $version, array $options = []): ?SplFileInfo
+    public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo
     {
         $version = $this->prehandleVersion($version);
         try {
-            $response = $this->getArtifact($version, 'cli');
+            $response = $this->getArtifact($this->getDefinition($pkgName), $version, 'cli');
             if ($response->getStatusCode() !== 302 || ! $response->getHeaderLine('Location')) {
                 throw new \RuntimeException('Download failed, cannot retrieve the download url from artifact.');
             }
@@ -97,7 +82,7 @@ class PhpHandler extends AbstractDownloadHandler
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function getArtifact(string $version, string $prefix): ResponseInterface
+    protected function getArtifact(Definition $definition, string $version, string $prefix): ResponseInterface
     {
         $githubToken = $this->githubClient->getGithubToken();
         if (! $githubToken) {
@@ -106,8 +91,8 @@ class PhpHandler extends AbstractDownloadHandler
         $os = PHP_OS_FAMILY;
         $arch = php_uname('m');
         $key = $os . '.' . $arch;
-        $response = $this->githubClient->getActionsArtifacts($this->repo, $this->jobs[$key]);
-        $searchKey = $this->buildSearchKey($os, $prefix, $version, $arch);
+        $response = $this->githubClient->getActionsArtifacts($definition->getRepo(), $definition->getJobs()?->getJob($key)?->getJobId());
+        $searchKey = $this->buildSearchKey($definition, $key, $prefix, $version, $arch);
         $artifact = $this->matchArtifact($response['artifacts'] ?? [], $searchKey);
         if (! isset($artifact['archive_download_url'])) {
             throw new \RuntimeException('Does not match any artifact.');
@@ -121,21 +106,13 @@ class PhpHandler extends AbstractDownloadHandler
         ]);
     }
 
-    protected function buildSearchKey(string $os, string $prefix, string $version, string $arch): string
+    protected function buildSearchKey(Definition $definition, string $key, string $prefix, string $version, string $arch): string
     {
-        return $this->replaces($this->matchRules[$os], [
+        return $this->replaces($definition->getJobArtifactMatchRule()[$key], [
             'prefix' => $prefix,
             'php-version' => $version,
             'arch' => $arch,
         ]);
-    }
-
-    protected function replaces(string $subject, array $replaces): string
-    {
-        foreach ($replaces as $search => $replace) {
-            $subject = str_replace('${{' . $search . '}}', $replace, $subject);
-        }
-        return $subject;
     }
 
     protected function isBinExists(string $string): bool
@@ -144,10 +121,8 @@ class PhpHandler extends AbstractDownloadHandler
         return ! empty($result) && ! str_contains($result, 'not found');
     }
 
-    public function versions(string $repo, array $options = []): array
+    public function versions(string $pkgName, array $options = []): array
     {
-        return [
-            '8.1', '8.0'
-        ];
+        return $this->getDefinition($pkgName)->getVersions();
     }
 }
