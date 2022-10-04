@@ -12,7 +12,10 @@ declare(strict_types=1);
 
 namespace App\DownloadHandler;
 
+use App\Exception\BoxException;
 use App\Exception\NotSupportVersionsException;
+use App\PkgDefinition\Definition;
+use GuzzleHttp\Client;
 use SplFileInfo;
 
 class DefaultHandler extends AbstractDownloadHandler
@@ -26,10 +29,17 @@ class DefaultHandler extends AbstractDownloadHandler
         if ($definition->getRepo()) {
             $url = $this->fetchDownloadUrlFromGithubRelease($definition->getBin(), $definition->getRepo(), $version);
         } elseif ($definition->getUrl()) {
-            if ($version === 'latest' && $definition->getLatest()) {
-                $version = $definition->getLatest();
+            if ($version === 'latest') {
+                if ($definition->getLatest() && $definition->getLatest() !== 'latest') {
+                    $specifiedVersion = $definition->getLatest();
+                } else {
+                    $versions = $this->versions($pkgName);
+                    $specifiedVersion = array_shift($versions);
+                }
+            } else {
+                $specifiedVersion = $version;
             }
-            $url = str_replace('${{version}}', $version, $definition->getUrl());
+            $url = str_replace('${{version}}', $specifiedVersion, $definition->getUrl());
         } else {
             throw new \RuntimeException('The definition of package is invalid');
         }
@@ -42,9 +52,15 @@ class DefaultHandler extends AbstractDownloadHandler
         if (! $definition) {
             throw new \RuntimeException('The package not found');
         }
-        if (! $definition->getRepo()) {
+        if (! $definition->getRepo() && ! $definition->getComposerName()) {
             throw new NotSupportVersionsException($pkgName);
         }
-        return $this->fetchVersionsFromGithubRelease($definition->getRepo(), $definition->getBin());
+        if ($definition->getLatestFetchType() === 'github') {
+            return $this->fetchVersionsFromGithubRelease($definition->getRepo(), $definition->getBin());
+        } elseif ($definition->getLatestFetchType() === 'packagist') {
+            return $this->fetchVersionsFromPackagist($definition->getPkgName(), $definition->getComposerName());
+        } else {
+            throw new BoxException('The definition of package is invalid');
+        }
     }
 }

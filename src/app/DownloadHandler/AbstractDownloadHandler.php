@@ -92,6 +92,28 @@ abstract class AbstractDownloadHandler
         return $versions;
     }
 
+    protected function fetchVersionsFromPackagist(string $pkgName, string $composerName): array
+    {
+        $client = new Client();
+        $response = $client->get(sprintf('https://repo.packagist.org/p2/%s.json', $composerName));
+        $body = json_decode($response->getBody()->getContents(), true);
+        if (! isset($body['packages'][$composerName])) {
+            throw new NotSupportVersionsException($pkgName);
+        }
+        $composerJsons = $body['packages'][$composerName];
+        $versions = [];
+        foreach ($composerJsons as $composerJson) {
+            if (isset($composerJson['version'])) {
+                $versions[] = $composerJson['version'];
+            }
+        }
+        // Sort versions by desc
+        usort($versions, function ($a, $b) {
+            return version_compare($b, $a);
+        });
+        return $versions;
+    }
+
     protected function download(
         ?string $url,
         string $savePath,

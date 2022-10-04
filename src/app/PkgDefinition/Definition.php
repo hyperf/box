@@ -10,6 +10,7 @@ class Definition
     protected ?string $latest = null;
     protected ?string $latestFetchType = null;
     protected ?string $url = null;
+    protected ?string $composerName = null;
     protected ?Jobs $jobs = null;
     protected array $jobArtifactMatchRule = [];
     protected array $releaseAssetMatchRule = [];
@@ -19,12 +20,13 @@ class Definition
 
     public function __construct(string $pkgName, array $data = [])
     {
-        $this->pkgName = $pkgName;
+        $this->setPkgName($pkgName);
         isset($data['repo']) && is_string($data['repo']) && $this->setRepo($data['repo']);
         isset($data['bin']) && is_string($data['bin']) && $this->setBin($data['bin']);
         isset($data['latest']) && is_string($data['latest']) && $this->setLatest($data['latest']);
         isset($data['latest_fetch_type']) && is_string($data['latest_fetch_type']) && $this->setLatestFetchType($data['latest_fetch_type']);
         isset($data['url']) && is_string($data['url']) && $this->setUrl($data['url']);
+        isset($data['composer_name']) && is_string($data['composer_name']) && $this->setComposerName($data['composer_name']);
         isset($data['jobs']) && is_array($data['jobs']) && $this->setJobs(new Jobs($data['jobs']));
         isset($data['job_artifact_match_rule']) && is_array($data['job_artifact_match_rule']) && $this->setJobArtifactMatchRule($data['job_artifact_match_rule']);
         isset($data['release_asset_match_rule']) && is_array($data['release_asset_match_rule']) && $this->setReleaseAssetMatchRule($data['release_asset_match_rule']);
@@ -151,6 +153,28 @@ class Definition
     public function setReleaseAssetKeyword(string $releaseAssetKeyword): Definition
     {
         $this->releaseAssetKeyword = $releaseAssetKeyword;
+        return $this;
+    }
+
+    public function getComposerName(): ?string
+    {
+        return $this->composerName;
+    }
+
+    public function setComposerName(string $composerName): Definition
+    {
+        $this->composerName = $composerName;
+        return $this;
+    }
+
+    public function getPkgName(): string
+    {
+        return $this->pkgName;
+    }
+
+    public function setPkgName(string $pkgName): Definition
+    {
+        $this->pkgName = $pkgName;
         return $this;
     }
 }
