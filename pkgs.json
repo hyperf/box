@@ -25,6 +25,23 @@
         "latest": "8.1",
         "versions": ["8.1", "8.0"]
     },
+    "micro": {
+        "repo": "dixyes/lwmbs",
+        "jobs": {
+            "Darwin.x86_64": "2969003447",
+            "Darwin.arm64": "2969003447",
+            "Linux.x86_64": "2961452571",
+            "Linux.aarch64": "2961452571"
+        },
+        "job_artifact_match_rule": {
+            "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
+            "Darwin.arm64": "${{prefix}}_${{php-version}}_${{arch}}",
+            "Linux.x86_64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
+            "Linux.aarch64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}"
+        },
+        "latest": "8.1",
+        "versions": ["8.1", "8.0"]
+    },
     "box": {
         "repo": "hyperf/box",
         "bin": "box.phar",
