@@ -17,8 +17,10 @@
             "Linux.aarch64": "2961452571"
         },
         "job_artifact_match_rule": {
-            "Darwin": "${{prefix}}_${{php-version}}_${{arch}}",
-            "Linux": "${{prefix}}_static_${{php-version}}_musl_${{arch}}"
+            "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
+            "Darwin.arm64": "${{prefix}}_${{php-version}}_${{arch}}",
+            "Linux.x86_64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
+            "Linux.aarch64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}"
         },
         "latest": "8.1",
         "versions": ["8.1", "8.0"]
@@ -27,11 +29,10 @@
         "repo": "hyperf/box",
         "bin": "box.phar",
         "release_asset_match_rule": {
-            "Darwin": "box_x86_64_macos",
-            "Linux": {
-                "x86_64": "box_x86_64_linux",
-                "aarch64": "box_aarch64_linux"
-            }
+            "Darwin.x86_64": "box_x86_64_macos",
+            "Darwin.arm64": "box_arm64_macos",
+            "Linux.x86_64": "box_x86_64_linux",
+            "Linux.aarch64": "box_aarch64_linux"
         }
     },
     "composer": {
@@ -39,11 +40,16 @@
         "bin": "composer.phar",
         "sources": {
             "github.com": {
-                "type": "github"
+                "type": "github",
+                "url": "github.com"
             },
             "getcomposer.org": {
                 "type": "url",
-                "url": "https://getcomposer.org/download/{{$version}}/{{$bin}}"
+                "url": "https://getcomposer.org/download/${{version}}/${{bin}}"
+            },
+            "default": {
+                "type": "url",
+                "url": "https://getcomposer.org/download/${{version}}/${{bin}}"
             }
         },
         "latest": "latest",
