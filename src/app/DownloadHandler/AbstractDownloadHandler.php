@@ -67,7 +67,7 @@ abstract class AbstractDownloadHandler
         return $url;
     }
 
-    protected function fetchVersionsFromGithubRelease(string $fullRepo, ?string $assetName = null): array
+    protected function fetchVersionsFromGithubRelease(string $fullRepo, ?string $assetKeyword = null): array
     {
         $releases = $this->githubClient->getReleases($fullRepo);
         $versions = [];
@@ -78,9 +78,9 @@ abstract class AbstractDownloadHandler
         // Filter releases which has assets, if the asset name is not null, then validate its.
         foreach ($releases as $release) {
             if (! empty($release['assets'])) {
-                if ($assetName) {
+                if ($assetKeyword) {
                     foreach ($release['assets'] as $asset) {
-                        if ($asset['name'] === $assetName) {
+                        if (str_contains($asset['name'], $assetKeyword)) {
                             $versions[] = $release['tag_name'];
                         }
                     }
@@ -89,6 +89,28 @@ abstract class AbstractDownloadHandler
                 }
             }
         }
+        return $versions;
+    }
+
+    protected function fetchVersionsFromPackagist(string $pkgName, string $composerName): array
+    {
+        $client = new Client();
+        $response = $client->get(sprintf('https://repo.packagist.org/p2/%s.json', $composerName));
+        $body = json_decode($response->getBody()->getContents(), true);
+        if (! isset($body['packages'][$composerName])) {
+            throw new NotSupportVersionsException($pkgName);
+        }
+        $composerJsons = $body['packages'][$composerName];
+        $versions = [];
+        foreach ($composerJsons as $composerJson) {
+            if (isset($composerJson['version'])) {
+                $versions[] = $composerJson['version'];
+            }
+        }
+        // Sort versions by desc
+        usort($versions, function ($a, $b) {
+            return version_compare($b, $a);
+        });
         return $versions;
     }
 

@@ -9,7 +9,9 @@ Box 致力于帮助提升 Hyperf 应用程序的编程体验，管理 PHP 环境
 您可以从该项目的 Github Actions 附件中下载最新构建的 `box` 二进制文件。
 点击 [这里](https://github.com/hyperf/box/actions) 下载 ~
 
-请注意 box **仅支持 Swow**, 暂 **不支持** Swoole，故你的项目骨架应由 [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) 项目创建或其它 Swow 骨架创建。
+请注意 box 内的 `php` **仅支持 Swow**, 暂 **不支持** Swoole，故你的项目骨架应由 [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) 项目创建或其它 Swow 骨架创建。   
+如果要使用 Swoole，请使用 `swoole-cli` 代替 `php` 命令，同时其他 PHP 代理命令将无效。   
+提示：运行 `box get swoole-cli` 可获取最新版本的 swoole-cli。   
 
 ### 使用
 
@@ -18,7 +20,7 @@ Box 致力于帮助提升 Hyperf 应用程序的编程体验，管理 PHP 环境
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.1.0/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.2.0/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -27,7 +29,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.1.0/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.2.0/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -65,6 +67,7 @@ Box 需要一个 Github 访问令牌来请求 Github API，以检索包的版本
 - `box config get-php-version <version>`获取 box 的当前设置的 PHP 版本
 - `box reverse-proxy -u <upsteamHost:upstreamPort>` 启动一个反向代理 HTTP 服务器，用于将 HTTP 请求转发到指定的多个上游服务器
 - `box php <argument>` 通过当前 box 的 PHP 版本运行任何 PHP 命令
+- `box swoole-cli <argument>` 通过 swoole-cli 运行任何命令，此命令仅在 box v0.2.0 及以上的版本中可用
 - `box composer <argument>`通过当前 box 的 PHP 版本运行任何 Composer 命令，composer bin 的版本取决于最后执行的`get composer`命令
 - `box php-cs-fixer <argument>` 通过当前 box 的 PHP 版本运行任何 `php-cs-fixer` 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
 - `box cs-fix <argument>` 通过当前 box 的 PHP 版本运行 `php-cs-fixer fix` 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令

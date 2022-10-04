@@ -17,6 +17,8 @@ use App\DownloadHandler\ComposerHandler;
 use App\DownloadHandler\DefaultHandler;
 use App\DownloadHandler\MicroHandler;
 use App\DownloadHandler\PhpHandler;
+use App\DownloadHandler\SwooleCliHandler;
+use App\Exception\PkgDefinitionNotFoundException;
 use Hyperf\Di\Annotation\Inject;
 use Psr\Container\ContainerInterface;
 
@@ -27,6 +29,7 @@ class DownloadManager
         'composer' => ComposerHandler::class,
         'micro' => MicroHandler::class,
         'php' => PhpHandler::class,
+        'swoole-cli' => SwooleCliHandler::class,
         'default' => DefaultHandler::class,
     ];
 
@@ -36,8 +39,14 @@ class DownloadManager
     #[Inject]
     protected Config $config;
 
+    #[Inject]
+    protected PkgDefinitionManager $pkgDefinitionManager;
+
     public function get(string $pkg, string $version, array $options = []): void
     {
+        if (! $this->pkgDefinitionManager->hasDefinition($pkg)) {
+            throw new PkgDefinitionNotFoundException($pkg);
+        }
         $this->createRuntimePath();
         /** @var \App\DownloadHandler\AbstractDownloadHandler $handler */
         $key = 'default';
@@ -46,11 +55,16 @@ class DownloadManager
         }
         $handler = $this->container->get($this->handlers[$key]);
         $file = $handler->handle($pkg, $version, $options);
-        chmod($file->getRealPath(), 0755);
+        if ($file->isWritable()) {
+            chmod($file->getRealPath(), 0755);
+        }
     }
 
     public function versions(string $pkg, array $options): array
     {
+        if (! $this->pkgDefinitionManager->hasDefinition($pkg)) {
+            throw new PkgDefinitionNotFoundException($pkg);
+        }
         /** @var \App\DownloadHandler\AbstractDownloadHandler $handler */
         $key = 'default';
         if (isset($this->handlers[$pkg])) {

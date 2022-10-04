@@ -5,8 +5,9 @@
     },
     "phpunit": {
         "url": "https://phar.phpunit.de/phpunit-${{version}}.phar",
-        "latest": "9",
-        "bin": "phpunit.phar"
+        "bin": "phpunit.phar",
+        "composer_name": "phpunit/phpunit",
+        "latest_fetch_type": "packagist"
     },
     "php": {
         "repo": "dixyes/lwmbs",
@@ -44,7 +45,7 @@
     },
     "box": {
         "repo": "hyperf/box",
-        "bin": "box.phar",
+        "bin": "box",
         "release_asset_match_rule": {
             "Darwin.x86_64": "box_x86_64_macos",
             "Darwin.arm64": "box_arm64_macos",
@@ -71,5 +72,14 @@
         },
         "latest": "latest",
         "latest_fetch_type": "github"
+    },
+    "swoole-cli": {
+        "repo": "swoole/swoole-src",
+        "bin": "swoole-cli",
+        "latest": "v5.0.0",
+        "release_asset_keyword": "swoole-cli",
+        "release_asset_match_rule": {
+            "Linux": "swoole-cli-${{version}}-linux-x64.tar.xz"
+        }
     }
 }
