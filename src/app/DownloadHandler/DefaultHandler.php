@@ -14,8 +14,6 @@ namespace App\DownloadHandler;
 
 use App\Exception\BoxException;
 use App\Exception\NotSupportVersionsException;
-use App\PkgDefinition\Definition;
-use GuzzleHttp\Client;
 use SplFileInfo;
 
 class DefaultHandler extends AbstractDownloadHandler

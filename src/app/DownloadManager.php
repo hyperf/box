@@ -21,6 +21,7 @@ use App\DownloadHandler\SwooleCliHandler;
 use App\Exception\PkgDefinitionNotFoundException;
 use Hyperf\Di\Annotation\Inject;
 use Psr\Container\ContainerInterface;
+use SplFileInfo;
 
 class DownloadManager
 {
@@ -55,7 +56,7 @@ class DownloadManager
         }
         $handler = $this->container->get($this->handlers[$key]);
         $file = $handler->handle($pkg, $version, $options);
-        if ($file->isWritable()) {
+        if ($file instanceof SplFileInfo && $file->isWritable()) {
             chmod($file->getRealPath(), 0755);
         }
     }

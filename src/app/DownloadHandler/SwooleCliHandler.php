@@ -19,11 +19,6 @@ use SplFileInfo;
 class SwooleCliHandler extends AbstractDownloadHandler
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo
     {
         $definition = $this->getDefinition($pkgName);

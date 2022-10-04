@@ -40,6 +40,7 @@ class GetCommand extends HyperfCommand
         $this->addArgument('pkg', InputArgument::REQUIRED, 'The package name');
         $this->addOption('source', 's', InputOption::VALUE_OPTIONAL, 'The download source.');
         $this->addOption('versions', '', InputOption::VALUE_NONE, 'Print the package versions only.');
+        $this->addOption('reinstall', 'r', InputOption::VALUE_NONE, 'Ignore the local file and reinstall.');
     }
 
     public function handle()
@@ -49,10 +50,14 @@ class GetCommand extends HyperfCommand
         $pkg = $this->input->getArgument('pkg');
         $source = $this->input->getOption('source');
         $versions = $this->input->getOption('versions');
+        $reinstall = $this->input->getOption('reinstall');
         [$pkg, $version] = $this->parsePkgVersion($pkg);
         $options = [];
         if ($source) {
             $options['source'] = $source;
+        }
+        if ($reinstall) {
+            $options['reinstall'] = $reinstall;
         }
         if ($versions) {
             $versions = $this->downloadManager->versions($pkg, $options);
@@ -60,6 +65,7 @@ class GetCommand extends HyperfCommand
         } else {
             $this->downloadManager->get($pkg, $version, $options);
         }
+        return self::SUCCESS;
     }
 
     protected function parsePkgVersion(string $pkg): array
