@@ -13,8 +13,9 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Config;
-use Hyperf\Command\Command as HyperfCommand;
+use RuntimeException;
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\Command\Command as HyperfCommand;
 
 abstract class AbstractCommand extends HyperfCommand
 {
