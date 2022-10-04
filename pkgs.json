@@ -5,8 +5,9 @@
     },
     "phpunit": {
         "url": "https://phar.phpunit.de/phpunit-${{version}}.phar",
-        "latest": "9",
-        "bin": "phpunit.phar"
+        "bin": "phpunit.phar",
+        "composer_name": "phpunit/phpunit",
+        "latest_fetch_type": "packagist"
     },
     "php": {
         "repo": "dixyes/lwmbs",
