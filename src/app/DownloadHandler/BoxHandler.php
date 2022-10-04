@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace App\DownloadHandler;
 
 use Phar;
+use App\Box;
 use SplFileInfo;
+use RuntimeException;
 
 class BoxHandler extends AbstractDownloadHandler
 {
@@ -29,6 +31,10 @@ class BoxHandler extends AbstractDownloadHandler
 
     public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo
     {
+        if (version_compare(Box::VERSION, $this->versions($this->binName)[0] ?? '', '>=')) {
+            throw new RuntimeException(sprintf("The latest version [v%s] is already installed.", Box::VERSION), 1);
+        }
+
         $url = $this->fetchDownloadUrlFromGithubRelease($this->getAssetName(), $this->fullRepo, $version);
         $savePath = Phar::running(false) ?: $this->runtimePath . '/';
 
