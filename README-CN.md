@@ -66,5 +66,6 @@ Box 需要一个 Github 访问令牌来请求 Github API，以检索包的版本
 - `box reverse-proxy -u <upsteamHost:upstreamPort>` 启动一个反向代理 HTTP 服务器，用于将 HTTP 请求转发到指定的多个上游服务器
 - `box php <argument>` 通过当前 box 的 PHP 版本运行任何 PHP 命令
 - `box composer <argument>`通过当前 box 的 PHP 版本运行任何 Composer 命令，composer bin 的版本取决于最后执行的`get composer`命令
-- `box php-cs-fixer <argument>` 通过当前 box 的 PHP 版本运行任何 php-cs-fixer 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
+- `box php-cs-fixer <argument>` 通过当前 box 的 PHP 版本运行任何 `php-cs-fixer` 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
+- `box cs-fix <argument>` 通过当前 box 的 PHP 版本运行 `php-cs-fixer fix` 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
 - `box version` 输出当前 box bin 的版本号
