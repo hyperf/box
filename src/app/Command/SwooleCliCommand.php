@@ -17,7 +17,7 @@ use Hyperf\Utils\Str;
 use Psr\Container\ContainerInterface;
 
 #[Command]
-class SwooleCliCommand extends AbstractPhpCallProxyCommand
+class SwooleCliCommand extends AbstractCommand
 {
     public function __construct(protected ContainerInterface $container)
     {
