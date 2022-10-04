@@ -13,7 +13,7 @@ class PkgDefinitionManager
     protected StdoutLoggerInterface $logger;
 
     // Use 'file://pkgs.json' to load local file for development
-    protected string $url = 'https://raw.githubusercontent.com/hyperf/box/master/pkgs.json';
+    protected string $url = 'file://pkgs.json';
 
     /**
      * All the definitions is array data, not Definition instance.
@@ -33,6 +33,11 @@ class PkgDefinitionManager
             }
         }
         return null;
+    }
+
+    public function hasDefinition(string $pkg): bool
+    {
+        return isset($this->pkgs[$pkg]);
     }
 
     public function getPkgs(): array

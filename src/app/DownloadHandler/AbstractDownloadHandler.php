@@ -67,7 +67,7 @@ abstract class AbstractDownloadHandler
         return $url;
     }
 
-    protected function fetchVersionsFromGithubRelease(string $fullRepo, ?string $assetName = null): array
+    protected function fetchVersionsFromGithubRelease(string $fullRepo, ?string $assetKeyword = null): array
     {
         $releases = $this->githubClient->getReleases($fullRepo);
         $versions = [];
@@ -78,9 +78,9 @@ abstract class AbstractDownloadHandler
         // Filter releases which has assets, if the asset name is not null, then validate its.
         foreach ($releases as $release) {
             if (! empty($release['assets'])) {
-                if ($assetName) {
+                if ($assetKeyword) {
                     foreach ($release['assets'] as $asset) {
-                        if ($asset['name'] === $assetName) {
+                        if (str_contains($asset['name'], $assetKeyword)) {
                             $versions[] = $release['tag_name'];
                         }
                     }
