@@ -28,11 +28,15 @@ class SwooleCliHandler extends AbstractDownloadHandler
     {
         $definition = $this->getDefinition($pkgName);
         if ($version === 'latest') {
-            $release = $this->githubClient->getRelease($definition->getRepo(), $version);
-            if (! isset($release['tag_name'])) {
-                throw new \RuntimeException('Cannot match the specified version from github releases.');
+            if ($definition->getLatest() !== null && $definition->getLatest() !== 'latest') {
+                $specifiedVersion = $definition->getLatest();
+            } else {
+                $release = $this->githubClient->getRelease($definition->getRepo(), $version);
+                if (! isset($release['tag_name'])) {
+                    throw new \RuntimeException('Cannot match the specified version from github releases.');
+                }
+                $specifiedVersion = $release['tag_name'];
             }
-            $specifiedVersion = $release['tag_name'];
         } else {
             $specifiedVersion = $version;
         }
