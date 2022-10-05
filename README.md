@@ -36,7 +36,7 @@ sudo chmod 755 /usr/local/bin/box
 ```
 ##### Linux aarch64
 
-At present, we are short of ARRCH64 Github Actions Runner, so we cannot timely construct the bin file of ARRCH64 version.
+At present, we are short of AARCH64 Github Actions Runner, so we cannot timely construct the bin file of AARCH64 version.
 
 ```bash
 wget https://github.com/hyperf/box/releases/download/v0.0.3/box_php8.1_aarch64_linux -O box
