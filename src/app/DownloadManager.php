@@ -7,6 +7,7 @@ declare(strict_types=1);
  * @link     https://www.hyperf.io
  * @document https://hyperf.wiki
  * @contact  group@hyperf.io
+ *
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
@@ -17,6 +18,7 @@ use App\DownloadHandler\ComposerHandler;
 use App\DownloadHandler\DefaultHandler;
 use App\DownloadHandler\MicroHandler;
 use App\DownloadHandler\PhpHandler;
+use App\DownloadHandler\PintHandler;
 use App\DownloadHandler\SwooleCliHandler;
 use App\Exception\PkgDefinitionNotFoundException;
 use Hyperf\Di\Annotation\Inject;
@@ -30,6 +32,7 @@ class DownloadManager
         'composer' => ComposerHandler::class,
         'micro' => MicroHandler::class,
         'php' => PhpHandler::class,
+        'pint' => PintHandler::class,
         'swoole-cli' => SwooleCliHandler::class,
         'default' => DefaultHandler::class,
     ];
@@ -72,12 +75,13 @@ class DownloadManager
             $key = $pkg;
         }
         $handler = $this->container->get($this->handlers[$key]);
+
         return $handler->versions($pkg, $options);
     }
 
     protected function createRuntimePath(): void
     {
-        $path = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
+        $path = $this->config->getConfig('path.runtime', getenv('HOME').'/.box');
         if (! file_exists($path)) {
             mkdir($path, 0755);
             chmod($path, 0755);

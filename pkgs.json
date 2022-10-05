@@ -26,6 +26,12 @@
         "latest": "8.1",
         "versions": ["8.1", "8.0"]
     },
+    "pint": {
+        "url": "https://github.com/laravel/pint/archive/refs/tags/${{version}}.zip",
+        "bin": "pint",
+        "composer_name": "laravel/pint",
+        "latest_fetch_type": "packagist"
+    },
     "micro": {
         "repo": "dixyes/lwmbs",
         "jobs": {
