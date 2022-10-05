@@ -31,7 +31,9 @@ abstract class AbstractPhpCallProxyCommand extends AbstractCommand
     {
         $bin = $this->buildBinCommand();
         $command = Str::replaceFirst($this->proxyCommand . ' ', '', (string) $this->input);
-        $fullCommand = sprintf('%s %s', $bin, $command);
+        // $fullCommand = sprintf('%s %s', $bin, $command);
+        $fullCommand = $bin;
+        var_dump($command, $fullCommand);
         $this->liveCommand($fullCommand);
     }
 
