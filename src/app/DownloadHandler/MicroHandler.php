@@ -39,26 +39,17 @@ class MicroHandler extends PhpHandler
             // Unzip the artifact file
             $this->logger->info('Unpacking zip file ' . $savePath);
             $renameTo = $this->runtimePath . '/micro_php' . $version . '.sfx';
-            // Is file name ends with .zip?
-            if (str_ends_with($savePath, '.zip')) {
-                $zip = new ZipArchive();
-                $zip->open($savePath);
-                for ($i = 0; $i < $zip->numFiles; ++$i) {
-                    $filename = $zip->getNameIndex($i);
-                    if (str_ends_with($filename, 'micro.sfx')) {
-                        copy('zip://' . $savePath . '#' . $filename, $renameTo);
-                    }
+            $zip = new ZipArchive();
+            $zip->open($savePath);
+            for ($i = 0; $i < $zip->numFiles; ++$i) {
+                $filename = $zip->getNameIndex($i);
+                if (str_ends_with($filename, 'micro.sfx')) {
+                    copy('zip://' . $savePath . '#' . $filename, $renameTo);
                 }
-                $zip->close();
             }
+            $zip->close();
             $this->logger->info('Unpacked zip file ' . $savePath);
             unlink($savePath);
-            if (file_exists($this->runtimePath . '/micro.sfx.dwarf')) {
-                unlink($this->runtimePath . '/micro.sfx.dwarf');
-            }
-            if (file_exists($this->runtimePath . '/micro.sfx.debug')) {
-                unlink($this->runtimePath . '/micro.sfx.debug');
-            }
             $this->logger->info(sprintf('Deleted %s', $savePath));
             return new SplFileInfo($renameTo);
         } catch (GuzzleException $exception) {
