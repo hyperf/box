@@ -6,9 +6,6 @@ Box 致力于帮助提升 Hyperf 应用程序的编程体验，管理 PHP 环境
 
 ## 目前还是早期实验版本，欢迎试玩 ~
 
-您可以从该项目的 Github Actions 附件中下载最新构建的 `box` 二进制文件。
-点击 [这里](https://github.com/hyperf/box/actions) 下载 ~
-
 请注意 box 内的 `php` **仅支持 Swow**, 暂 **不支持** Swoole，故你的项目骨架应由 [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) 项目创建或其它 Swow 骨架创建。   
 如果要使用 Swoole，请使用 `swoole-cli` 代替 `php` 命令，同时其他 PHP 代理命令将无效。   
 提示：运行 `box get swoole-cli` 可获取最新版本的 swoole-cli。   

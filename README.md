@@ -6,9 +6,6 @@ Box is committed to helping improve the programming experience of Hyperf applica
 
 ## This is still an early experimental version, have fun ~
 
-You could download the latest builded `box` binary file from Github Actions artifact of this project.    
-Click [here](https://github.com/hyperf/box/actions) to download ~   
-
 Please notice that the `php` which in box **ONLY** supports for **Swow**, but **NOT** Swoole, so your Hyperf application should created by [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) or other else swow skeleton.   
 If you want to use Swoole, please use `swoole-cli` instead of `php` command, also the other PHP proxy commands are invalid.
 Tips: run `box get swoole-cli` to get the latest version swoole-cli..
