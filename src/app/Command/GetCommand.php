@@ -61,7 +61,11 @@ class GetCommand extends HyperfCommand
         }
         if ($versions) {
             $versions = $this->downloadManager->versions($pkg, $options);
-            $this->output->writeln($versions);
+            if (empty($versions)) {
+                $this->output->writeln('No versions found.');
+            } else {
+                $this->output->writeln($versions);
+            }
         } else {
             $this->downloadManager->get($pkg, $version, $options);
         }
