@@ -57,6 +57,10 @@ class DownloadManager
         if (isset($this->handlers[$pkg])) {
             $key = $pkg;
         }
+        $kernel = strtolower($this->config->getConfig('kernel', 'swow'));
+        if ($key === 'php' && $kernel === 'swoole') {
+            $key = 'swoole-cli';
+        }
         $handler = $this->container->get($this->handlers[$key]);
         $file = $handler->handle($pkg, $version, $options);
         if ($file instanceof SplFileInfo && $file->isWritable()) {

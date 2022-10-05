@@ -38,6 +38,16 @@ abstract class AbstractPhpCallProxyCommand extends AbstractCommand
     protected function buildBinCommand(): string
     {
         $path = $this->getRuntimePath();
-        return $path . '/php' . $this->getCurrentPhpVersion() . ' ' . $path . '/' . $this->proxyBin;
+        $kernel = strtolower($this->config->getConfig('kernel', 'swow'));
+        $currentPhpVersion = $this->getCurrentPhpVersion();
+        if ($kernel === 'swoole') {
+            $bin = $path . '/swoole-cli';
+            if ($currentPhpVersion < '8.1') {
+                $this->logger->warning(sprintf('Current setting PHP version is %s, but the kernel is Swoole and Swoole only support 8.1, so the PHP version is forced to 8.1.', $currentPhpVersion));
+            }
+        } else {
+            $bin = $path . '/php' . $currentPhpVersion;
+        }
+        return $bin . ' ' . $path . '/' . $this->proxyBin;
     }
 }

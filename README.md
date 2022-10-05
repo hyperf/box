@@ -6,10 +6,6 @@ Box is committed to helping improve the programming experience of Hyperf applica
 
 ## This is still an early experimental version, have fun ~
 
-Please notice that the `php` which in box **ONLY** supports for **Swow**, but **NOT** Swoole, so your Hyperf application should created by [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) or other else swow skeleton.   
-If you want to use Swoole, please use `swoole-cli` instead of `php` command, also the other PHP proxy commands are invalid.
-Tips: run `box get swoole-cli` to get the latest version swoole-cli..
-
 ### Usage
 
 #### Install box
@@ -49,6 +45,18 @@ Box needs a Github Access Token to request github api, to retrieve the versions 
 1. [Create Github Access Token](https://github.com/settings/tokens/new)， the `workflow` scope have to be selected.
 2. Run `box config set github.access-token <Your Token>` to init the token.
 3. Have fun ~
+
+#### Setting the Box Kernel
+
+By default, Box is supported by Swow Kernel, but we also provide Swoole Kernel, you can switch to Swoole Kernel by `box config set kernel swoole`, but it should be noted that Swoole Kernel only supports PHP 8.1 version, and The Build Binaries feature is not supported.
+
+```bash
+// set to Swow Kernel [default]
+box config set kernel swow
+
+// set to Swoole Kernel
+box config set kernel swoole
+````
 
 ### Commands
 
