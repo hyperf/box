@@ -9,6 +9,10 @@
         "composer_name": "phpunit/phpunit",
         "latest_fetch_type": "packagist"
     },
+    "phpstan": {
+        "repo": "phpstan/phpstan",
+        "bin": "phpstan.phar"
+    },
     "php": {
         "repo": "dixyes/lwmbs",
         "jobs": {

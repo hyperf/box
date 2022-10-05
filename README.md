@@ -71,4 +71,5 @@ Box needs a Github Access Token to request github api, to retrieve the versions 
 - `box composer <argument>` to run any Composer command via box, the version of the composer bin depends on the last executed `get composer` command
 - `box php-cs-fixer <argument>` to run any php-cs-fixer command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command
 - `box cs-fix <argument>` to run `php-cs-fix fix` command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command
+- `box phpstan <argument>` to run any phpstan command via box, the version of the composer bin depends on the last executed `get phpstan` command, since box v0.3.0
 - `box version` to dump the current version of the box bin
