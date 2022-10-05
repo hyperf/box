@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\DownloadHandler\AbstractDownloadHandler;
 use App\DownloadHandler\BoxHandler;
 use App\DownloadHandler\ComposerHandler;
 use App\DownloadHandler\DefaultHandler;
@@ -48,20 +49,8 @@ class DownloadManager
 
     public function get(string $pkg, string $version, array $options = []): void
     {
-        if (! $this->pkgDefinitionManager->hasDefinition($pkg)) {
-            throw new PkgDefinitionNotFoundException($pkg);
-        }
+        $handler = $this->buildHandler($pkg);
         $this->createRuntimePath();
-        /** @var \App\DownloadHandler\AbstractDownloadHandler $handler */
-        $key = 'default';
-        if (isset($this->handlers[$pkg])) {
-            $key = $pkg;
-        }
-        $kernel = strtolower($this->config->getConfig('kernel', 'swow'));
-        if ($key === 'php' && $kernel === 'swoole') {
-            $key = 'swoole-cli';
-        }
-        $handler = $this->container->get($this->handlers[$key]);
         $file = $handler->handle($pkg, $version, $options);
         if ($file instanceof SplFileInfo && $file->isWritable()) {
             chmod($file->getRealPath(), 0755);
@@ -70,16 +59,7 @@ class DownloadManager
 
     public function versions(string $pkg, array $options): array
     {
-        if (! $this->pkgDefinitionManager->hasDefinition($pkg)) {
-            throw new PkgDefinitionNotFoundException($pkg);
-        }
-        /** @var \App\DownloadHandler\AbstractDownloadHandler $handler */
-        $key = 'default';
-        if (isset($this->handlers[$pkg])) {
-            $key = $pkg;
-        }
-        $handler = $this->container->get($this->handlers[$key]);
-
+        $handler = $this->buildHandler($pkg);
         return $handler->versions($pkg, $options);
     }
 
@@ -90,5 +70,21 @@ class DownloadManager
             mkdir($path, 0755);
             chmod($path, 0755);
         }
+    }
+
+    protected function buildHandler(string &$pkg): AbstractDownloadHandler
+    {
+        if (! $this->pkgDefinitionManager->hasDefinition($pkg)) {
+            throw new PkgDefinitionNotFoundException($pkg);
+        }
+        $key = 'default';
+        if (isset($this->handlers[$pkg])) {
+            $key = $pkg;
+        }
+        $kernel = strtolower($this->config->getConfig('kernel', 'swow'));
+        if ($key === 'php' && $kernel === 'swoole') {
+            $key = $pkg = 'swoole-cli';
+        }
+        return $this->container->get($this->handlers[$key]);
     }
 }
