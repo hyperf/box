@@ -71,4 +71,5 @@ Box 需要一个 Github 访问令牌来请求 Github API，以检索包的版本
 - `box composer <argument>`通过当前 box 的 PHP 版本运行任何 Composer 命令，composer bin 的版本取决于最后执行的`get composer`命令
 - `box php-cs-fixer <argument>` 通过当前 box 的 PHP 版本运行任何 `php-cs-fixer` 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
 - `box cs-fix <argument>` 通过当前 box 的 PHP 版本运行 `php-cs-fixer fix` 命令，composer bin 的版本取决于最后执行的 `get php-cs-fixer` 命令
+- `box phpstan <argument>` 通过当前 box 的 PHP 版本运行任何 `phpstan` 命令，composer bin 的版本取决于最后执行的 `get phpstan` 命令，此命令仅在 box v0.3.0 及以上的版本中可用
 - `box version` 输出当前 box bin 的版本号
