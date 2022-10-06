@@ -13,7 +13,7 @@ Box 致力于帮助提升 Hyperf 应用程序的编程体验，管理 PHP 环境
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.3.0/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.4.0/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -22,7 +22,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.3.0/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.4.0/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -64,6 +64,7 @@ box config set kernel swoole
 - `box build-prepare` 为 `build` 和 `build-self` 命令做好相关环境的准备
 - `box build-self` 构建 `box` bin 本身
 - `box build <path>` 将 Hyperf 应用程序构建成二进制文件
+- `box self-update` 将 `box` bin 更新至最新版本
 - `box config list` 输出 box 配置文件的所有内容
 - `box config get <key>` 从配置文件中按键检索值
 - `box config set <key> <value>`通过 key 设置 value 到配置文件中
