@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Config;
+use Hyperf\Contract\StdoutLoggerInterface;
 use RuntimeException;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\Command\Command as HyperfCommand;
@@ -21,6 +22,9 @@ abstract class AbstractCommand extends HyperfCommand
 {
     #[Inject]
     protected Config $config;
+
+    #[Inject]
+    protected StdoutLoggerInterface $logger;
 
     protected function liveCommand(string $command)
     {

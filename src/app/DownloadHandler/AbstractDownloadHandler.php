@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace App\DownloadHandler;
 
-use App\Box;
 use App\Config;
 use App\Exception\BoxException;
 use App\Exception\NotSupportVersionsException;
@@ -20,14 +19,12 @@ use App\GithubClient;
 use App\PkgDefinition\Definition;
 use App\PkgDefinitionManager;
 use GuzzleHttp\Client;
-use GuzzleHttp\TransferStats;
 use Hyperf\Context\Context;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\Engine\Channel;
 use Hyperf\Engine\Coroutine;
 use Hyperf\Utils\Str;
-use Psr\Http\Message\ResponseInterface;
 use SplFileInfo;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;

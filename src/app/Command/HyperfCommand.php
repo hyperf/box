@@ -38,9 +38,18 @@ class HyperfCommand extends AbstractCommand
     public function handle()
     {
         $path = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
+        $kernel = strtolower($this->config->getConfig('kernel', 'swow'));
         $currentPhpVersion = $this->config->getConfig('versions.php', '8.1');
         $hyperfBin = $this->config->getConfig('hyperf.bin', './bin/hyperf.php');
-        $bin = $path . '/php' . $currentPhpVersion . ' ' . $hyperfBin;
+        if ($kernel === 'swoole') {
+            $closeShortname = "-d swoole.use_shortname='Off'";
+            $bin = $path . '/swoole-cli ' . $closeShortname . ' ' . $hyperfBin;
+            if ($currentPhpVersion < '8.1') {
+                $this->logger->warning(sprintf('Current setting PHP version is %s, but the kernel is Swoole and Swoole only support 8.1, so the PHP version is forced to 8.1.', $currentPhpVersion));
+            }
+        } else {
+            $bin = $path . '/php' . $currentPhpVersion . ' ' . $hyperfBin;
+        }
         $command = Str::replaceFirst('hyperf ', '', (string) $this->input);
         $fullCommand = sprintf('%s %s', $bin, $command);
         $this->liveCommand($fullCommand);
