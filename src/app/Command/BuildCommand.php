@@ -64,8 +64,12 @@ class BuildCommand extends AbstractCommand
             $outputBin
         );
         $this->liveCommand($fullCommand);
-        chmod($outputBin, 0755);
-        $this->output->info('The application build finished, saved to ' . $outputBin);
+        if (file_exists($outputBin)) {
+            $this->output->success(sprintf('The application %s is built successfully.', $outputBin));
+            chmod($outputBin, 0755);
+        } else {
+            $this->output->error(sprintf('The application %s is built failed.', $outputBin));
+        }
     }
 
     protected function buildComposerNoDevCommand(string $php, string $composer): string
