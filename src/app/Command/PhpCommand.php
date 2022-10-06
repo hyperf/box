@@ -34,8 +34,16 @@ class PhpCommand extends AbstractCommand
     public function handle()
     {
         $path = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
+        $kernel = strtolower($this->config->getConfig('kernel', 'swow'));
         $currentPhpVersion = $this->config->getConfig('versions.php', '8.1');
-        $bin = $path . '/php' . $currentPhpVersion;
+        if ($kernel === 'swoole') {
+            $bin = $path . '/swoole-cli';
+            if ($currentPhpVersion < '8.1') {
+                $this->logger->warning(sprintf('Current setting PHP version is %s, but the kernel is Swoole and Swoole only support 8.1, so the PHP version is forced to 8.1.', $currentPhpVersion));
+            }
+        } else {
+            $bin = $path . '/php' . $currentPhpVersion;
+        }
         $command = Str::replaceFirst('php ', '', (string) $this->input);
         $fullCommand = sprintf('%s %s', $bin, $command);
         $this->liveCommand($fullCommand);

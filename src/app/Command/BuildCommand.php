@@ -32,6 +32,11 @@ class BuildCommand extends AbstractCommand
 
     public function handle()
     {
+        $kernel = strtolower($this->config->getConfig('kernel', 'swow'));
+        if ($kernel === 'swoole') {
+            $this->logger->error('The build command is not supported in Swoole kernel.');
+            return;
+        }
         $path = $this->input->getArgument('path');
         $binName = $this->input->getOption('name');
         $outputPath = $this->input->getOption('output');
