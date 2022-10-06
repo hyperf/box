@@ -43,7 +43,7 @@ class MicroHandler extends PhpHandler
             $zip->open($savePath);
             for ($i = 0; $i < $zip->numFiles; ++$i) {
                 $filename = $zip->getNameIndex($i);
-                if (str_ends_with($filename, 'micro.sfx')) {
+                if ($filename === 'micro.sfx') {
                     copy('zip://' . $savePath . '#' . $filename, $renameTo);
                 }
             }
