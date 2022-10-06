@@ -18,6 +18,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Di\Annotation\Inject;
 use Psr\Http\Message\ResponseInterface;
 use SplFileInfo;
+use ZipArchive;
 
 class PhpHandler extends AbstractDownloadHandler
 {
@@ -37,22 +38,20 @@ class PhpHandler extends AbstractDownloadHandler
             if (! file_exists($savePath)) {
                 throw new \RuntimeException('Download failed, cannot locate the PHP bin file in local.');
             }
-            if (! $this->isBinExists('unzip')) {
-                throw new \RuntimeException('Download failed, unzip command not found.');
-            }
             // Unzip the artifact file
-            exec('unzip -o ' . $savePath . ' -d ' . $this->runtimePath);
+            $this->logger->info('Unpacking zip file ' . $savePath);
+            $renameTo = $this->runtimePath . '/php' . $version;
+            $zip = new ZipArchive();
+            $zip->open($savePath);
+            for ($i = 0; $i < $zip->numFiles; ++$i) {
+                $filename = $zip->getNameIndex($i);
+                if ($filename === 'php') {
+                    copy('zip://' . $savePath . '#' . $filename, $renameTo);
+                }
+            }
+            $zip->close();
             $this->logger->info('Unpacked zip file ' . $savePath);
-            // ZipArchive::extractTo('runtime', $savePath);
-            rename($renameFrom = $this->runtimePath . '/php', $renameTo = $this->runtimePath . '/php' . $version);
-            $this->logger->info(sprintf('Renamed %s to %s', $renameFrom, $renameTo));
             unlink($savePath);
-            if (file_exists($this->runtimePath . '/php.dwarf')) {
-                unlink($this->runtimePath . '/php.dwarf');
-            }
-            if (file_exists($this->runtimePath . '/php.debug')) {
-                unlink($this->runtimePath . '/php.debug');
-            }
             $this->logger->info(sprintf('Deleted %s', $savePath));
             return new SplFileInfo($renameTo);
         } catch (GuzzleException $exception) {

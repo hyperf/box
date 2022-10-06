@@ -16,6 +16,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Di\Annotation\Inject;
 use SplFileInfo;
+use ZipArchive;
 
 class MicroHandler extends PhpHandler
 {
@@ -35,22 +36,20 @@ class MicroHandler extends PhpHandler
             if (! file_exists($savePath)) {
                 throw new \RuntimeException('Download failed, cannot locate the PHP bin file in local.');
             }
-            if (! $this->isBinExists('unzip')) {
-                throw new \RuntimeException('Download failed, unzip command not found.');
-            }
             // Unzip the artifact file
-            exec('unzip -o ' . $savePath . ' -d ' . $this->runtimePath);
+            $this->logger->info('Unpacking zip file ' . $savePath);
+            $renameTo = $this->runtimePath . '/micro_php' . $version . '.sfx';
+            $zip = new ZipArchive();
+            $zip->open($savePath);
+            for ($i = 0; $i < $zip->numFiles; ++$i) {
+                $filename = $zip->getNameIndex($i);
+                if ($filename === 'micro.sfx') {
+                    copy('zip://' . $savePath . '#' . $filename, $renameTo);
+                }
+            }
+            $zip->close();
             $this->logger->info('Unpacked zip file ' . $savePath);
-            // ZipArchive::extractTo('runtime', $savePath);
-            rename($renameFrom = $this->runtimePath . '/micro.sfx', $renameTo = $this->runtimePath . '/micro_php' . $version . '.sfx');
-            $this->logger->info(sprintf('Renamed %s to %s', $renameFrom, $renameTo));
             unlink($savePath);
-            if (file_exists($this->runtimePath . '/micro.sfx.dwarf')) {
-                unlink($this->runtimePath . '/micro.sfx.dwarf');
-            }
-            if (file_exists($this->runtimePath . '/micro.sfx.debug')) {
-                unlink($this->runtimePath . '/micro.sfx.debug');
-            }
             $this->logger->info(sprintf('Deleted %s', $savePath));
             return new SplFileInfo($renameTo);
         } catch (GuzzleException $exception) {

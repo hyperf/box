@@ -16,7 +16,7 @@ use App\Exception\NotSupportVersionsException;
 use Phar;
 use SplFileInfo;
 
-class PintHandler extends AbstractDownloadHandler
+class PintHandler extends DefaultHandler
 {
     public function handle(string $pkgName, string $version, array $options = []): ?SplFileInfo
     {
@@ -74,21 +74,4 @@ class PintHandler extends AbstractDownloadHandler
         return new SplFileInfo($savePath . $definition->getBin());
     }
 
-    public function versions(string $pkgName, array $options = []): array
-    {
-        $definition = $this->getDefinition($pkgName);
-        if (! $definition) {
-            throw new \RuntimeException('The package not found');
-        }
-        if (! $definition->getRepo() && ! $definition->getComposerName()) {
-            throw new NotSupportVersionsException($pkgName);
-        }
-        if ($definition->getLatestFetchType() === 'github') {
-            return $this->fetchVersionsFromGithubRelease($definition->getRepo(), $definition->getBin());
-        }
-        if ($definition->getLatestFetchType() === 'packagist') {
-            return $this->fetchVersionsFromPackagist($definition->getPkgName(), $definition->getComposerName());
-        }
-        throw new BoxException('The definition of package is invalid');
-    }
 }
