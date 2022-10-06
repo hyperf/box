@@ -13,7 +13,7 @@ Box is committed to helping improve the programming experience of Hyperf applica
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.3.0/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.4.0/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
@@ -22,7 +22,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.3.0/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.4.0/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
@@ -64,6 +64,7 @@ box config set kernel swoole
 - `box build-prepare` to get ready for `build` and `build-self` command
 - `box build-self` to build the `box` bin itself
 - `box build <path>` to build a Hyperf application into a binary file
+- `box self-update` to update the `box` bin to latest version
 - `box config list` to dump the config file
 - `box config get <key>` to retrieve the value by key from config file
 - `box config set <key> <value>` to set value by key into the config file
