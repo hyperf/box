@@ -94,7 +94,9 @@ abstract class AbstractDownloadHandler
 
     protected function fetchVersionsFromPackagist(string $pkgName, string $composerName): array
     {
-        $client = new Client();
+        $client = new Client([
+            'verify' => false,
+        ]);
         $response = $client->get(sprintf('https://repo.packagist.org/p2/%s.json', $composerName));
         $body = json_decode($response->getBody()->getContents(), true);
         if (! isset($body['packages'][$composerName])) {
@@ -124,7 +126,7 @@ abstract class AbstractDownloadHandler
             throw new \RuntimeException('Download url is empty, maybe the url parse failed.');
         }
         $this->logger->info(sprintf('Downloading %s', $url));
-        if (str_ends_with($savePath, '/')) {
+        if (str_ends_with($savePath,  DIRECTORY_SEPARATOR)) {
             $explodedUrl = explode('/', $url);
             $filename = end($explodedUrl);
             $savePath = $savePath . $filename;
@@ -140,6 +142,7 @@ abstract class AbstractDownloadHandler
             ) use ($channel) {
                 $channel->push([$downloadedBytes, $downloadTotal]);
             },
+            'verify' => false,
         ]);
 
         /** @var OutputInterface $output */
@@ -151,7 +154,7 @@ abstract class AbstractDownloadHandler
         $output->writeln('');
         $output->writeln('');
         if ($renameTo) {
-            $explodedSavePath = explode('/', $savePath);
+            $explodedSavePath = explode(DIRECTORY_SEPARATOR, $savePath);
             $filename = end($explodedSavePath);
             rename($sink, $afterRenameSavePath = Str::replaceLast($filename, $renameTo, $savePath));
             $savePath = $afterRenameSavePath;

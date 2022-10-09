@@ -33,7 +33,7 @@ class BoxHandler extends AbstractDownloadHandler
             throw new BoxException('Can not found any matched asset for your system.');
         }
         $url = $this->fetchDownloadUrlFromGithubRelease($assetName, $definition->getRepo(), $version);
-        $savePath = Phar::running(false) ?: $this->runtimePath . '/';
+        $savePath = Phar::running(false) ?: $this->runtimePath . DIRECTORY_SEPARATOR;
 
         return $this->download($url, $savePath, 0755, $definition->getBin());
     }

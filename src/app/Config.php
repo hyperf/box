@@ -22,8 +22,9 @@ class Config
 
     public function __construct()
     {
-        $this->configFilePath = getenv('HOME') . '/.box';
-        $this->configFile = $this->configFilePath . '/.boxconfig';
+        $base = $this->getBaseDir();
+        $this->configFilePath = $base . DIRECTORY_SEPARATOR . '.box';
+        $this->configFile = $this->configFilePath . DIRECTORY_SEPARATOR. '.boxconfig';
         $this->init();
     }
 
@@ -66,8 +67,8 @@ class Config
         if (! $content) {
             $content = [
                 'path' => [
-                    'runtime' => getenv('HOME') . '/.box',
-                    'bin' => getenv('HOME') . '/.box',
+                    'runtime' => $this->getBaseDir(). DIRECTORY_SEPARATOR . '.box',
+                    'bin' => $this->getBaseDir() . DIRECTORY_SEPARATOR . '.box',
                 ],
                 'github' => [
                     'access-token' => '',
@@ -78,5 +79,11 @@ class Config
             ];
             $this->setConfigContent($content);
         }
+    }
+
+    protected function getBaseDir(): string
+    {
+        $base = getenv('HOME') ?: getenv('USERPROFILE');
+        return (string)$base;
     }
 }
