@@ -31,7 +31,7 @@ class ComposerHandler extends AbstractDownloadHandler
             $this->githubBaseUrl => $this->fetchDownloadUrlFromGithubRelease($definition->getBin(), $definition->getRepo(), $version),
             default => $this->fetchDownloadUrlFromGetComposerOrg($definition, $version),
         };
-        return $this->download($url, $this->runtimePath . '/', 0755);
+        return $this->download($url, $this->runtimePath . DIRECTORY_SEPARATOR , 0755);
     }
 
     public function versions(string $pkgName, array $options = []): array

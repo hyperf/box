@@ -21,7 +21,11 @@ require BASE_PATH . '/vendor/autoload.php';
 
 // Self-called anonymous function that creates its own scope and keep the global namespace clean.
 (function () {
-    Hyperf\Di\ClassLoader::init();
+    $handler = null;
+    if (PHP_OS_FAMILY === 'Windows') {
+        $handler = new Hyperf\Di\ScanHandler\ProcScanHandler();
+    }
+    Hyperf\Di\ClassLoader::init(handler: $handler);
     /** @var Psr\Container\ContainerInterface $container */
     $container = require BASE_PATH . '/config/container.php';
     /** @var Symfony\Component\Console\Application $application */

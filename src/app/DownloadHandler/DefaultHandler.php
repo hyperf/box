@@ -41,7 +41,7 @@ class DefaultHandler extends AbstractDownloadHandler
         } else {
             throw new \RuntimeException('The definition of package is invalid');
         }
-        return $this->download($url, $this->runtimePath . '/', 0755, $definition->getBin());
+        return $this->download($url, $this->runtimePath . DIRECTORY_SEPARATOR, 0755, $definition->getBin());
     }
 
     public function versions(string $pkgName, array $options = []): array

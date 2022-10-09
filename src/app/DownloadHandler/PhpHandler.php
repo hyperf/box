@@ -33,19 +33,23 @@ class PhpHandler extends AbstractDownloadHandler
             if ($response->getStatusCode() !== 302 || ! $response->getHeaderLine('Location')) {
                 throw new \RuntimeException('Download failed, cannot retrieve the download url from artifact.');
             }
-            $savePath = $this->runtimePath . '/php' . $version . '.zip';
+            $savePath = $this->runtimePath . DIRECTORY_SEPARATOR . 'php' . $version . '.zip';
             $this->download($response->getHeaderLine('Location'), $savePath, 0755);
             if (! file_exists($savePath)) {
                 throw new \RuntimeException('Download failed, cannot locate the PHP bin file in local.');
             }
             // Unzip the artifact file
             $this->logger->info('Unpacking zip file ' . $savePath);
-            $renameTo = $this->runtimePath . '/php' . $version;
+            $extention = '';
+            if (PHP_OS_FAMILY === 'Windows') {
+                $extention = '.exe';
+            }
+            $renameTo = $this->runtimePath . DIRECTORY_SEPARATOR . 'php' . $version . $extention;
             $zip = new ZipArchive();
             $zip->open($savePath);
             for ($i = 0; $i < $zip->numFiles; ++$i) {
                 $filename = $zip->getNameIndex($i);
-                if ($filename === 'php') {
+                if ($filename === 'php' || $filename === 'php.exe') {
                     copy('zip://' . $savePath . '#' . $filename, $renameTo);
                 }
             }
@@ -102,6 +106,7 @@ class PhpHandler extends AbstractDownloadHandler
                 'Authorization' => 'token ' . $githubToken,
             ],
             'allow_redirects' => false,
+            'verify' => false,
         ]);
     }
 

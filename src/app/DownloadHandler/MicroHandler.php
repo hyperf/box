@@ -31,14 +31,14 @@ class MicroHandler extends PhpHandler
             if ($response->getStatusCode() !== 302 || ! $response->getHeaderLine('Location')) {
                 throw new \RuntimeException('Download failed, cannot retrieve the download url from artifact.');
             }
-            $savePath = $this->runtimePath . '/micro_php' . $version . '.zip';
+            $savePath = $this->runtimePath . DIRECTORY_SEPARATOR . 'micro_php' . $version . '.zip';
             $this->download($response->getHeaderLine('Location'), $savePath, 0755);
             if (! file_exists($savePath)) {
                 throw new \RuntimeException('Download failed, cannot locate the PHP bin file in local.');
             }
             // Unzip the artifact file
             $this->logger->info('Unpacking zip file ' . $savePath);
-            $renameTo = $this->runtimePath . '/micro_php' . $version . '.sfx';
+            $renameTo = $this->runtimePath . DIRECTORY_SEPARATOR . 'micro_php' . $version . '.sfx';
             $zip = new ZipArchive();
             $zip->open($savePath);
             for ($i = 0; $i < $zip->numFiles; ++$i) {

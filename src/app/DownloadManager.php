@@ -65,7 +65,8 @@ class DownloadManager
 
     protected function createRuntimePath(): void
     {
-        $path = $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
+        $base = getenv('HOME') ?: getenv('USERPROFILE');
+        $path = $this->config->getConfig('path.runtime', $base . DIRECTORY_SEPARATOR . '.box');
         if (! file_exists($path)) {
             mkdir($path, 0755);
             chmod($path, 0755);

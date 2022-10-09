@@ -32,6 +32,7 @@ class GithubClient
                 'Accept' => 'application/vnd.github.v3+json',
                 'Authorization' => 'token ' . $this->getGithubToken(),
             ],
+            'verify' => false
         ]);
     }
 

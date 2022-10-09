@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Exception\BoxException;
 use Hyperf\Utils\Str;
 
 abstract class AbstractPhpCallProxyCommand extends AbstractCommand
@@ -40,14 +41,22 @@ abstract class AbstractPhpCallProxyCommand extends AbstractCommand
         $path = $this->getRuntimePath();
         $kernel = strtolower($this->config->getConfig('kernel', 'swow'));
         $currentPhpVersion = $this->getCurrentPhpVersion();
+        $os = PHP_OS_FAMILY;
         if ($kernel === 'swoole') {
-            $bin = $path . '/swoole-cli';
+            if ($os === 'Windows') {
+                throw new BoxException('Swoole kernel is not supported on Windows.');
+            }
             if ($currentPhpVersion < '8.1') {
                 $this->logger->warning(sprintf('Current setting PHP version is %s, but the kernel is Swoole and Swoole only support 8.1, so the PHP version is forced to 8.1.', $currentPhpVersion));
             }
+            $bin = $path . DIRECTORY_SEPARATOR . 'swoole-cli';
         } else {
-            $bin = $path . '/php' . $currentPhpVersion;
+            $extension = '';
+            if ($os === 'Windows') {
+                $extension = '.exe';
+            }
+            $bin = $path . DIRECTORY_SEPARATOR . 'php' . $currentPhpVersion . $extension;
         }
-        return $bin . ' ' . $path . '/' . $this->proxyBin;
+        return $bin . ' ' . $path . DIRECTORY_SEPARATOR . $this->proxyBin;
     }
 }

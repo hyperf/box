@@ -50,7 +50,8 @@ abstract class AbstractCommand extends HyperfCommand
 
     protected function getRuntimePath(): string
     {
-        return $this->config->getConfig('path.runtime', getenv('HOME') . '/.box');
+        $base = getenv('HOME') ?: getenv('USERPROFILE');
+        return $this->config->getConfig('path.runtime', $base . DIRECTORY_SEPARATOR . '.box');
     }
 
     protected function getCurrentPhpVersion(): string
