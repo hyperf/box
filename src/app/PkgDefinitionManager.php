@@ -57,7 +57,7 @@ class PkgDefinitionManager
                 }
                 $this->pkgs = json_decode(file_get_contents($path), true);
             } else {
-                $response = (new Client())->get($this->url);
+                $response = (new Client(['verify' => false]))->get($this->url);
                 if ($response->getStatusCode() === 200) {
                     $this->pkgs = json_decode($response->getBody()->getContents(), true);
                 }
