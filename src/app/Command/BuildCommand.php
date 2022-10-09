@@ -59,7 +59,7 @@ class BuildCommand extends AbstractCommand
             $fullCommand = sprintf(
                 'cd %s && ' .
                 $composerNoDevCmd .
-                '%s -d phar.readonly=Off .\bin\hyperf.php phar:build --name=box-build.phar.tmp && cd .. && COPY /b %s + .\src\box-build.phar.tmp %s /y && rd /s /q .\src\box-build.phar.tmp',
+                '%s -d phar.readonly=Off .\bin\hyperf.php phar:build --name=box-build.phar.tmp && cd .. && COPY /b %s + .\src\box-build.phar.tmp %s /y && rm .\src\box-build.phar.tmp',
                 $path,
                 $php,
                 $micro,
