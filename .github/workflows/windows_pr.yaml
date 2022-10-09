@@ -28,7 +28,7 @@ jobs:
       - name: Download Composer
         id: composer
         run: |
-          wget https://getcomposer.org/download/2.3.7/composer.phar
+          curl -o composer.phar https://getcomposer.org/download/2.3.7/composer.phar
 
       - name: Vendor Installation
         id: vendor_installation
@@ -57,7 +57,7 @@ jobs:
         if: steps.box.outcome == 'success'
         uses: actions/upload-artifact@v3
         with:
-          name: box_${{ matrix.arch }}_linux
+          name: box_${{ matrix.arch }}_windows
           path: |
             box
 
