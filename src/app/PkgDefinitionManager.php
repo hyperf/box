@@ -18,16 +18,11 @@ class PkgDefinitionManager
     /**
      * All the definitions is array data, not Definition instance.
      */
-    protected array $pkgs = [];
-
-    public function __construct()
-    {
-        $this->fetchPkgs();
-    }
+    protected ?array $pkgs = null;
 
     public function getDefinition(string $pkg): ?Definition
     {
-        foreach ($this->pkgs as $name => $item) {
+        foreach ($this->getPkgs() as $name => $item) {
             if ($name === $pkg) {
                 return new Definition($name, $item);
             }
@@ -37,11 +32,14 @@ class PkgDefinitionManager
 
     public function hasDefinition(string $pkg): bool
     {
-        return isset($this->pkgs[$pkg]);
+        return isset($this->getPkgs()[$pkg]);
     }
 
     public function getPkgs(): array
     {
+        if (is_null($this->pkgs)) {
+            $this->fetchPkgs();
+        }
         return $this->pkgs;
     }
 
