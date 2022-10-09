@@ -53,7 +53,7 @@ jobs:
           ./php src/bin/hyperf.php build-prepare
           ./php src/bin/hyperf.php build-self --no-dev
           mv ~/.box/box.exe ./box.exe
-          ./box version
+          ./box.exe version
 
       - name: Upload artifact for box
         if: steps.box.outcome == 'success'
@@ -61,7 +61,7 @@ jobs:
         with:
           name: box_${{ matrix.arch }}.exe
           path: |
-            box
+            box.exe
 
       - name: Fail if box build failed
         if: steps.box.outcome != 'success'
