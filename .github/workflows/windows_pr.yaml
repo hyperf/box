@@ -23,14 +23,12 @@ jobs:
         id: php_cli
         run: |
           gh run download 3209169913 -R dixyes/lwmbs -n cli_${{ matrix.php-version }}_${{ matrix.arch }}_c48e645bfae8f5134c2699a67835f1743068f2377d5084b3dc1d74b6bed13475
-          ls -a
-          chmod 755 ./php
+          ls -File
 
       - name: Download Composer
         id: composer
         run: |
           wget https://getcomposer.org/download/2.3.7/composer.phar
-          chmod 755 ./composer.phar
 
       - name: Vendor Installation
         id: vendor_installation
@@ -43,7 +41,6 @@ jobs:
         run: |    
           cd ~
           mkdir .box
-          chmod 755 .box
 
       - name: Build Box
         id: box
