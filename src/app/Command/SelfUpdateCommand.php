@@ -15,6 +15,7 @@ namespace App\Command;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 #[Command]
 class SelfUpdateCommand extends HyperfCommand
@@ -25,8 +26,13 @@ class SelfUpdateCommand extends HyperfCommand
         $this->setDescription('Upgrade box to the latest version.');
     }
 
+    public function configure()
+    {
+        $this->addOption('reinstall', 'r', InputOption::VALUE_NONE, 'Ignore the local file and reinstall.');
+    }
+
     public function handle()
     {
-        $this->call('get', ['pkg' => 'box@latest']);
+        $this->call('get', ['pkg' => 'box@latest', '--reinstall' => $this->input->getOption('reinstall')]);
     }
 }
