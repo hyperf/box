@@ -52,16 +52,16 @@ jobs:
           ./php src/bin/hyperf.php config set-php-version ${{ matrix.php-version }}
           ./php src/bin/hyperf.php build-prepare
           ./php src/bin/hyperf.php build-self --no-dev
-          mv ~/.box/box ./box
-          ./box version
+          mv ~/.box/box.exe ./box.exe
+          ./box.exe version
 
       - name: Upload artifact for box
         if: steps.box.outcome == 'success'
         uses: actions/upload-artifact@v3
         with:
-          name: box_${{ matrix.arch }}
+          name: box_${{ matrix.arch }}.exe
           path: |
-            box
+            box.exe
 
       - name: Fail if box build failed
         if: steps.box.outcome != 'success'
@@ -83,6 +83,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./box
-          asset_name: box_${{ matrix.arch }}_windows
+          asset_path: ./box.exe
+          asset_name: box_${{ matrix.arch }}_windows.exe
           asset_content_type: application/x-sh
