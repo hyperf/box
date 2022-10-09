@@ -65,7 +65,6 @@ class BuildCommand extends AbstractCommand
                 $micro,
                 $outputBin
             );
-            var_dump($fullCommand);
         } else {
             $fullCommand = sprintf(
                 'cd %s && ' .
