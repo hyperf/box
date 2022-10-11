@@ -70,6 +70,13 @@ class SwooleCliHandler extends AbstractDownloadHandler
             $this->logger->info('Unpacked tar.xz file ' . $savePath);
             unlink($file->getRealPath());
         }
+        // Is file name ends with .tar.gz?
+        if (str_ends_with($file->getFilename(), '.tar.gz')) {
+            $this->logger->info('Unpacking tar.gz file ' . $savePath);
+            exec(sprintf('tar -xvf %s -C %s', $file->getRealPath(), $savePath));
+            $this->logger->info('Unpacked tar.gz file ' . $savePath);
+            unlink($file->getRealPath());
+        }
         $licenseFile = $savePath . 'LICENSE';
         // If license file exists, delete it.
         if (file_exists($licenseFile)) {
