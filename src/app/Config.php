@@ -76,6 +76,7 @@ class Config
                 'versions' => [
                     'php' => '8.1',
                 ],
+                'kernel' => 'swow',
             ];
             $this->setConfigContent($content);
         }
