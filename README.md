@@ -13,7 +13,7 @@ Box is committed to helping improve the programming experience of PHP applicatio
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.5.0/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.5.1/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
@@ -22,7 +22,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.5.0/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.5.1/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
@@ -41,7 +41,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Windows
 
 ```powershell
-curl -o box.exe https://github.com/hyperf/box/releases/download/v0.5.0/box_x64_windows.exe
+curl -o box.exe https://github.com/hyperf/box/releases/download/v0.5.1/box_x64_windows.exe
 // Put `box.exe` into any path in $PATH env that you want, and use `box.exe` instead of `box` when executing on Windows
 ```
 
