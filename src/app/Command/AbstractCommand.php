@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Config;
+use App\Exception\BoxException;
 use Hyperf\Contract\StdoutLoggerInterface;
 use RuntimeException;
 use Hyperf\Di\Annotation\Inject;
@@ -69,5 +70,29 @@ abstract class AbstractCommand extends HyperfCommand
             }
         }
         return $isExists;
+    }
+
+    protected function buildBinPath(): string
+    {
+        $path = $this->getRuntimePath();
+        $kernel = strtolower($this->config->getConfig('kernel', 'swow'));
+        $currentPhpVersion = $this->getCurrentPhpVersion();
+        $os = PHP_OS_FAMILY;
+        if ($kernel === 'swoole') {
+            if ($os === 'Windows') {
+                throw new BoxException('The command is not supported in Swoole kernel on Windows.');
+            }
+            if ($currentPhpVersion < '8.1') {
+                $this->logger->warning(sprintf('Current setting PHP version is %s, but the kernel is Swoole and Swoole only support 8.1, so the PHP version is forced to 8.1.', $currentPhpVersion));
+            }
+            $bin = $path . DIRECTORY_SEPARATOR . 'swoole-cli';
+        } else {
+            $extension = '';
+            if ($os === 'Windows') {
+                $extension = '.exe';
+            }
+            $bin = $path . DIRECTORY_SEPARATOR . 'php' . $currentPhpVersion . $extension;
+        }
+        return $bin;
     }
 }
