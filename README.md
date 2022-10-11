@@ -2,7 +2,7 @@ English | [中文](./README-CN.md)
 
 # box, by Hyperf
 
-Box is committed to helping improve the programming experience of Hyperf applications, managing the PHP environment and related dependencies, providing the ability to package Hyperf applications as binary programs, and also providing reverse proxy services for managing and deploying Hyperf applications.
+Box is committed to helping improve the programming experience of PHP applications, expecially for Hyperf, managing the PHP environment and related dependencies, providing the ability to package PHP applications as binary programs, and also providing reverse proxy services for managing and deploying Swoole/Swow applications.
 
 ## This is still an early experimental version, have fun ~
 
@@ -13,7 +13,7 @@ Box is committed to helping improve the programming experience of Hyperf applica
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.4.0/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.5.0/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
@@ -22,7 +22,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.4.0/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.5.0/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
@@ -38,6 +38,13 @@ sudo chmod 755 /usr/local/bin/box
 // Make sure /usr/local/bin/box in your $PATH env, or put `box` into any path in $PATH env that you want
 ```
 
+##### Windows
+
+```powershell
+curl -o box.exe https://github.com/hyperf/box/releases/download/v0.5.0/box_x64_windows.exe
+// Put `box.exe` into any path in $PATH env that you want, and use `box.exe` instead of `box` when executing on Windows
+```
+
 #### Init Github Access Token
 
 Box needs a Github Access Token to request github api, to retrieve the versions of the package.   
@@ -48,13 +55,13 @@ Box needs a Github Access Token to request github api, to retrieve the versions 
 
 #### Setting the Box Kernel
 
-By default, Box is supported by Swow Kernel, but we also provide Swoole Kernel, you can switch to Swoole Kernel by `box config set kernel swoole`, but it should be noted that Swoole Kernel only supports PHP 8.1 version, and The Build Binaries feature is not supported.
+By default, Box is supported by Swow Kernel, but we also provide Swoole Kernel, you can switch to Swoole Kernel by `box config set kernel swoole`, but it should be noted that Swoole Kernel only supports PHP 8.1 version, and The Build Binaries feature and Windows Systems are not supported.
 
 ```bash
 // set to Swow Kernel [default]
 box config set kernel swow
 
-// set to Swoole Kernel
+// set to Swoole Kernel (NOT supported on Windows)
 box config set kernel swoole
 ````
 
@@ -73,7 +80,6 @@ box config set kernel swoole
 - `box config get-php-version <version>` to get the current PHP version of box
 - `box reverse-proxy -u <upsteamHost:upstreamPort>` to start a reverse proxy HTTP server for the upstream servers
 - `box php <argument>` to run any PHP command via current PHP version of box
-- `box swoole-cli <argument>` to run any command via swoole-cli, since box v0.2.0
 - `box composer <argument>` to run any Composer command via box, the version of the composer bin depends on the last executed `get composer` command
 - `box php-cs-fixer <argument>` to run any `php-cs-fixer` command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command
 - `box cs-fix <argument>` to run `php-cs-fix fix` command via box, the version of the composer bin depends on the last executed `get php-cs-fixer` command
