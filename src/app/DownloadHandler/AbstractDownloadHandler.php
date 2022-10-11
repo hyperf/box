@@ -211,6 +211,8 @@ abstract class AbstractDownloadHandler
             return;
         }
         $latestVersion = $this->versions($definition->getPkgName())[0] ?? '';
+        // Trim v prefix
+        $latestVersion = ltrim($latestVersion, 'v');
         if ($latestVersion && version_compare($currentVersion, $latestVersion, '>=')) {
             throw new BoxException(sprintf('Your %s version %s is latest, no need to update, add `--reinstall` or `-r` option to force reinstall the package.', $definition->getPkgName(), $currentVersion));
         }
