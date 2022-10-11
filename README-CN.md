@@ -13,7 +13,7 @@ Box 致力于帮助提升 PHP 应用程序的编程体验，尤其有助于 Hype
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.5.0/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.5.1/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -22,7 +22,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.5.0/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.5.1/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -41,7 +41,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Windows
 
 ```powershell
-curl -o box.exe https://github.com/hyperf/box/releases/download/v0.5.0/box_x64_windows.exe
+curl -o box.exe https://github.com/hyperf/box/releases/download/v0.5.1/box_x64_windows.exe
 // 将 `box.exe` 放到你想要的任意 Path 环境变量路径中，同时 Windows 版本在执行时需要在命令行中使用 `box.exe` 而不是 `box`
 ```
 
