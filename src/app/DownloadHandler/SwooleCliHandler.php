@@ -47,7 +47,7 @@ class SwooleCliHandler extends AbstractDownloadHandler
             $assetName = $this->replaces($matchRule, ['version' => $specifiedVersion]);
         }
         $url = $this->fetchDownloadUrlFromGithubRelease($assetName, $definition->getRepo(), $specifiedVersion);
-        $savePath = Phar::running(false) ?: $this->runtimePath . DIRECTORY_SEPARATOR;
+        $savePath = $this->runtimePath . DIRECTORY_SEPARATOR;
 
         $file = $this->download($url, $savePath, 0755);
         if (! file_exists($savePath)) {
