@@ -42,7 +42,7 @@ class PintHandler extends DefaultHandler
             throw new \RuntimeException('The definition of package is invalid');
         }
 
-        $savePath = Phar::running(false) ?: $this->runtimePath . DIRECTORY_SEPARATOR;
+        $savePath = $this->runtimePath . DIRECTORY_SEPARATOR;
         $file = $this->download($url, $savePath, 0755);
         if (! file_exists($savePath)) {
             throw new \RuntimeException('Download failed, cannot locate the file in local.');
