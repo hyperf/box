@@ -13,7 +13,7 @@ Box 致力于帮助提升 PHP 应用程序的编程体验，尤其有助于 Hype
 ##### Mac
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.5.2/box_x86_64_macos -O box
+wget https://github.com/hyperf/box/releases/download/v0.5.3/box_x86_64_macos -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -22,7 +22,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Linux x86_64
 
 ```bash
-wget https://github.com/hyperf/box/releases/download/v0.5.2/box_x86_64_linux -O box
+wget https://github.com/hyperf/box/releases/download/v0.5.3/box_x86_64_linux -O box
 sudo mv ./box /usr/local/bin/box
 sudo chmod 755 /usr/local/bin/box
 // 确保 /usr/local/bin/box 在你的 $PATH 环境中，或者将 `box` 放到你想要的任意 $PATH 路径中
@@ -41,7 +41,7 @@ sudo chmod 755 /usr/local/bin/box
 ##### Windows
 
 ```powershell
-curl -o box.exe https://github.com/hyperf/box/releases/download/v0.5.2/box_x64_windows.exe
+curl -o box.exe https://github.com/hyperf/box/releases/download/v0.5.3/box_x64_windows.exe
 // 将 `box.exe` 放到你想要的任意 Path 环境变量路径中，同时 Windows 版本在执行时需要在命令行中使用 `box.exe` 而不是 `box`
 ```
 
@@ -86,3 +86,7 @@ box config set kernel swoole
 - `box phpstan <argument>` 通过当前 box 的 PHP 版本运行任何 `phpstan` 命令，composer bin 的版本取决于最后执行的 `get phpstan` 命令，此命令仅在 box v0.3.0 及以上的版本中可用
 - `box pint <argument>` 通过当前 box 的 PHP 版本运行任何 `pint` 命令，composer bin 的版本取决于最后执行的 `get pint` 命令，此命令仅在 box v0.3.0 及以上的版本中可用
 - `box version` 输出当前 box bin 的版本号
+
+### 关于 Swow-Skeleton
+
+希望体验 Box 完整功能的朋友，需要通过 Swow Kernel 来运行，因此您需要基于 [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) 来运行您的项目，可通过 `box composer create-project hyperf/swow-skeleton:dev-master` 命令来创建一个基于 Hyperf 3.0 RC 版的 Swow 骨架项目。
