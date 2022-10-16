@@ -87,10 +87,6 @@ box config set kernel swoole
 - `box pint <argument>` to run any `pint` command via box, the version of the composer bin depends on the last executed `get pint` command, since box v0.3.0
 - `box version` to dump the current version of the box bin
 
-### 关于 Swow-Skeleton
-
-希望体验 Box 完整功能的朋友，需要通过 Swow Kernel 来运行，因此您需要基于 [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) 来运行您的项目，可通过 `box composer create-project hyperf/swow-skeleton:dev-master` 来创建一个基于 Hyperf 3.0 RC 版的 Swow 骨架项目。
-
 ### About Swow Skeleton
 
 If you want to experience the full features of Box, you need to run it based on the Swow Kernel, so you need to base your project on [hyperf/swow-skeleton](https://github.com/hyperf/swow-skeleton) to run your project, you can create a Swow skeleton project based on Hyperf 3.0 RC version by `box composer create-project hyperf/swow-skeleton:dev-master` command.
