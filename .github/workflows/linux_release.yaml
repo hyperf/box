@@ -91,7 +91,7 @@ jobs:
           asset_content_type: application/x-sh
   aarch64:
     name: PHP ${{ matrix.php-version }} ${{ matrix.arch }}
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, arm64]
     strategy:
       fail-fast: false
       matrix:
