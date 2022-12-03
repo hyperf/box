@@ -16,11 +16,11 @@
     "php": {
         "repo": "dixyes/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "2969003447",
-            "Darwin.arm64": "2969003447",
-            "Linux.x86_64": "2961452571",
-            "Linux.aarch64": "2961452571",
-            "Windows.AMD64": "3209169913"
+            "Darwin.x86_64": "3607006944",
+            "Darwin.arm64": "3607006944",
+            "Linux.x86_64": "3607008643",
+            "Linux.aarch64": "3607008643",
+            "Windows.AMD64": "3607004444"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
@@ -41,11 +41,11 @@
     "micro": {
         "repo": "dixyes/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "2969003447",
-            "Darwin.arm64": "2969003447",
-            "Linux.x86_64": "2961452571",
-            "Linux.aarch64": "2961452571",
-            "Windows.AMD64": "3209169913"
+            "Darwin.x86_64": "3607006944",
+            "Darwin.arm64": "3607006944",
+            "Linux.x86_64": "3607008643",
+            "Linux.aarch64": "3607008643",
+            "Windows.AMD64": "3607004444"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
