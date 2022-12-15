@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace App\DownloadHandler;
 
 use App\Box;
+use App\Exception\BoxException;
 use Phar;
 use SplFileInfo;
 
