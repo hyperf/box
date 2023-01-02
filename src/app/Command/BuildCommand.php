@@ -54,6 +54,11 @@ class BuildCommand extends AbstractCommand
             return static::FAILURE;
         }
         $outputBin = $outputPath . DIRECTORY_SEPARATOR . $binName . $extension;
+        $handledOutputBin = $outputBin;
+        // If $outputBin is a relative path, convert it to an absolute path, note that it is adapted to the Windows environment
+        if (!str_starts_with($outputBin, DIRECTORY_SEPARATOR) && strpos($outputBin, ':') !== 1) {
+            $handledOutputBin = getcwd() . DIRECTORY_SEPARATOR . $outputBin;
+        }
         $composerNoDevCmd = $this->buildComposerNoDevCommand($php, $composer);
         if (PHP_OS_FAMILY === 'Windows') {
             $fullCommand = sprintf(
@@ -63,7 +68,7 @@ class BuildCommand extends AbstractCommand
                 $path,
                 $php,
                 $micro,
-                $outputBin
+                $handledOutputBin
             );
         } else {
             $fullCommand = sprintf(
@@ -73,13 +78,13 @@ class BuildCommand extends AbstractCommand
                 $path,
                 $php,
                 $micro,
-                $outputBin
+                $handledOutputBin
             );
         }
         $this->liveCommand($fullCommand);
-        if (file_exists($outputBin)) {
+        if (file_exists($handledOutputBin)) {
             $this->output->success(sprintf('The application %s is built successfully.', $outputBin));
-            chmod($outputBin, 0755);
+            chmod($handledOutputBin, 0755);
         } else {
             $this->output->error(sprintf('The application %s is built failed.', $outputBin));
         }
