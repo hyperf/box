@@ -1,6 +1,7 @@
 name: Linux build
 
 on:
+  pull_request:
   push:
     tags:
       - '*'
@@ -77,11 +78,13 @@ jobs:
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.2.3
+        continue-on-error: true
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Asset
-        if: steps.box.outcome == 'success'
+        if: steps.box.outcome == 'success' && steps.get_release.outputs.upload_url
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
@@ -91,6 +94,7 @@ jobs:
           asset_path: ./box
           asset_name: box_${{ matrix.arch }}_linux
           asset_content_type: application/x-sh
+
   aarch64:
     name: PHP ${{ matrix.php-version }} ${{ matrix.arch }}
     runs-on: [self-hosted, linux, arm64]
@@ -160,11 +164,13 @@ jobs:
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.2.3
+        continue-on-error: true
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Asset
-        if: steps.box.outcome == 'success'
+        if: steps.box.outcome == 'success' && steps.get_release.outputs.upload_url
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:

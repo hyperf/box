@@ -2,6 +2,9 @@ name: MacOS build
 
 on:
   pull_request:
+  push:
+    tags:
+      - '*'
 
 jobs:
   macos:
@@ -58,7 +61,7 @@ jobs:
         if: steps.box.outcome == 'success'
         uses: actions/upload-artifact@v3
         with:
-          name: box_${{ matrix.arch }}_macos
+          name: box_${{ matrix.arch }}
           path: |
             box
 
@@ -66,3 +69,23 @@ jobs:
         if: steps.box.outcome != 'success'
         run: |
           false
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        if: steps.box.outcome == 'success' && steps.get_release.outputs.upload_url
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ./box
+          asset_name: box_${{ matrix.arch }}_macos
+          asset_content_type: application/x-sh
