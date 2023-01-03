@@ -133,6 +133,7 @@ jobs:
         id: create_folder
         run: |
           cd ~
+          rm -rf ~/.box
           mkdir .box
           chmod 755 .box
 
@@ -146,6 +147,7 @@ jobs:
           ./php src/bin/hyperf.php build-self --no-dev
           mv ~/.box/box ./box
           ./box version
+          rm -rf ~/.box
 
       - name: Upload artifact for box
         if: steps.box.outcome == 'success'
