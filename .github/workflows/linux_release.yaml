@@ -24,7 +24,7 @@ jobs:
       - name: Download PHP Cli
         id: php_cli
         run: |
-          gh run download 3825335479 -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_ad4bf78451bf9894c4711694556132cc8f268ebf4a4607ba487984cdd338efad
+          gh run download 3825999869 -R hyperf/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_ad4bf78451bf9894c4711694556132cc8f268ebf4a4607ba487984cdd338efad
           ls -a
           chmod 755 ./php
 
@@ -109,7 +109,7 @@ jobs:
       - name: Download PHP Cli
         id: php_cli
         run: |
-          gh run download 3825335479 -R dixyes/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_ad4bf78451bf9894c4711694556132cc8f268ebf4a4607ba487984cdd338efad
+          gh run download 3825999869 -R hyperf/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_ad4bf78451bf9894c4711694556132cc8f268ebf4a4607ba487984cdd338efad
           ls -a
           chmod 755 ./php
 

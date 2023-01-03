@@ -14,13 +14,13 @@
         "bin": "phpstan.phar"
     },
     "php": {
-        "repo": "dixyes/lwmbs",
+        "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "3710322403",
-            "Darwin.arm64": "3710322403",
-            "Linux.x86_64": "3825335479",
-            "Linux.aarch64": "3825335479",
-            "Windows.AMD64": "3825335904"
+            "Darwin.x86_64": "3826009291",
+            "Darwin.arm64": "3826009291",
+            "Linux.x86_64": "3825999869",
+            "Linux.aarch64": "3825999869",
+            "Windows.AMD64": "3825884688"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
@@ -39,13 +39,13 @@
         "latest_fetch_type": "packagist"
     },
     "micro": {
-        "repo": "dixyes/lwmbs",
+        "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "3710322403",
-            "Darwin.arm64": "3710322403",
-            "Linux.x86_64": "3825335479",
-            "Linux.aarch64": "3825335479",
-            "Windows.AMD64": "3825335904"
+            "Darwin.x86_64": "3826009291",
+            "Darwin.arm64": "3826009291",
+            "Linux.x86_64": "3825999869",
+            "Linux.aarch64": "3825999869",
+            "Windows.AMD64": "3825884688"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",

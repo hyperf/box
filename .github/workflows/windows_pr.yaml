@@ -22,7 +22,7 @@ jobs:
       - name: Download PHP Cli
         id: php_cli
         run: |
-          gh run download 3209169913 -R dixyes/lwmbs -n cli_${{ matrix.php-version }}_${{ matrix.arch }}_c48e645bfae8f5134c2699a67835f1743068f2377d5084b3dc1d74b6bed13475
+          gh run download 3825884688 -R hyperf/lwmbs -n cli_${{ matrix.php-version }}_${{ matrix.arch }}_ad4bf78451bf9894c4711694556132cc8f268ebf4a4607ba487984cdd338efad
           ls -File
 
       - name: Download Composer
