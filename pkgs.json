@@ -16,11 +16,11 @@
     "php": {
         "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "4154701363",
-            "Darwin.arm64": "4154701363",
-            "Linux.x86_64": "4154700732",
-            "Linux.aarch64": "4154700732",
-            "Windows.AMD64": "3826901337"
+            "Darwin.x86_64": "4273362908",
+            "Darwin.arm64": "4273362908",
+            "Linux.x86_64": "4273362594",
+            "Linux.aarch64": "4273362594",
+            "Windows.AMD64": "4273361844"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
@@ -29,8 +29,8 @@
             "Linux.aarch64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
             "Windows.AMD64": "${{prefix}}_${{php-version}}_x64"
         },
-        "latest": "8.1",
-        "versions": ["8.1", "8.0"]
+        "latest": "8.2",
+        "versions": ["8.2", "8.1", "8.0"]
     },
     "pint": {
         "url": "https://github.com/laravel/pint/archive/refs/tags/${{version}}.zip",
@@ -41,11 +41,11 @@
     "micro": {
         "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "4154701363",
-            "Darwin.arm64": "4154701363",
-            "Linux.x86_64": "4154700732",
-            "Linux.aarch64": "4154700732",
-            "Windows.AMD64": "3826901337"
+            "Darwin.x86_64": "4273362908",
+            "Darwin.arm64": "4273362908",
+            "Linux.x86_64": "4273362594",
+            "Linux.aarch64": "4273362594",
+            "Windows.AMD64": "4273361844"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
@@ -54,8 +54,8 @@
             "Linux.aarch64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
             "Windows.AMD64": "${{prefix}}_${{php-version}}_x64"
         },
-        "latest": "8.1",
-        "versions": ["8.1", "8.0"]
+        "latest": "8.2",
+        "versions": ["8.2", "8.1", "8.0"]
     },
     "box": {
         "repo": "hyperf/box",
