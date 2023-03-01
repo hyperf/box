@@ -49,7 +49,7 @@ curl -o box.exe https://github.com/hyperf/box/releases/download/v0.5.5/box_x64_w
 
 Box 需要一个 Github 访问令牌来请求 Github API，以检索包的版本。
 
-1. [创建 Github Access Token](https://github.com/settings/tokens/new)，`workflow` 范围需要勾选；
+1. [创建 Github Access Token](https://github.com/settings/tokens/new?scopes=workflow,repo&description=HyperfBox)，`workflow` 范围需要勾选；
 2. 运行 `box config set github.access-token <Your Token>` 命令来设置您的 token；
 3. 玩得开心 ~
 
