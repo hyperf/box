@@ -113,7 +113,7 @@ jobs:
       - name: Download PHP Cli
         id: php_cli
         run: |
-          gh run download 5471614657 -R hyperf/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_245a03ecd8971e80be6c5a88a947035278229272751ab84b382eafd735e9a2c
+          gh run download 5471614657 -R hyperf/lwmbs -n cli_static_${{ matrix.php-version }}_musl_${{ matrix.arch }}_1245a03ecd8971e80be6c5a88a947035278229272751ab84b382eafd735e9a2c
           ls -a
           chmod 755 ./php
 
