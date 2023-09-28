@@ -15,6 +15,7 @@ namespace App\DownloadHandler;
 use App\PkgDefinition\Definition;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 use Hyperf\Di\Annotation\Inject;
 use Psr\Http\Message\ResponseInterface;
 use SplFileInfo;
@@ -101,12 +102,12 @@ class PhpHandler extends AbstractDownloadHandler
             throw new \RuntimeException('Does not match any artifact.');
         }
         return $this->httpClient->get($artifact['archive_download_url'], [
-            'headers' => [
+            RequestOptions::HEADERS => [
                 'Accept' => 'application/vnd.github.v3+json',
                 'Authorization' => 'token ' . $githubToken,
             ],
-            'allow_redirects' => false,
-            'verify' => false,
+            RequestOptions::ALLOW_REDIRECTS => false,
+            RequestOptions::VERIFY => false,
         ]);
     }
 
