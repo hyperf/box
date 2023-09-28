@@ -20,7 +20,7 @@
             "Darwin.arm64": "5408524798",
             "Linux.x86_64": "5408536086",
             "Linux.aarch64": "5408536086",
-            "Windows.AMD64": "5408536196"
+            "Windows.AMD64": "6321454433"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
@@ -45,7 +45,7 @@
             "Darwin.arm64": "5408524798",
             "Linux.x86_64": "5408536086",
             "Linux.aarch64": "5408536086",
-            "Windows.AMD64": "5408536196"
+            "Windows.AMD64": "6321454433"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
