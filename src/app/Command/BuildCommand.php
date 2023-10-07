@@ -61,7 +61,7 @@ class BuildCommand extends AbstractCommand
         if (!str_starts_with($outputBin, DIRECTORY_SEPARATOR) && strpos($outputBin, ':') !== 1) {
             $handledOutputBin = getcwd() . DIRECTORY_SEPARATOR . $outputBin;
         }
-        $this->buildINICommand($iniPath);
+        $this->buildINICommand($iniPath, $path);
         $composerNoDevCmd = $this->buildComposerNoDevCommand($php, $composer);
         $command = '%s -d phar.readonly=Off .\bin\hyperf.php phar:build --name=box-build.phar.tmp && ';
         if (PHP_OS_FAMILY === 'Windows') {
@@ -96,14 +96,15 @@ class BuildCommand extends AbstractCommand
         return $composerNoDevCmd;
     }
 
-    protected function buildINICommand(?string $iniPath): string
+    protected function buildINICommand(?string $iniPath, string $path): string
     {
         $ini = '';
         if ($iniPath && file_exists($iniPath) && is_file($iniPath)) {
             $ini = file_get_contents($iniPath);
         }
+        $ini = "\n$ini\n";
 
-        $f = fopen('ini.tmp', 'wb');
+        $f = fopen($path . DIRECTORY_SEPARATOR . 'ini.tmp', 'wb');
         fwrite($f, "\xfd\xf6\x69\xe6");
         fwrite($f, pack("N", strlen($ini)));
         fwrite($f, $ini);
