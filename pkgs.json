@@ -16,11 +16,11 @@
     "php": {
         "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "5408524798",
-            "Darwin.arm64": "5408524798",
+            "Darwin.x86_64": "6439057627",
+            "Darwin.arm64": "6439057627",
             "Linux.x86_64": "5408536086",
             "Linux.aarch64": "5408536086",
-            "Windows.AMD64": "6321454433"
+            "Windows.AMD64": "6439065539"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
@@ -41,11 +41,11 @@
     "micro": {
         "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "5408524798",
-            "Darwin.arm64": "5408524798",
+            "Darwin.x86_64": "6439057627",
+            "Darwin.arm64": "6439057627",
             "Linux.x86_64": "5408536086",
             "Linux.aarch64": "5408536086",
-            "Windows.AMD64": "6321454433"
+            "Windows.AMD64": "6439065539"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
