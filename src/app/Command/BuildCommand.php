@@ -28,6 +28,7 @@ class BuildCommand extends AbstractCommand
         $this->addOption('name', '', InputOption::VALUE_OPTIONAL, 'The name of the output bin.', 'hyperf');
         $this->addOption('output', 'o', InputOption::VALUE_OPTIONAL, 'The output path of bin.', '.');
         $this->addOption('dev', 'd', InputOption::VALUE_NEGATABLE, 'Require the dev composer packages or not.', true);
+        $this->addOption('ini-path', 'i', InputOption::VALUE_OPTIONAL, 'The path for php.ini.');
     }
 
     public function handle()
@@ -40,6 +41,7 @@ class BuildCommand extends AbstractCommand
         $path = $this->input->getArgument('path');
         $binName = $this->input->getOption('name');
         $outputPath = $this->input->getOption('output');
+        $iniPath = $this->input->getOption('ini-path');
         $runtimePath = $this->getRuntimePath();
         $currentPhpVersion = $this->getCurrentPhpVersion();
         $extension = '';
@@ -59,28 +61,22 @@ class BuildCommand extends AbstractCommand
         if (!str_starts_with($outputBin, DIRECTORY_SEPARATOR) && strpos($outputBin, ':') !== 1) {
             $handledOutputBin = getcwd() . DIRECTORY_SEPARATOR . $outputBin;
         }
+        $this->buildINICommand($iniPath, $path);
         $composerNoDevCmd = $this->buildComposerNoDevCommand($php, $composer);
+        $command = '%s -d phar.readonly=Off .\bin\hyperf.php phar:build --name=box-build.phar.tmp && ';
         if (PHP_OS_FAMILY === 'Windows') {
-            $fullCommand = sprintf(
-                'cd %s && ' .
-                $composerNoDevCmd .
-                '%s -d phar.readonly=Off .\bin\hyperf.php phar:build --name=box-build.phar.tmp && COPY /b %s + .\box-build.phar.tmp %s /y && DEL .\box-build.phar.tmp',
-                $path,
-                $php,
-                $micro,
-                $handledOutputBin
-            );
+            $command .= 'COPY /b %s + .\ini.tmp + .\box-build.phar.tmp %s /y && DEL .\box-build.phar.tmp .\ini.tmp';
         } else {
-            $fullCommand = sprintf(
-                'cd %s && ' .
-                $composerNoDevCmd .
-                '%s -d phar.readonly=Off ./bin/hyperf.php phar:build --name=box-build.phar.tmp && cat %s ./box-build.phar.tmp > %s && rm -rf ./box-build.phar.tmp',
-                $path,
-                $php,
-                $micro,
-                $handledOutputBin
-            );
+            $command .= 'cat %s ./ini.tmp ./box-build.phar.tmp > %s && rm -rf ./box-build.phar.tmp ./ini.tmp';
         }
+        $fullCommand = sprintf(
+            'cd %s && ' . $composerNoDevCmd . $command,
+            $path,
+            $php,
+            $micro,
+            $handledOutputBin
+        );
+
         $this->liveCommand($fullCommand);
         if (file_exists($handledOutputBin)) {
             $this->output->success(sprintf('The application %s is built successfully.', $outputBin));
@@ -98,5 +94,21 @@ class BuildCommand extends AbstractCommand
             $composerNoDevCmd = sprintf('%s %s install -o --no-dev && ', $php, $composer);
         }
         return $composerNoDevCmd;
+    }
+
+    protected function buildINICommand(?string $iniPath, string $path): string
+    {
+        $ini = '';
+        if ($iniPath && file_exists($iniPath) && is_file($iniPath)) {
+            $ini = file_get_contents($iniPath);
+        }
+        $ini = "\n$ini\n";
+
+        $f = fopen($path . DIRECTORY_SEPARATOR . 'ini.tmp', 'wb');
+        fwrite($f, "\xfd\xf6\x69\xe6");
+        fwrite($f, pack("N", strlen($ini)));
+        fwrite($f, $ini);
+        fclose($f);
+        return 'ini.tmp';
     }
 }
