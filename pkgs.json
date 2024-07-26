@@ -16,8 +16,8 @@
     "php": {
         "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "10100823194",
-            "Darwin.arm64": "10100823194",
+            "Darwin.x86_64": "10104219277",
+            "Darwin.arm64": "10104219277",
             "Linux.x86_64": "10100820549",
             "Linux.aarch64": "10100820549",
             "Windows.AMD64": "10100824849"
@@ -35,8 +35,8 @@
     "micro": {
         "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "10100823194",
-            "Darwin.arm64": "10100823194",
+            "Darwin.x86_64": "10104219277",
+            "Darwin.arm64": "10104219277",
             "Linux.x86_64": "10100820549",
             "Linux.aarch64": "10100820549",
             "Windows.AMD64": "10100824849"
