@@ -16,11 +16,30 @@
     "php": {
         "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "8406897401",
-            "Darwin.arm64": "8406897401",
-            "Linux.x86_64": "7621094399",
-            "Linux.aarch64": "7621094399",
-            "Windows.AMD64": "7123841077"
+            "Darwin.x86_64": "10100823194",
+            "Darwin.arm64": "10100823194",
+            "Linux.x86_64": "10100820549",
+            "Linux.aarch64": "10100820549",
+            "Windows.AMD64": "10100824849"
+        },
+        "job_artifact_match_rule": {
+            "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
+            "Darwin.arm64": "${{prefix}}_${{php-version}}_${{arch}}",
+            "Linux.x86_64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
+            "Linux.aarch64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
+            "Windows.AMD64": "${{prefix}}_${{php-version}}_x64"
+        },
+        "latest": "8.2",
+        "versions": ["8.2", "8.1", "8.0"]
+    },
+    "micro": {
+        "repo": "hyperf/lwmbs",
+        "jobs": {
+            "Darwin.x86_64": "10100823194",
+            "Darwin.arm64": "10100823194",
+            "Linux.x86_64": "10100820549",
+            "Linux.aarch64": "10100820549",
+            "Windows.AMD64": "10100824849"
         },
         "job_artifact_match_rule": {
             "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
@@ -37,25 +56,6 @@
         "bin": "pint",
         "composer_name": "laravel/pint",
         "latest_fetch_type": "packagist"
-    },
-    "micro": {
-        "repo": "hyperf/lwmbs",
-        "jobs": {
-            "Darwin.x86_64": "8406897401",
-            "Darwin.arm64": "8406897401",
-            "Linux.x86_64": "7621094399",
-            "Linux.aarch64": "7621094399",
-            "Windows.AMD64": "7123841077"
-        },
-        "job_artifact_match_rule": {
-            "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
-            "Darwin.arm64": "${{prefix}}_${{php-version}}_${{arch}}",
-            "Linux.x86_64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
-            "Linux.aarch64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
-            "Windows.AMD64": "${{prefix}}_${{php-version}}_x64"
-        },
-        "latest": "8.2",
-        "versions": ["8.2", "8.1", "8.0"]
     },
     "box": {
         "repo": "hyperf/box",
