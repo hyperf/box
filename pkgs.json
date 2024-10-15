@@ -16,40 +16,40 @@
     "php": {
         "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "11266315985",
-            "Darwin.arm64": "11266315985",
-            "Linux.x86_64": "11266314660",
-            "Linux.aarch64": "11266314660",
-            "Windows.AMD64": "10100824849"
+            "Darwin.x86_64": "11338681130",
+            "Darwin.arm64": "11338681130",
+            "Linux.x86_64": "11338678228",
+            "Linux.aarch64": "11338678228",
+            "Windows.AMD64": "11267510778"
         },
         "job_artifact_match_rule": {
-            "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
-            "Darwin.arm64": "${{prefix}}_${{php-version}}_${{arch}}",
-            "Linux.x86_64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
-            "Linux.aarch64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
-            "Windows.AMD64": "${{prefix}}_${{php-version}}_x64"
+            "Darwin.x86_64": "${{prefix}}_max-swow_${{php-version}}_${{arch}}",
+            "Darwin.arm64": "${{prefix}}_max-swow_${{php-version}}_${{arch}}",
+            "Linux.x86_64": "${{prefix}}_static_max-swow_${{php-version}}_musl_${{arch}}",
+            "Linux.aarch64": "${{prefix}}_static_max-swow_${{php-version}}_musl_${{arch}}",
+            "Windows.AMD64": "${{prefix}}_max-swow_${{php-version}}_x64"
         },
-        "latest": "8.2",
-        "versions": ["8.2", "8.1", "8.0"]
+        "latest": "8.3",
+        "versions": ["8.3" ,"8.2", "8.1", "8.0"]
     },
     "micro": {
         "repo": "hyperf/lwmbs",
         "jobs": {
-            "Darwin.x86_64": "11266315985",
-            "Darwin.arm64": "11266315985",
-            "Linux.x86_64": "11266314660",
-            "Linux.aarch64": "11266314660",
-            "Windows.AMD64": "10100824849"
+            "Darwin.x86_64": "11338681130",
+            "Darwin.arm64": "11338681130",
+            "Linux.x86_64": "11338678228",
+            "Linux.aarch64": "11338678228",
+            "Windows.AMD64": "11267510778"
         },
         "job_artifact_match_rule": {
-            "Darwin.x86_64": "${{prefix}}_${{php-version}}_${{arch}}",
-            "Darwin.arm64": "${{prefix}}_${{php-version}}_${{arch}}",
-            "Linux.x86_64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
-            "Linux.aarch64": "${{prefix}}_static_${{php-version}}_musl_${{arch}}",
-            "Windows.AMD64": "${{prefix}}_${{php-version}}_x64"
+            "Darwin.x86_64": "${{prefix}}_max-swow_${{php-version}}_${{arch}}",
+            "Darwin.arm64": "${{prefix}}_max-swow_${{php-version}}_${{arch}}",
+            "Linux.x86_64": "${{prefix}}_static_max-swow_${{php-version}}_musl_${{arch}}",
+            "Linux.aarch64": "${{prefix}}_static_max-swow_${{php-version}}_musl_${{arch}}",
+            "Windows.AMD64": "${{prefix}}_max-swow_${{php-version}}_x64"
         },
-        "latest": "8.2",
-        "versions": ["8.2", "8.1", "8.0"]
+        "latest": "8.3",
+        "versions": ["8.3" ,"8.2", "8.1", "8.0"]
     },
     "pint": {
         "url": "https://github.com/laravel/pint/archive/refs/tags/${{version}}.zip",
